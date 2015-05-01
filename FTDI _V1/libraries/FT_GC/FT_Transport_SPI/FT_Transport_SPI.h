@@ -24,6 +24,7 @@
 #define _FT_TRANSPORT_SPI_H_
 
 #include "SPI.h"
+#include <util/delay.h>
 
 #define CS_HIGH() DD_PORT |= (1 << DD_SS)
 #define CS_LOW() DD_PORT &= ~(1 << DD_SS)
@@ -202,6 +203,7 @@ public:
    void EndTransfer(void) {
       //digitalWrite(CSPin, HIGH);
       CS_HIGH();
+      _delay_ms(100);
    }
    //transfer a single byte
    void Transfer(uint8_t Value8) {

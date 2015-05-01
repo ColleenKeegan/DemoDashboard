@@ -4,6 +4,8 @@
  *  Created on: Apr 5, 2015
  *      Author: thomaswillson
  */
+#include <stdint.h>
+
 
 #include "FT_VM801P43_50.h"
 #include "arduino/Arduino.h"
@@ -33,7 +35,7 @@ int16_t BootupConfigure() {
    //FTImpl.SetDisplayEnablePin(FT_DISPENABLE_PIN);
    // FTImpl.SetAudioEnablePin(FT_AUDIOENABLE_PIN);
    Serial.println("Turn on BL");
-   FTImpl.DisplayOff();
+   FTImpl.DisplayOn();
    //FTImpl.AudioOn();
    Serial.println("Finish Startup");
    return 0;
@@ -56,7 +58,7 @@ void HelloWorld() {
 /* bootup the module and display "Hello World" on screen */
 void setup() {
    /* Initialize serial print related functionality */
-   Serial.begin(9600);
+   Serial.begin(57600);
 
    /* Set the Display Enable pin*/
    Serial.println("--Start Application--");
