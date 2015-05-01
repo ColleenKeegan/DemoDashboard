@@ -203,7 +203,6 @@ public:
    void EndTransfer(void) {
       //digitalWrite(CSPin, HIGH);
       CS_HIGH();
-      _delay_ms(100);
    }
    //transfer a single byte
    void Transfer(uint8_t Value8) {

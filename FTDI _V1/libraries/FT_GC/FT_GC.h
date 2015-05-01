@@ -399,10 +399,12 @@ FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
    /* Bootup of graphics controller */
    Reset();
    Serial.println("4");
+
    /* Set the display configurations followed by external clock set, spi clock change wrt FT80x */
    DisplayConfigExternalClock(ResType);
 
-   if ((options1 & FT_INTERNAL_CLOCK_SOURCE) == FT_INTERNAL_CLOCK_SOURCE) {
+//   if ((options1 & FT_INTERNAL_CLOCK_SOURCE) == FT_INTERNAL_CLOCK_SOURCE) {
+   if (true) {
       /* Set to use internal clock source */
       HostCommand(FT_CLKINT);
    } else {
@@ -411,8 +413,7 @@ FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
    }
 
    /* change the clock to maximum SPI operating frequency */
-   FT_Trans::ChangeClock(SPI_CLOCK_DIV2); //change the clock to normal operating frequency - harcoded wrt due
-
+   //FT_Trans::ChangeClock(SPI_CLOCK_DIV2); //change the clock to normal operating frequency - harcoded wrt due
    return FT_OK;
 }
 template<class FT_Trans>

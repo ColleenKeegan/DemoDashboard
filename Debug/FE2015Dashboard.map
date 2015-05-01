@@ -480,10 +480,11 @@ Discarded input sections
  .group         0x00000000        0x8 ./main.o
  .group         0x00000000        0x8 ./main.o
  .group         0x00000000        0x8 ./main.o
+ .group         0x00000000        0x8 ./main.o
  .text          0x00000000        0x0 ./main.o
  .bss           0x00000000        0x0 ./main.o
  .text.unlikely._ZN16FT_Transport_SPI7Write16Emj.isra.7
-                0x00000000       0x44 ./main.o
+                0x00000000       0x56 ./main.o
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulsi3.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulsi3.o)
  .text.libgcc.mul
@@ -984,7 +985,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x21f8
+.text           0x00000000     0x22bc
  *(.vectors)
  .vectors       0x00000000       0x94 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
                 0x00000000                __vectors
@@ -1151,47 +1152,50 @@ END GROUP
  .text._ZN8SPIClass5beginEv
                 0x00001022       0x2e ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
                 0x00001022                _ZN8SPIClass5beginEv
+ .text._ZN5FT_GCI16FT_Transport_SPIE14EndTransferCmdEv
+                0x00001050       0x90 ./main.o
+                0x00001050                _ZN5FT_GCI16FT_Transport_SPIE14EndTransferCmdEv
  .text._ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
-                0x00001050      0x15c ./main.o
-                0x00001050                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
+                0x000010e0      0x192 ./main.o
+                0x000010e0                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
  .text._Z15BootupConfigurev
-                0x000011ac      0x604 ./main.o
-                0x000011ac                _Z15BootupConfigurev
+                0x00001272      0x72a ./main.o
+                0x00001272                _Z15BootupConfigurev
  .text._ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
-                0x000017b0      0x1a8 ./main.o
-                0x000017b0                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
+                0x0000199c      0x1bc ./main.o
+                0x0000199c                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
  .text._ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
-                0x00001958      0x2fa ./main.o
-                0x00001958                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
+                0x00001b58      0x2ce ./main.o
+                0x00001b58                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
  .text._ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
-                0x00001c52      0x1ba ./main.o
-                0x00001c52                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
+                0x00001e26      0x158 ./main.o
+                0x00001e26                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
  .text._Z10HelloWorldv
-                0x00001e0c      0x2e8 ./main.o
-                0x00001e0c                _Z10HelloWorldv
- .text.setup    0x000020f4       0x30 ./main.o
-                0x000020f4                setup
+                0x00001f7e      0x23a ./main.o
+                0x00001f7e                _Z10HelloWorldv
+ .text.setup    0x000021b8       0x30 ./main.o
+                0x000021b8                setup
  .text.startup.main
-                0x00002124        0xc ./main.o
-                0x00002124                main
+                0x000021e8        0xc ./main.o
+                0x000021e8                main
  .text.startup._GLOBAL__sub_I_FTImpl
-                0x00002130       0x46 ./main.o
+                0x000021f4       0x46 ./main.o
  .text.libgcc.div
-                0x00002176       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
-                0x00002176                __udivmodsi4
+                0x0000223a       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
+                0x0000223a                __udivmodsi4
  .text.libgcc.mul
-                0x000021ba       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
-                0x000021ba                __muluhisi3
- .text.libgcc   0x000021ce        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
-                0x000021ce                __tablejump_elpm__
+                0x0000227e       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
+                0x0000227e                __muluhisi3
+ .text.libgcc   0x00002292        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
+                0x00002292                __tablejump_elpm__
  .text.libgcc.mul
-                0x000021d6       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
-                0x000021d6                __umulhisi3
-                0x000021f4                . = ALIGN (0x2)
+                0x0000229a       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
+                0x0000229a                __umulhisi3
+                0x000022b8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000021f4        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
-                0x000021f4                exit
-                0x000021f4                _exit
+ .fini9         0x000022b8        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+                0x000022b8                exit
+                0x000022b8                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1210,11 +1214,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000021f4        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+ .fini0         0x000022b8        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
  *(.fini0)
-                0x000021f8                _etext = .
+                0x000022bc                _etext = .
 
-.data           0x00800100       0xc2 load address 0x000021f8
+.data           0x00800100       0xc2 load address 0x000022bc
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
@@ -1340,8 +1344,8 @@ END GROUP
                 0x0080031e                FTImpl
  *(COMMON)
                 0x0080032d                PROVIDE (__bss_end, .)
-                0x000021f8                __data_load_start = LOADADDR (.data)
-                0x000022ba                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000022bc                __data_load_start = LOADADDR (.data)
+                0x0000237e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080032d        0x0
                 0x0080032d                PROVIDE (__noinit_start, .)
@@ -1369,7 +1373,7 @@ END GROUP
 .user_signatures
  *(.user_signatures*)
 
-.stab           0x00000000     0x9f00
+.stab           0x00000000     0x9a2c
  *(.stab)
  .stab          0x00000000      0xc48 ./arduino/HardwareSerial.o
                                 0xdec (size before relaxing)
@@ -1401,12 +1405,12 @@ END GROUP
                                 0x630 (size before relaxing)
  .stab          0x00004f14      0x5d0 ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
                                 0x894 (size before relaxing)
- .stab          0x000054e4     0x4a1c ./main.o
-                               0x4bc0 (size before relaxing)
+ .stab          0x000054e4     0x4548 ./main.o
+                               0x4704 (size before relaxing)
 
-.stabstr        0x00000000     0x6f50
+.stabstr        0x00000000     0x6fc2
  *(.stabstr)
- .stabstr       0x00000000     0x6f50 ./arduino/HardwareSerial.o
+ .stabstr       0x00000000     0x6fc2 ./arduino/HardwareSerial.o
 
 .stab.excl
  *(.stab.excl)
@@ -1567,6 +1571,7 @@ CAN                                               ./arduino/can_lib.o
 FTImpl                                            ./main.o
 FT_GC<FT_Transport_SPI>::ActiveInternalClock()    ./main.o
 FT_GC<FT_Transport_SPI>::ChkGetFreeSpace(unsigned int) ./main.o
+FT_GC<FT_Transport_SPI>::EndTransferCmd()         ./main.o
 FT_GC<FT_Transport_SPI>::TransferCmd(unsigned char*, unsigned long) ./main.o
 FT_GC<FT_Transport_SPI>::WriteCmd(unsigned long)  ./main.o
 HardwareSerial::HardwareSerial(ring_buffer*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char) ./arduino/HardwareSerial.o
@@ -1643,8 +1648,8 @@ Stream::timedRead()                               ./arduino/Stream.o
 String::String(String const&)                     ./arduino/WString.o
 String::String(String const&)                     ./arduino/WString.o
 String::String(char const*)                       ./arduino/WString.o
-                                                  ./arduino/Stream.o
 String::String(char const*)                       ./arduino/WString.o
+                                                  ./arduino/Stream.o
 String::String(char)                              ./arduino/WString.o
 String::String(char)                              ./arduino/WString.o
 String::String(int, unsigned char)                ./arduino/WString.o
