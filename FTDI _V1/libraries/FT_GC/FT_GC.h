@@ -373,10 +373,6 @@ FT_GC<FT_Trans>::FT_GC() {
    DispGpioPin = FT_GPIO7;
    AudioGpioPin = FT_GPIO1;
    TrnsFlag = 0;
-
-   //redundant call
-   FT_GC<FT_Trans>::SetCSpin((volatile uint8_t *) FT_CS_PORT,
-      (volatile uint8_t *) FT_CS_DDR, FT_CS_PIN);
 }
 
 template<class FT_Trans>
@@ -390,16 +386,19 @@ FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
    //pinMode(PDNPin, OUTPUT);
    //digitalWrite(PDNPin, HIGH);    	
    /*attempt to initialize interrupt pin*/
+   Serial.println("1");
    if (IntPin != -1) {
       //pinMode(IntPin, INPUT);
       FT_INT_DDR &= ~FT_INT_PIN;
    }
-
+   Serial.println("2");
    /* Initialize SPI channel */
    FT_Trans::Init();
 
+   Serial.println("3");
    /* Bootup of graphics controller */
    Reset();
+   Serial.println("4");
    /* Set the display configurations followed by external clock set, spi clock change wrt FT80x */
    DisplayConfigExternalClock(ResType);
 
@@ -412,7 +411,7 @@ FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
    }
 
    /* change the clock to maximum SPI operating frequency */
-   FT_Trans::ChangeClock(FT_SPI_CLK_FREQ_MAX); //change the clock to normal operating frequency - harcoded wrt due	
+   FT_Trans::ChangeClock(SPI_CLOCK_DIV2); //change the clock to normal operating frequency - harcoded wrt due
 
    return FT_OK;
 }
@@ -535,9 +534,13 @@ void FT_GC<FT_Trans>::ActiveInternalClock(void) {
       0, 0, 0, 0,  //GPU instruction DISPLAY
       };
    /* change the SPI clock to <11MHz */
-   FT_Trans::ChangeClock(FT_SPI_CLK_FREQ_MIN);
+   Serial.println("3.1");
+   FT_Trans::ChangeClock(SPI_CLOCK_DIV128);
+   Serial.println("3.2");
    HostCommand(FT_ACTIVE);  //wake up the processor from sleep state
+   Serial.println("3.3");
    delay(20);
+   Serial.println("3.4");
    /* download the first display list */
    FT_Trans::Write(FT_RAM_DL, FT_DLCODE_BOOTUP, 12);
    /* perform first swap command */
@@ -1757,6 +1760,7 @@ FT_GEStatus FT_GC<FT_Trans>::Finish(void) {
    FT_Trans::Write16(REG_CMD_WRITE, CmdFifoWp);
 
    while ((ReadPrt = FT_Trans::Read16(REG_CMD_READ)) != CmdFifoWp) {
+      Serial.println(ReadPrt, HEX);
       if (FT_COPRO_ERROR == ReadPrt) {
          return FT_GE_ERROR;
       }

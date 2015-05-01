@@ -46,14 +46,11 @@ endif
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
-LSS += \
-FE2015Dashboard.lss \
-
 FLASH_IMAGE += \
 FE2015Dashboard.hex \
 
-SIZEDUMMY += \
-sizedummy \
+AVRDUDEDUMMY += \
+avrdudedummy \
 
 
 # All Target
@@ -67,30 +64,24 @@ FE2015Dashboard.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-FE2015Dashboard.lss: FE2015Dashboard.elf
-	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S FE2015Dashboard.elf  >"FE2015Dashboard.lss"
-	@echo 'Finished building: $@'
-	@echo ' '
-
 FE2015Dashboard.hex: FE2015Dashboard.elf
 	@echo 'Create Flash image (ihex format)'
 	-avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex FE2015Dashboard.elf  "FE2015Dashboard.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: FE2015Dashboard.elf
-	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=at90can128 FE2015Dashboard.elf
+avrdudedummy: FE2015Dashboard.elf
+	@echo 'Invoking: AVRDude'
+	/opt/local/bin/avrdude -pc128 -carduino -P/dev/tty.usbserial-A603X73G -b57600 -v -D -Uflash:w:FE2015Dashboard.hex:a
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(C_UPPER_DEPS)$(S_DEPS)$(LSS)$(C_DEPS)$(FLASH_IMAGE)$(CC_DEPS)$(ELFS)$(C++_DEPS)$(OBJS)$(CXX_DEPS)$(ASM_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(CPP_DEPS) FE2015Dashboard.elf
+	-$(RM) $(C_UPPER_DEPS)$(AVRDUDEDUMMY)$(S_DEPS)$(C_DEPS)$(FLASH_IMAGE)$(CC_DEPS)$(ELFS)$(C++_DEPS)$(OBJS)$(CXX_DEPS)$(ASM_DEPS)$(S_UPPER_DEPS)$(CPP_DEPS) FE2015Dashboard.elf
 	-@echo ' '
 
-secondary-outputs: $(LSS) $(FLASH_IMAGE) $(SIZEDUMMY)
+secondary-outputs: $(FLASH_IMAGE) $(AVRDUDEDUMMY)
 
 .PHONY: all clean dependents
 .SECONDARY:

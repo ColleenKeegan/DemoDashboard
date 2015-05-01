@@ -8,15 +8,18 @@
 #include "FT_VM801P43_50.h"
 #include "arduino/Arduino.h"
 
-FT801IMPL_SPI FTImpl(FT_CS_PIN, FT_INT_PIN);
+FT801IMPL_SPI FTImpl;
 
 /* Api to bootup FT801, verify FT801 hardware and configure display/audio pins */
 /* Returns 0 in case of success and 1 in case of failure */
 int16_t BootupConfigure() {
    uint32_t chipid = 0;
-   FTImpl.Init(FT_DISPLAY_RESOLUTION); //configure the display to the WQVGA
+   Serial.println("Init");
+   Serial.println(FTImpl.Init(FT_DISPLAY_RESOLUTION), HEX); //configure the display to the WQVGA
+   Serial.println("Finished Init");
 
-   delay(20); //for safer side
+   delay(2000); //for safer side
+   Serial.println("Read Chip ID");
    chipid = FTImpl.Read32(FT_ROM_CHIPID);
 
    /* Identify the chip */
@@ -29,8 +32,10 @@ int16_t BootupConfigure() {
    /* Set the Display & audio pins */
    //FTImpl.SetDisplayEnablePin(FT_DISPENABLE_PIN);
    // FTImpl.SetAudioEnablePin(FT_AUDIOENABLE_PIN);
-   FTImpl.DisplayOn();
+   Serial.println("Turn on BL");
+   FTImpl.DisplayOff();
    //FTImpl.AudioOn();
+   Serial.println("Finish Startup");
    return 0;
 }
 
@@ -64,12 +69,17 @@ void setup() {
 }
 
 int main() {
+   init();
    setup();
 
-   delay(2000);
+   //FTImpl.Clear();
 
-   FTImpl.Clear();
+   /*while (1) {
+    Serial.println("Loop");
+    FTImpl.DisplayOff();
+    delay(2000);
+    FTImpl.DisplayOn();
+    delay(2000);
+    }*/
 
-   while (1)
-      ;
 }

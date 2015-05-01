@@ -14,8 +14,8 @@ CPP_SRCS :=
 S_UPPER_SRCS := 
 O_SRCS := 
 C_UPPER_DEPS := 
+AVRDUDEDUMMY := 
 S_DEPS := 
-LSS := 
 C_DEPS := 
 FLASH_IMAGE := 
 CC_DEPS := 
@@ -24,7 +24,6 @@ C++_DEPS :=
 OBJS := 
 CXX_DEPS := 
 ASM_DEPS := 
-SIZEDUMMY := 
 S_UPPER_DEPS := 
 CPP_DEPS := 
 
