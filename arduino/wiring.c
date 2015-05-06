@@ -182,27 +182,28 @@ void init() {
    // enable timer 0 overflow interrupt
    sbi(TIMSK0, TOIE0);
 
-   // timers 1, 2 and 3 are used for phase-correct hardware pwm
-   // this is better for motors as it ensures an even waveform
-   // note, however, that fast pwm mode can achieve a frequency of up
-   // 8 MHz (with a 16 MHz clock) at 50% duty cycle
-
-   // set timer 1 prescale factor to 64
-   sbi(TCCR1B, CS11);
-   sbi(TCCR1B, CS10);
-   // put timer 1 in 8-bit phase correct pwm mode
-   sbi(TCCR1A, WGM10);
-
-   // set timer 1 prescale factor to 64
-   sbi(TCCR3B, CS31);
-   sbi(TCCR3B, CS30);
-   // put timer 1 in 8-bit phase correct pwm mode
-   sbi(TCCR3A, WGM30);
-
-   // set timer 2 prescale factor to 64
-   sbi(TCCR2A, CS22);
-   // configure timer 2 for phase correct pwm (8-bit)
-   sbi(TCCR2A, WGM20);
+//    Commented out because not using PWM, want timers for programmatic functions.
+//   // timers 1, 2 and 3 are used for phase-correct hardware pwm
+//   // this is better for motors as it ensures an even waveform
+//   // note, however, that fast pwm mode can achieve a frequency of up
+//   // 8 MHz (with a 16 MHz clock) at 50% duty cycle
+//
+//   // set timer 1 prescale factor to 64
+//   sbi(TCCR1B, CS11);
+//   sbi(TCCR1B, CS10);
+//   // put timer 1 in 8-bit phase correct pwm mode
+//   sbi(TCCR1A, WGM10);
+//
+//   // set timer 1 prescale factor to 64
+//   sbi(TCCR3B, CS31);
+//   sbi(TCCR3B, CS30);
+//   // put timer 1 in 8-bit phase correct pwm mode
+//   sbi(TCCR3A, WGM30);
+//
+//   // set timer 2 prescale factor to 64
+//   sbi(TCCR2A, CS22);
+//   // configure timer 2 for phase correct pwm (8-bit)
+//   sbi(TCCR2A, WGM20);
 
    // set a2d prescale factor to 128
    // 16 MHz / 128 = 125 KHz, inside the desired 50-200 KHz range.

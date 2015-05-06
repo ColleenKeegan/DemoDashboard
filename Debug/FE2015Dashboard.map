@@ -1,5 +1,7 @@
 Archive member included because of file (symbol)
 
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+                              (vfprintf)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulsi3.o)
                               ./arduino/WMath.o (__mulsi3)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
@@ -68,12 +70,16 @@ Archive member included because of file (symbol)
                               ./arduino/WString.o (realloc)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(atol.o)
                               ./arduino/WString.o (atol)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (__ftoa_engine)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(isspace.o)
                               ./arduino/WString.o (isspace)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(tolower.o)
                               ./arduino/WString.o (tolower)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(toupper.o)
                               ./arduino/WString.o (toupper)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
+                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (strnlen_P)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy.o)
                               ./arduino/WString.o (memcpy)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memmove.o)
@@ -88,6 +94,8 @@ Archive member included because of file (symbol)
                               ./arduino/WString.o (strncmp)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy.o)
                               ./arduino/WString.o (strncpy)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
+                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (strnlen)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrchr.o)
                               ./arduino/WString.o (strrchr)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strstr.o)
@@ -110,6 +118,12 @@ Archive member included because of file (symbol)
                               ./arduino/WString.o (__utoa)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa_ncheck.o)
                               ./arduino/WString.o (__utoa_ncheck)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (fputc)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+                              ./main.o (vsnprintf)
+/usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (__ultoa_invert)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(cty_isfalse.o)
                               /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(isspace.o) (__ctype_isfalse)
 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrev.o)
@@ -126,6 +140,8 @@ __flp               0x2               /usr/local/CrossPack-AVR-20131216/lib/gcc/
 Discarded input sections
 
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
  .group         0x00000000        0x8 ./arduino/HardwareSerial.o
  .group         0x00000000        0x8 ./arduino/HardwareSerial.o
  .group         0x00000000        0x8 ./arduino/HardwareSerial.o
@@ -162,10 +178,14 @@ Discarded input sections
                 0x00000000       0x38 ./arduino/Print.o
  .text._ZN5Print7printlnERK6String
                 0x00000000       0xa2 ./arduino/Print.o
+ .text._ZN5Print7printlnEPKc
+                0x00000000       0x66 ./arduino/Print.o
  .text._ZN5Print7printlnEc
                 0x00000000       0x54 ./arduino/Print.o
  .text._ZN5Print7printlnEhi
                 0x00000000      0x136 ./arduino/Print.o
+ .text._ZN5Print7printlnEji
+                0x00000000      0x134 ./arduino/Print.o
  .text._ZN5Print7printlnEli
                 0x00000000      0x25a ./arduino/Print.o
  .text._ZN5Print7printlnERK9Printable
@@ -431,8 +451,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ./arduino/wiring.o
  .text.millis   0x00000000       0x18 ./arduino/wiring.o
  .text.micros   0x00000000       0x5e ./arduino/wiring.o
- .text.delayMicroseconds
-                0x00000000       0x1c ./arduino/wiring.o
  .text          0x00000000        0x0 ./arduino/wiring_analog.o
  .bss           0x00000000        0x0 ./arduino/wiring_analog.o
  .text.analogReference
@@ -481,10 +499,11 @@ Discarded input sections
  .group         0x00000000        0x8 ./main.o
  .group         0x00000000        0x8 ./main.o
  .group         0x00000000        0x8 ./main.o
+ .group         0x00000000        0x8 ./main.o
  .text          0x00000000        0x0 ./main.o
  .bss           0x00000000        0x0 ./main.o
- .text.unlikely._ZN16FT_Transport_SPI7Write16Emj.isra.7
-                0x00000000       0x56 ./main.o
+ .text.unlikely._ZN16FT_Transport_SPI7Write16Emj.isra.8
+                0x00000000       0x44 ./main.o
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulsi3.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulsi3.o)
  .text.libgcc.mul
@@ -747,6 +766,8 @@ Discarded input sections
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(atol.o)
  .text.avr-libc
                 0x00000000       0x4e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(atol.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(isspace.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(isspace.o)
  .text.avr-libc
@@ -759,6 +780,8 @@ Discarded input sections
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(toupper.o)
  .text.avr-libc
                 0x00000000       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(toupper.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy.o)
  .text.avr-libc
@@ -787,6 +810,8 @@ Discarded input sections
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy.o)
  .text.avr-libc
                 0x00000000       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrchr.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrchr.o)
  .text.avr-libc
@@ -831,6 +856,12 @@ Discarded input sections
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa_ncheck.o)
  .text.avr-libc
                 0x00000000       0x34 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa_ncheck.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+ .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
  .text          0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(cty_isfalse.o)
  .bss           0x00000000        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(cty_isfalse.o)
  .text.avr-libc
@@ -871,6 +902,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+LOAD /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a
 LOAD ./arduino/HardwareSerial.o
 LOAD ./arduino/Print.o
 LOAD ./arduino/Stream.o
@@ -985,7 +1017,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x22bc
+.text           0x00000000     0x38fc
  *(.vectors)
  .vectors       0x00000000       0x94 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
                 0x00000000                __vectors
@@ -999,203 +1031,239 @@ END GROUP
  *(.trampolines*)
                 0x00000094                __trampolines_end = .
  *(.progmem*)
-                0x00000094                . = ALIGN (0x2)
+ .progmem.data  0x00000094        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .progmem.data._ZL12CPRacingLogo
+                0x0000009c      0x1f7 ./main.o
+ .progmem.data  0x00000293       0xfa /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                0x0000038e                . = ALIGN (0x2)
+ *fill*         0x0000038d        0x1 
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x00000094                __ctors_start = .
+                0x0000038e                __ctors_start = .
  *(.ctors)
- .ctors         0x00000094        0x2 ./arduino/HardwareSerial.o
- .ctors         0x00000096        0x2 ./main.o
-                0x00000098                __ctors_end = .
-                0x00000098                __dtors_start = .
+ .ctors         0x0000038e        0x2 ./arduino/HardwareSerial.o
+ .ctors         0x00000390        0x2 ./main.o
+                0x00000392                __ctors_end = .
+                0x00000392                __dtors_start = .
  *(.dtors)
-                0x00000098                __dtors_end = .
+                0x00000392                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x00000098        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
-                0x00000098                __init
+ .init0         0x00000392        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+                0x00000392                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x00000098        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .init2         0x00000392        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x000000a4       0x1a /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_copy_data.o)
-                0x000000a4                __do_copy_data
- .init4         0x000000be       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_clear_bss.o)
-                0x000000be                __do_clear_bss
+ .init4         0x0000039e       0x1a /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_copy_data.o)
+                0x0000039e                __do_copy_data
+ .init4         0x000003b8       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_clear_bss.o)
+                0x000003b8                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
  *(.init6)
- .init6         0x000000ce       0x20 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_ctors.o)
-                0x000000ce                __do_global_ctors
+ .init6         0x000003c8       0x20 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_ctors.o)
+                0x000003c8                __do_global_ctors
  *(.init6)
  *(.init7)
  *(.init7)
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000000ee        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .init9         0x000003e8        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
  *(.init9)
  *(.text)
- .text          0x000000f6        0x2 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
-                0x000000f6                __vector_20
-                0x000000f6                __vector_28
-                0x000000f6                __vector_34
-                0x000000f6                __vector_24
-                0x000000f6                __vector_12
-                0x000000f6                __bad_interrupt
-                0x000000f6                __vector_31
-                0x000000f6                __vector_35
-                0x000000f6                __vector_23
-                0x000000f6                __vector_30
-                0x000000f6                __vector_25
-                0x000000f6                __vector_11
-                0x000000f6                __vector_13
-                0x000000f6                __vector_19
-                0x000000f6                __vector_27
-                0x000000f6                __vector_33
-                0x000000f6                __vector_9
-                0x000000f6                __vector_15
-                0x000000f6                __vector_36
-                0x000000f6                __vector_29
-                0x000000f6                __vector_26
-                0x000000f6                __vector_14
-                0x000000f6                __vector_10
-                0x000000f6                __vector_16
-                0x000000f6                __vector_18
-                0x000000f6                __vector_22
-                0x000000f8                . = ALIGN (0x2)
+ .text          0x000003f0        0x2 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+                0x000003f0                __vector_20
+                0x000003f0                __vector_28
+                0x000003f0                __vector_34
+                0x000003f0                __vector_24
+                0x000003f0                __vector_12
+                0x000003f0                __bad_interrupt
+                0x000003f0                __vector_31
+                0x000003f0                __vector_35
+                0x000003f0                __vector_23
+                0x000003f0                __vector_30
+                0x000003f0                __vector_25
+                0x000003f0                __vector_11
+                0x000003f0                __vector_13
+                0x000003f0                __vector_19
+                0x000003f0                __vector_27
+                0x000003f0                __vector_33
+                0x000003f0                __vector_9
+                0x000003f0                __vector_15
+                0x000003f0                __vector_36
+                0x000003f0                __vector_29
+                0x000003f0                __vector_26
+                0x000003f0                __vector_14
+                0x000003f0                __vector_10
+                0x000003f0                __vector_16
+                0x000003f0                __vector_18
+                0x000003f0                __vector_22
+                0x000003f2                . = ALIGN (0x2)
  *(.text.*)
+ .text.avr-libc
+                0x000003f2      0x748 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+                0x000003f2                vfprintf
  .text._ZN14HardwareSerial4peekEv
-                0x000000f8        0x6 ./arduino/HardwareSerial.o
-                0x000000f8                _ZN14HardwareSerial4peekEv
+                0x00000b3a        0x6 ./arduino/HardwareSerial.o
+                0x00000b3a                _ZN14HardwareSerial4peekEv
  .text._ZN14HardwareSerial9availableEv
-                0x000000fe       0x30 ./arduino/HardwareSerial.o
-                0x000000fe                _ZN14HardwareSerial9availableEv
+                0x00000b40       0x30 ./arduino/HardwareSerial.o
+                0x00000b40                _ZN14HardwareSerial9availableEv
  .text._ZN14HardwareSerial4readEv
-                0x0000012e       0x56 ./arduino/HardwareSerial.o
-                0x0000012e                _ZN14HardwareSerial4readEv
+                0x00000b70       0x56 ./arduino/HardwareSerial.o
+                0x00000b70                _ZN14HardwareSerial4readEv
  .text._ZN14HardwareSerial5flushEv
-                0x00000184       0x1c ./arduino/HardwareSerial.o
-                0x00000184                _ZN14HardwareSerial5flushEv
+                0x00000bc6       0x1c ./arduino/HardwareSerial.o
+                0x00000bc6                _ZN14HardwareSerial5flushEv
  .text._ZN14HardwareSerial5writeEh
-                0x000001a0       0x3a ./arduino/HardwareSerial.o
-                0x000001a0                _ZN14HardwareSerial5writeEh
+                0x00000be2       0x3a ./arduino/HardwareSerial.o
+                0x00000be2                _ZN14HardwareSerial5writeEh
  .text.__vector_21
-                0x000001da       0x80 ./arduino/HardwareSerial.o
-                0x000001da                __vector_21
+                0x00000c1c       0x80 ./arduino/HardwareSerial.o
+                0x00000c1c                __vector_21
  .text.__vector_32
-                0x0000025a       0x80 ./arduino/HardwareSerial.o
-                0x0000025a                __vector_32
+                0x00000c9c       0x80 ./arduino/HardwareSerial.o
+                0x00000c9c                __vector_32
  .text._ZN14HardwareSerial5beginEl
-                0x000002da      0x1d4 ./arduino/HardwareSerial.o
-                0x000002da                _ZN14HardwareSerial5beginEl
+                0x00000d1c      0x1d4 ./arduino/HardwareSerial.o
+                0x00000d1c                _ZN14HardwareSerial5beginEl
  .text.startup._GLOBAL__sub_I_rx_buffer
-                0x000004ae      0x110 ./arduino/HardwareSerial.o
+                0x00000ef0      0x110 ./arduino/HardwareSerial.o
  .text._ZN5Print5writeEPKhj
-                0x000005be       0x5a ./arduino/Print.o
-                0x000005be                _ZN5Print5writeEPKhj
+                0x00001000       0x5a ./arduino/Print.o
+                0x00001000                _ZN5Print5writeEPKhj
  .text._ZN5Print5printEPKc
-                0x00000618       0x20 ./arduino/Print.o
-                0x00000618                _ZN5Print5printEPKc
- .text._ZN5Print7printlnEPKc
-                0x00000638       0x66 ./arduino/Print.o
-                0x00000638                _ZN5Print7printlnEPKc
+                0x0000105a       0x20 ./arduino/Print.o
+                0x0000105a                _ZN5Print5printEPKc
  .text._ZN5Print7printlnEii
-                0x0000069e      0x28c ./arduino/Print.o
-                0x0000069e                _ZN5Print7printlnEii
- .text._ZN5Print7printlnEji
-                0x0000092a      0x134 ./arduino/Print.o
-                0x0000092a                _ZN5Print7printlnEji
+                0x0000107a      0x28c ./arduino/Print.o
+                0x0000107a                _ZN5Print7printlnEii
  .text._ZN5Print7printlnEmi
-                0x00000a5e      0x13e ./arduino/Print.o
-                0x00000a5e                _ZN5Print7printlnEmi
+                0x00001306      0x13e ./arduino/Print.o
+                0x00001306                _ZN5Print7printlnEmi
  .text.__vector_1
-                0x00000b9c       0x62 ./arduino/WInterrupts.o
-                0x00000b9c                __vector_1
+                0x00001444       0x62 ./arduino/WInterrupts.o
+                0x00001444                __vector_1
  .text.__vector_2
-                0x00000bfe       0x62 ./arduino/WInterrupts.o
-                0x00000bfe                __vector_2
+                0x000014a6       0x62 ./arduino/WInterrupts.o
+                0x000014a6                __vector_2
  .text.__vector_3
-                0x00000c60       0x62 ./arduino/WInterrupts.o
-                0x00000c60                __vector_3
+                0x00001508       0x62 ./arduino/WInterrupts.o
+                0x00001508                __vector_3
  .text.__vector_4
-                0x00000cc2       0x62 ./arduino/WInterrupts.o
-                0x00000cc2                __vector_4
+                0x0000156a       0x62 ./arduino/WInterrupts.o
+                0x0000156a                __vector_4
  .text.__vector_5
-                0x00000d24       0x62 ./arduino/WInterrupts.o
-                0x00000d24                __vector_5
+                0x000015cc       0x62 ./arduino/WInterrupts.o
+                0x000015cc                __vector_5
  .text.__vector_6
-                0x00000d86       0x62 ./arduino/WInterrupts.o
-                0x00000d86                __vector_6
+                0x0000162e       0x62 ./arduino/WInterrupts.o
+                0x0000162e                __vector_6
  .text.__vector_7
-                0x00000de8       0x62 ./arduino/WInterrupts.o
-                0x00000de8                __vector_7
+                0x00001690       0x62 ./arduino/WInterrupts.o
+                0x00001690                __vector_7
  .text.__vector_8
-                0x00000e4a       0x62 ./arduino/WInterrupts.o
-                0x00000e4a                __vector_8
+                0x000016f2       0x62 ./arduino/WInterrupts.o
+                0x000016f2                __vector_8
  .text.__vector_17
-                0x00000eac       0x94 ./arduino/wiring.o
-                0x00000eac                __vector_17
- .text.delay    0x00000f40       0x58 ./arduino/wiring.o
-                0x00000f40                delay
- .text.init     0x00000f98       0x8a ./arduino/wiring.o
-                0x00000f98                init
+                0x00001754       0x94 ./arduino/wiring.o
+                0x00001754                __vector_17
+ .text.delay    0x000017e8       0x58 ./arduino/wiring.o
+                0x000017e8                delay
+ .text.delayMicroseconds
+                0x00001840       0x1c ./arduino/wiring.o
+                0x00001840                delayMicroseconds
+ .text.init     0x0000185c       0x46 ./arduino/wiring.o
+                0x0000185c                init
  .text._ZN8SPIClass5beginEv
-                0x00001022       0x2e ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
-                0x00001022                _ZN8SPIClass5beginEv
- .text._ZN5FT_GCI16FT_Transport_SPIE14EndTransferCmdEv
-                0x00001050       0x90 ./main.o
-                0x00001050                _ZN5FT_GCI16FT_Transport_SPIE14EndTransferCmdEv
- .text._ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
-                0x000010e0      0x192 ./main.o
-                0x000010e0                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
- .text._Z15BootupConfigurev
-                0x00001272      0x72a ./main.o
-                0x00001272                _Z15BootupConfigurev
+                0x000018a2       0x2e ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
+                0x000018a2                _ZN8SPIClass5beginEv
+ .text._ZN5FT_GCI16FT_Transport_SPIE6FinishEv.constprop.26
+                0x000018d0      0x138 ./main.o
  .text._ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
-                0x0000199c      0x1bc ./main.o
-                0x0000199c                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
+                0x00001a08      0x1a8 ./main.o
+                0x00001a08                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
  .text._ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
-                0x00001b58      0x2ce ./main.o
-                0x00001b58                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
+                0x00001bb0      0x2fa ./main.o
+                0x00001bb0                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
+ .text._ZN5FT_GCI16FT_Transport_SPIE20TransferCmdfromflashEPKhm
+                0x00001eaa      0x306 ./main.o
+                0x00001eaa                _ZN5FT_GCI16FT_Transport_SPIE20TransferCmdfromflashEPKhm
+ .text._ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm.constprop.27
+                0x000021b0      0x1e0 ./main.o
+ .text._Z11DisplayLogov
+                0x00002390      0x1d4 ./main.o
+                0x00002390                _Z11DisplayLogov
  .text._ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
-                0x00001e26      0x158 ./main.o
-                0x00001e26                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
- .text._Z10HelloWorldv
-                0x00001f7e      0x23a ./main.o
-                0x00001f7e                _Z10HelloWorldv
- .text.setup    0x000021b8       0x30 ./main.o
-                0x000021b8                setup
+                0x00002564      0x1ba ./main.o
+                0x00002564                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
+ .text._Z22UploadLogoToControllerv
+                0x0000271e      0x152 ./main.o
+                0x0000271e                _Z22UploadLogoToControllerv
+ .text._ZN5FT_GCI16FT_Transport_SPIE9PrintTextEiihjPKcz
+                0x00002870      0x184 ./main.o
+                0x00002870                _ZN5FT_GCI16FT_Transport_SPIE9PrintTextEiihjPKcz
+ .text._Z11StartupTextv
+                0x000029f4      0x18e ./main.o
+                0x000029f4                _Z11StartupTextv
+ .text._ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
+                0x00002b82      0x33e ./main.o
+                0x00002b82                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
+ .text._Z15BootupConfigurev
+                0x00002ec0      0x500 ./main.o
+                0x00002ec0                _Z15BootupConfigurev
+ .text.setup    0x000033c0       0xfa ./main.o
+                0x000033c0                setup
  .text.startup.main
-                0x000021e8        0xc ./main.o
-                0x000021e8                main
+                0x000034ba        0xc ./main.o
+                0x000034ba                main
  .text.startup._GLOBAL__sub_I_FTImpl
-                0x000021f4       0x46 ./main.o
+                0x000034c6       0x46 ./main.o
  .text.libgcc.div
-                0x0000223a       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
-                0x0000223a                __udivmodsi4
+                0x0000350c       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
+                0x0000350c                __udivmodsi4
  .text.libgcc.mul
-                0x0000227e       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
-                0x0000227e                __muluhisi3
- .text.libgcc   0x00002292        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
-                0x00002292                __tablejump_elpm__
+                0x00003550       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
+                0x00003550                __muluhisi3
+ .text.libgcc   0x00003564        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
+                0x00003564                __tablejump_elpm__
  .text.libgcc.mul
-                0x0000229a       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
-                0x0000229a                __umulhisi3
-                0x000022b8                . = ALIGN (0x2)
+                0x0000356c       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
+                0x0000356c                __umulhisi3
+ .text.avr-libc
+                0x0000358a      0x1b0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                0x0000358a                __ftoa_engine
+ .text.avr-libc
+                0x0000373a       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
+                0x0000373a                strnlen_P
+ .text.avr-libc
+                0x00003750       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
+                0x00003750                strnlen
+ .text.avr-libc
+                0x00003766       0x64 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+                0x00003766                fputc
+ .text.avr-libc
+                0x000037ca       0x72 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+                0x000037ca                vsnprintf
+ .text.avr-libc
+                0x0000383c       0xbc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+                0x0000383c                __ultoa_invert
+                0x000038f8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000022b8        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
-                0x000022b8                exit
-                0x000022b8                _exit
+ .fini9         0x000038f8        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+                0x000038f8                exit
+                0x000038f8                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1214,14 +1282,15 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000022b8        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+ .fini0         0x000038f8        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
  *(.fini0)
-                0x000022bc                _etext = .
+                0x000038fc                _etext = .
 
-.data           0x00800100       0xc2 load address 0x000022bc
+.data           0x00800100       0x6c load address 0x000038fc
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .data          0x00800100        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
  .data          0x00800100        0x0 ./arduino/HardwareSerial.o
  .data          0x00800100        0x0 ./arduino/Print.o
  .data          0x00800100        0x0 ./arduino/Stream.o
@@ -1275,9 +1344,11 @@ END GROUP
  .data          0x00800106        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(random.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(realloc.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(atol.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(isspace.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(tolower.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(toupper.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memmove.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strchr.o)
@@ -1285,6 +1356,7 @@ END GROUP
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strcpy.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncmp.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrchr.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strstr.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(itoa.o)
@@ -1296,6 +1368,9 @@ END GROUP
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_ncheck.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa_ncheck.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+ .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(cty_isfalse.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrev.o)
  .data          0x0080010a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulshisi3.o)
@@ -1307,52 +1382,52 @@ END GROUP
                 0x00800116       0x10 ./arduino/HardwareSerial.o
                 0x00800116                _ZTV14HardwareSerial
  .rodata.str1.1
-                0x00800126       0x9c ./main.o
-                                 0xa9 (size before relaxing)
+                0x00800126       0x45 ./main.o
  *(.gnu.linkonce.d*)
-                0x008001c2                . = ALIGN (0x2)
-                0x008001c2                _edata = .
-                0x008001c2                PROVIDE (__data_end, .)
+                0x0080016c                . = ALIGN (0x2)
+ *fill*         0x0080016b        0x1 
+                0x0080016c                _edata = .
+                0x0080016c                PROVIDE (__data_end, .)
 
-.bss            0x008001c2      0x16b
-                0x008001c2                PROVIDE (__bss_start, .)
+.bss            0x0080016c      0x16b
+                0x0080016c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.Serial1   0x008001c2       0x1d ./arduino/HardwareSerial.o
-                0x008001c2                Serial1
- .bss.Serial    0x008001df       0x1d ./arduino/HardwareSerial.o
-                0x008001df                Serial
+ .bss.Serial1   0x0080016c       0x1d ./arduino/HardwareSerial.o
+                0x0080016c                Serial1
+ .bss.Serial    0x00800189       0x1d ./arduino/HardwareSerial.o
+                0x00800189                Serial
  .bss.rx_buffer1
-                0x008001fc       0x84 ./arduino/HardwareSerial.o
-                0x008001fc                rx_buffer1
+                0x008001a6       0x84 ./arduino/HardwareSerial.o
+                0x008001a6                rx_buffer1
  .bss.rx_buffer
-                0x00800280       0x84 ./arduino/HardwareSerial.o
-                0x00800280                rx_buffer
- .bss.intFunc   0x00800304       0x10 ./arduino/WInterrupts.o
+                0x0080022a       0x84 ./arduino/HardwareSerial.o
+                0x0080022a                rx_buffer
+ .bss.intFunc   0x008002ae       0x10 ./arduino/WInterrupts.o
  .bss.timer0_fract
-                0x00800314        0x1 ./arduino/wiring.o
+                0x008002be        0x1 ./arduino/wiring.o
  .bss.timer0_millis
-                0x00800315        0x4 ./arduino/wiring.o
-                0x00800315                timer0_millis
+                0x008002bf        0x4 ./arduino/wiring.o
+                0x008002bf                timer0_millis
  .bss.timer0_overflow_count
-                0x00800319        0x4 ./arduino/wiring.o
-                0x00800319                timer0_overflow_count
+                0x008002c3        0x4 ./arduino/wiring.o
+                0x008002c3                timer0_overflow_count
  .bss._ZN8SPIClass11initializedE
-                0x0080031d        0x1 ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
-                0x0080031d                _ZN8SPIClass11initializedE
- .bss.FTImpl    0x0080031e        0xf ./main.o
-                0x0080031e                FTImpl
+                0x008002c7        0x1 ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
+                0x008002c7                _ZN8SPIClass11initializedE
+ .bss.FTImpl    0x008002c8        0xf ./main.o
+                0x008002c8                FTImpl
  *(COMMON)
-                0x0080032d                PROVIDE (__bss_end, .)
-                0x000022bc                __data_load_start = LOADADDR (.data)
-                0x0000237e                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x008002d7                PROVIDE (__bss_end, .)
+                0x000038fc                __data_load_start = LOADADDR (.data)
+                0x00003968                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080032d        0x0
-                0x0080032d                PROVIDE (__noinit_start, .)
+.noinit         0x008002d7        0x0
+                0x008002d7                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080032d                PROVIDE (__noinit_end, .)
-                0x0080032d                _end = .
-                0x0080032d                PROVIDE (__heap_start, .)
+                0x008002d7                PROVIDE (__noinit_end, .)
+                0x008002d7                _end = .
+                0x008002d7                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -1373,44 +1448,11 @@ END GROUP
 .user_signatures
  *(.user_signatures*)
 
-.stab           0x00000000     0x9a2c
+.stab
  *(.stab)
- .stab          0x00000000      0xc48 ./arduino/HardwareSerial.o
-                                0xdec (size before relaxing)
- .stab          0x00000c48      0xfb4 ./arduino/Print.o
-                               0x2f1c (size before relaxing)
- .stab          0x00001bfc      0x630 ./arduino/Stream.o
-                               0x1860 (size before relaxing)
- .stab          0x0000222c      0x720 ./arduino/WInterrupts.o
-                                0x9b4 (size before relaxing)
- .stab          0x0000294c      0x348 ./arduino/WMath.o
-                                0x5a0 (size before relaxing)
- .stab          0x00002c94      0x504 ./arduino/WString.o
-                               0x47c4 (size before relaxing)
- .stab          0x00003198      0x594 ./arduino/can_lib.o
-                               0x1e48 (size before relaxing)
- .stab          0x0000372c      0x354 ./arduino/new.o
-                                0x45c (size before relaxing)
- .stab          0x00003a80      0x384 ./arduino/pins_arduino.o
-                                0x5e8 (size before relaxing)
- .stab          0x00003e04      0x5ac ./arduino/wiring.o
-                                0x9f0 (size before relaxing)
- .stab          0x000043b0      0x2dc ./arduino/wiring_analog.o
-                                0x864 (size before relaxing)
- .stab          0x0000468c      0x2dc ./arduino/wiring_digital.o
-                                0x918 (size before relaxing)
- .stab          0x00004968      0x2dc ./arduino/wiring_pulse.o
-                                0x708 (size before relaxing)
- .stab          0x00004c44      0x2d0 ./arduino/wiring_shift.o
-                                0x630 (size before relaxing)
- .stab          0x00004f14      0x5d0 ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
-                                0x894 (size before relaxing)
- .stab          0x000054e4     0x4548 ./main.o
-                               0x4704 (size before relaxing)
 
-.stabstr        0x00000000     0x6fc2
+.stabstr
  *(.stabstr)
- .stabstr       0x00000000     0x6fc2 ./arduino/HardwareSerial.o
 
 .stab.excl
  *(.stab.excl)
@@ -1426,8 +1468,9 @@ END GROUP
 
 .comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x11 ./arduino/HardwareSerial.o
+ .comment       0x00000000       0x11 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
                                  0x12 (size before relaxing)
+ .comment       0x00000000       0x12 ./arduino/HardwareSerial.o
  .comment       0x00000000       0x12 ./arduino/Print.o
  .comment       0x00000000       0x12 ./arduino/Stream.o
  .comment       0x00000000       0x12 ./arduino/WInterrupts.o
@@ -1446,6 +1489,8 @@ END GROUP
  .comment       0x00000000       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(malloc.o)
  .comment       0x00000000       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(random.o)
  .comment       0x00000000       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(realloc.o)
+ .comment       0x00000000       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+ .comment       0x00000000       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
 
 .debug
  *(.debug)
@@ -1568,11 +1613,13 @@ Cross Reference Table
 Symbol                                            File
 BootupConfigure()                                 ./main.o
 CAN                                               ./arduino/can_lib.o
+DisplayLogo()                                     ./main.o
 FTImpl                                            ./main.o
 FT_GC<FT_Transport_SPI>::ActiveInternalClock()    ./main.o
 FT_GC<FT_Transport_SPI>::ChkGetFreeSpace(unsigned int) ./main.o
-FT_GC<FT_Transport_SPI>::EndTransferCmd()         ./main.o
+FT_GC<FT_Transport_SPI>::PrintText(int, int, unsigned char, unsigned int, char const*, ...) ./main.o
 FT_GC<FT_Transport_SPI>::TransferCmd(unsigned char*, unsigned long) ./main.o
+FT_GC<FT_Transport_SPI>::TransferCmdfromflash(unsigned char const*, unsigned long) ./main.o
 FT_GC<FT_Transport_SPI>::WriteCmd(unsigned long)  ./main.o
 HardwareSerial::HardwareSerial(ring_buffer*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char) ./arduino/HardwareSerial.o
 HardwareSerial::HardwareSerial(ring_buffer*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char volatile*, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char) ./arduino/HardwareSerial.o
@@ -1583,7 +1630,6 @@ HardwareSerial::flush()                           ./arduino/HardwareSerial.o
 HardwareSerial::peek()                            ./arduino/HardwareSerial.o
 HardwareSerial::read()                            ./arduino/HardwareSerial.o
 HardwareSerial::write(unsigned char)              ./arduino/HardwareSerial.o
-HelloWorld()                                      ./main.o
 Print::print(Printable const&)                    ./arduino/Print.o
 Print::print(String const&)                       ./arduino/Print.o
 Print::print(__FlashStringHelper const*)          ./arduino/Print.o
@@ -1603,7 +1649,6 @@ Print::println(Printable const&)                  ./arduino/Print.o
 Print::println(String const&)                     ./arduino/Print.o
 Print::println(__FlashStringHelper const*)        ./arduino/Print.o
 Print::println(char const*)                       ./arduino/Print.o
-                                                  ./main.o
 Print::println(char)                              ./arduino/Print.o
 Print::println(double, int)                       ./arduino/Print.o
 Print::println(int, int)                          ./arduino/Print.o
@@ -1611,7 +1656,6 @@ Print::println(int, int)                          ./arduino/Print.o
 Print::println(long, int)                         ./arduino/Print.o
 Print::println(unsigned char, int)                ./arduino/Print.o
 Print::println(unsigned int, int)                 ./arduino/Print.o
-                                                  ./main.o
 Print::println(unsigned long, int)                ./arduino/Print.o
                                                   ./main.o
 Print::write(unsigned char const*, unsigned int)  ./arduino/Print.o
@@ -1629,6 +1673,7 @@ SPIClass::usingInterrupt(unsigned char)           ./FTDI _V1/libraries/FT_GC/FT_
 Serial                                            ./arduino/HardwareSerial.o
                                                   ./main.o
 Serial1                                           ./arduino/HardwareSerial.o
+StartupText()                                     ./main.o
 Stream::find(char*)                               ./arduino/Stream.o
 Stream::find(char*, unsigned int)                 ./arduino/Stream.o
 Stream::findUntil(char*, char*)                   ./arduino/Stream.o
@@ -1648,8 +1693,8 @@ Stream::timedRead()                               ./arduino/Stream.o
 String::String(String const&)                     ./arduino/WString.o
 String::String(String const&)                     ./arduino/WString.o
 String::String(char const*)                       ./arduino/WString.o
-String::String(char const*)                       ./arduino/WString.o
                                                   ./arduino/Stream.o
+String::String(char const*)                       ./arduino/WString.o
 String::String(char)                              ./arduino/WString.o
 String::String(char)                              ./arduino/WString.o
 String::String(int, unsigned char)                ./arduino/WString.o
@@ -1713,6 +1758,7 @@ String::toUpperCase()                             ./arduino/WString.o
 String::trim()                                    ./arduino/WString.o
 String::~String()                                 ./arduino/WString.o
 String::~String()                                 ./arduino/WString.o
+UploadLogoToController()                          ./main.o
 __addsf3                                          /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(addsf3.o)
                                                   ./arduino/Print.o
 __addsf3x                                         /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(addsf3x.o)
@@ -1814,6 +1860,8 @@ __fp_szero                                        /usr/local/CrossPack-AVR-20131
 __fp_zero                                         /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fp_zero.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fixunssfsi.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(addsf3x.o)
+__ftoa_engine                                     /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
 __heap_end                                        /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(malloc.o)
 __heap_start                                      /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(malloc.o)
@@ -1875,6 +1923,8 @@ __ultoa                                           /usr/local/CrossPack-AVR-20131
                                                   ./arduino/WString.o
 __ultoa_common                                    /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_ncheck.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ltoa_ncheck.o)
+__ultoa_invert                                    /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
 __ultoa_ncheck                                    /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_ncheck.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa.o)
                                                   ./arduino/WString.o
@@ -1958,6 +2008,7 @@ canlib::set_baudrate(unsigned short)              ./arduino/can_lib.o
 delay                                             ./arduino/wiring.o
                                                   ./main.o
 delayMicroseconds                                 ./arduino/wiring.o
+                                                  ./main.o
 detachInterrupt                                   ./arduino/WInterrupts.o
 digitalRead                                       ./arduino/wiring_digital.o
 digitalWrite                                      ./arduino/wiring_digital.o
@@ -1974,6 +2025,8 @@ digital_pin_to_timer_PGM                          ./arduino/pins_arduino.o
                                                   ./arduino/wiring_analog.o
 exit                                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+fputc                                             /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
 free                                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(malloc.o)
                                                   /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(realloc.o)
                                                   ./arduino/new.o
@@ -2045,6 +2098,10 @@ strncmp                                           /usr/local/CrossPack-AVR-20131
                                                   ./arduino/WString.o
 strncpy                                           /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy.o)
                                                   ./arduino/WString.o
+strnlen                                           /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+strnlen_P                                         /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
 strrchr                                           /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrchr.o)
                                                   ./arduino/WString.o
 strrev                                            /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strrev.o)
@@ -2060,6 +2117,10 @@ toupper                                           /usr/local/CrossPack-AVR-20131
                                                   ./arduino/WString.o
 ultoa                                             /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa.o)
 utoa                                              /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(utoa.o)
+vfprintf                                          /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+                                                  /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+vsnprintf                                         /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+                                                  ./main.o
 vtable for HardwareSerial                         ./arduino/HardwareSerial.o
 vtable for Print                                  ./arduino/Print.o
 vtable for Stream                                 ./arduino/HardwareSerial.o

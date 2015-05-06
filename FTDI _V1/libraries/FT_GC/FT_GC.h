@@ -179,6 +179,8 @@ public:
    /* Apis related to power up/power down funcationality */
    void DisplayConfigExternalClock(uint8_t ResType);
    void ActiveInternalClock(void);
+   void tune();
+   uint32_t measure_freq();
 
    /* Apis related to graphics processor */
    //enable or disable interrupts
@@ -330,6 +332,9 @@ public:
    void DLEnd(void);	//inserts display() gpu instruction at the end and inserts cmd_swap() command
    FT_GEStatus CheckLogo(void);	//special api to check logo completion
 
+   FT_GEStatus PrintText(int16_t x, int16_t y, uint8_t Font, uint16_t Options,
+      const char *fmt, ...);
+
    //apis to render all the commands to hardware
    FT_GEStatus Flush(void);//api to flush out all the commands to FT_GC, does not wait for the completion of the rendering
    FT_GEStatus Finish(void);//flushes out all the commands to FT_GC and waits for the completion of execution
@@ -382,23 +387,14 @@ FT_GC<FT_Trans>::~FT_GC() {
 /* API to initialize the display wrt input configuration */
 template<class FT_Trans>
 FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
-   /* assign the pdn */
-   //pinMode(PDNPin, OUTPUT);
-   //digitalWrite(PDNPin, HIGH);    	
-   /*attempt to initialize interrupt pin*/
-   Serial.println("1");
    if (IntPin != -1) {
-      //pinMode(IntPin, INPUT);
       FT_INT_DDR &= ~FT_INT_PIN;
    }
-   Serial.println("2");
    /* Initialize SPI channel */
    FT_Trans::Init();
 
-   Serial.println("3");
    /* Bootup of graphics controller */
    Reset();
-   Serial.println("4");
 
    /* Set the display configurations followed by external clock set, spi clock change wrt FT80x */
    DisplayConfigExternalClock(ResType);
@@ -527,6 +523,27 @@ void FT_GC<FT_Trans>::Reset(void) {
 //delay(20);
 //
 //}
+#define REG_CLOCK 0x102408
+#define REG_TRIM 0x10256C
+#define REG_FREQUENCY 0x10240C
+#define LOW_FREQ_BOUND 47040000UL
+
+template<class FT_Trans>
+uint32_t FT_GC<FT_Trans>::measure_freq(void) {
+   unsigned long t0 = FT_Trans::Read32(REG_CLOCK);
+   delayMicroseconds(15625);
+   unsigned long t1 = FT_Trans::Read32(REG_CLOCK);
+   return (t1 - t0) << 6;
+}
+
+template<class FT_Trans>
+void FT_GC<FT_Trans>::tune(void) {
+   uint32_t f;
+   for (byte i = 0; (i < 31) && ((f = measure_freq()) < LOW_FREQ_BOUND); i++)
+      FT_Trans::Write(REG_TRIM, i);
+   FT_Trans::Write32(REG_FREQUENCY, f);
+}
+
 template<class FT_Trans>
 /* API to set active command, set internal clock and download first DL */
 void FT_GC<FT_Trans>::ActiveInternalClock(void) {
@@ -535,13 +552,11 @@ void FT_GC<FT_Trans>::ActiveInternalClock(void) {
       0, 0, 0, 0,  //GPU instruction DISPLAY
       };
    /* change the SPI clock to <11MHz */
-   Serial.println("3.1");
-   FT_Trans::ChangeClock(SPI_CLOCK_DIV128);
-   Serial.println("3.2");
+   FT_Trans::ChangeClock(SPI_CLOCK_DIV2);
    HostCommand(FT_ACTIVE);  //wake up the processor from sleep state
-   Serial.println("3.3");
    delay(20);
-   Serial.println("3.4");
+   tune();
+
    /* download the first display list */
    FT_Trans::Write(FT_RAM_DL, FT_DLCODE_BOOTUP, 12);
    /* perform first swap command */
@@ -860,6 +875,18 @@ FT_GEStatus FT_GC<FT_Trans>::ColorARGB(uint32_t argb) {
    Status = WriteCmd((16UL << 24) | ((argb >> 24) & 0xFFL));
 
    return Status;
+}
+
+template<class FT_Trans>
+FT_GEStatus FT_GC<FT_Trans>::PrintText(int16_t x, int16_t y, uint8_t Font,
+   uint16_t Options, const char *fmt, ...) {
+   char s[64];
+   va_list args;
+   va_start(args, fmt);
+
+   vsnprintf(s, 64, fmt, args);
+
+   return Cmd_Text(x, y, Font, Options, s);;
 }
 template<class FT_Trans>
 
@@ -1761,7 +1788,6 @@ FT_GEStatus FT_GC<FT_Trans>::Finish(void) {
    FT_Trans::Write16(REG_CMD_WRITE, CmdFifoWp);
 
    while ((ReadPrt = FT_Trans::Read16(REG_CMD_READ)) != CmdFifoWp) {
-      Serial.println(ReadPrt, HEX);
       if (FT_COPRO_ERROR == ReadPrt) {
          return FT_GE_ERROR;
       }

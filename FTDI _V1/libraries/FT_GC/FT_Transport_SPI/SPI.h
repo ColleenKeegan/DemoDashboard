@@ -27,7 +27,7 @@
 #define DD_SS PB0
 #define DD_PORT PORTB
 
-#define prog_uchar PROGMEM unsigned char
+#define prog_uchar PROGMEM const unsigned char
 #define noInterrupts() cli()
 
 // SPI_HAS_TRANSACTION means SPI has beginTransaction(), endTransaction(),

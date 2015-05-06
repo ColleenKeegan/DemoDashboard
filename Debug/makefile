@@ -60,7 +60,7 @@ all: FE2015Dashboard.elf secondary-outputs
 FE2015Dashboard.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR C++ Linker'
-	avr-g++ -Wl,-Map,FE2015Dashboard.map,--cref -mrelax -Wl,--gc-sections -mmcu=at90can128 -o "FE2015Dashboard.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	avr-g++ -Wl,-Map,FE2015Dashboard.map,--cref -mrelax -Wl,--gc-sections -Wl,-u,vfprintf -lprintf_flt -lm -mmcu=at90can128 -o "FE2015Dashboard.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
