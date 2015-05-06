@@ -8,7 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include avr-stl/include/subdir.mk
 -include arduino/subdir.mk
 -include FTDI\ _V1/libraries/FT_GC/FT_Transport_SPI/subdir.mk
 -include subdir.mk

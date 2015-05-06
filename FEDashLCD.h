@@ -1,13 +1,21 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <FT_VM801P43_50.h>
-#include <map>
 
-static const uint8_t CPRacingLogo[] PROGMEM = {120, 156, 205, 212, 49, 110,
-   219, 48, 20, 6, 224, 71, 209, 40, 129, 34, 0, 57, 116, 208, 100, 122, 200,
-   160, 209, 163, 6, 193, 118, 111, 144, 35, 248, 8, 25, 53, 8, 49, 157, 14,
-   25, 123, 133, 30, 33, 71, 96, 209, 33, 107, 143, 64, 195, 67, 87, 6, 94,
-   88, 128, 21, 251, 72, 73, 137, 156, 184, 206, 210, 33, 15, 2, 52, 124, 18,
+static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
+static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
+static const char PROGMEM WarningMessage_BatteryTemperature[] = "BATTERY WARM: %.2fC";
+static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "BATTERY PACK LOW VOLTAGE: %.2fV";
+static const char PROGMEM WarningMessage_LVBattery[] = "GLV LOW VOLTAGE: %.2fV";
+static const char PROGMEM WarningMessage_sbRIOTemperature[] = "sbRIO WARM: %.0fC";
+static const char PROGMEM WarningMessage_Precharge[] = "HV SYSTEM PRECHARGING: %.0fV";
+static const char PROGMEM WarningMessage_Invalid[] = "INVALID WARNING";
+
+static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 205, 212, 49, 110, 219,
+   48, 20, 6, 224, 71, 209, 40, 129, 34, 0, 57, 116, 208, 100, 122, 200, 160,
+   209, 163, 6, 193, 118, 111, 144, 35, 248, 8, 25, 53, 8, 49, 157, 14, 25,
+   123, 133, 30, 33, 71, 96, 209, 33, 107, 143, 64, 195, 67, 87, 6, 94, 88,
+   128, 21, 251, 72, 73, 137, 156, 184, 206, 210, 33, 15, 2, 52, 124, 18,
    223, 251, 41, 66, 33, 156, 45, 125, 158, 223, 191, 59, 24, 213, 53, 200,
    96, 151, 65, 49, 211, 80, 191, 81, 4, 221, 30, 59, 11, 70, 182, 192, 76,
    69, 252, 13, 188, 242, 53, 208, 160, 165, 7, 166, 75, 226, 155, 115, 94,
@@ -36,26 +44,16 @@ static const uint8_t CPRacingLogo[] PROGMEM = {120, 156, 205, 212, 49, 110,
    35, 109, 94, 174, 63, 246, 134, 111, 79, 247, 55, 221, 89, 198, 125, 59,
    51, 159, 199, 246, 203, 232, 127, 1, 157, 31, 141, 8};
 
-static const char WarningMessage_ControllerTemperature[] PROGMEM
-= "CONTROLLER WARM";
-static const char WarningMessage_MotorTemperature[] PROGMEM = "MOTOR WARM";
-static const char WarningMessage_BatteryTemperature[] PROGMEM
-= "BATTERY WARM";
-static const char WarningMessage_BatteryLowVoltage[] PROGMEM
-= "BATTERY PACK LOW VOLTAGE";
-static const char WarningMessage_LVBattery[] PROGMEM = "GLV LOW VOLTAGE";
-static const char WarningMessage_sbRIOTemperature[] PROGMEM = "sbRIO WARM";
-static const char WarningMessage_Precharge[] PROGMEM
-= "HV SYSTEM PRECHARGING";
-
 class FEDashLCD {
 public:
-   enum class DashPages {
-      Primary, ReturnToPits, Warning, Error, Danger, WaitingForCAN
+   enum class DashPages
+      : uint8_t {
+         Primary, ReturnToPits, Warning, Danger, WaitingForCAN
    };
 
-   enum class WarningMessage {
-      ControllerTemperature,
+   enum class WarningMessage
+      : uint8_t {
+         ControllerTemperature,
       MotorTemperature,
       BatteryTemperature,
       BatteryLowVoltage,
@@ -63,34 +61,6 @@ public:
       sbRIOTemperature,
       Precharge
    };
-
-   enum class ErrorMessage {
-      ControllerTemperature,
-      MotorTemperature,
-      BatteryTemperature,
-      BatteryLowVoltage,
-      LVBattery,
-      sbRIOTemperature,
-      Precharge
-   };
-
-   FEDashLCD() {
-      WarningMessagesExplanation[WarningMessage::ControllerTemperature] =
-         WarningMessage_ControllerTemperature;
-      WarningMessagesExplanation[WarningMessage::MotorTemperature] =
-         WarningMessage_MotorTemperature;
-      WarningMessagesExplanation[WarningMessage::BatteryTemperature] =
-         WarningMessage_BatteryTemperature;
-      WarningMessagesExplanation[WarningMessage::BatteryLowVoltage] =
-         WarningMessage_BatteryLowVoltage;
-      WarningMessagesExplanation[WarningMessage::LVBattery] =
-         WarningMessage_LVBattery;
-      WarningMessagesExplanation[WarningMessage::sbRIOTemperature] =
-         WarningMessage_sbRIOTemperature;
-      WarningMessagesExplanation[WarningMessage::Precharge] =
-         WarningMessage_Precharge;
-
-   }
 
    typedef struct DASHBOARD_DATA {
       union {
@@ -105,6 +75,8 @@ public:
       float VMaxCell;
       float VMeanCell;
       WarningMessage warningMessage;
+      float warningValue;
+      bool warningIsErrorSeverity;
 
    } DASHBOARD_DATA;
 
@@ -117,7 +89,7 @@ public:
          Serial.println("Init Failed");
       }
 
-      waitingForCAN(false); //Faster apparent boot.
+      waitingForCAN(false); //Faster boot.
       LCD.DisplayOn();
 
       uploadLogoToController();
@@ -200,8 +172,11 @@ private:
       LCD.DLStart();
       LCD.ColorRGB(boxColor);
       LCD.ClearColorRGB(boxColor);
-      LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 31,
+      LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
          FT_OPT_CENTER, "DANGER!");
+      LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29,
+         FT_OPT_CENTER, warningMessageToString(DashboardData.warningMessage),
+         DashboardData.warningValue);
       LCD.ScissorSize(75, FT_DISPLAYHEIGHT);
       LCD.ScissorXY(0, 0);
       LCD.Clear(1, 1, 1);
@@ -214,15 +189,19 @@ private:
 
    void warning() {
       bool displayBoxes = millis() % 500 > 250;
+      const char *severityText =
+         DashboardData.warningIsErrorSeverity ? "ERROR!" : "WARNING!";
+      uint32_t color =
+         DashboardData.warningIsErrorSeverity ? 0xFF0000 : 0xFFFF00;
 
       LCD.DLStart();
 
-      LCD.ColorRGB(0xFFFF00);
+      LCD.ColorRGB(color);
       LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
-         FT_OPT_CENTER, "WARNING!");
+         FT_OPT_CENTER, severityText);
       LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29,
-         FT_OPT_CENTER, "%s",
-         WarningMessagesExplanation[DashboardData.warningMessage]);
+         FT_OPT_CENTER, warningMessageToString(DashboardData.warningMessage),
+         DashboardData.warningValue);
 
       if (displayBoxes) {
          LCD.ClearColorRGB(0xFFFF00);
@@ -306,5 +285,25 @@ private:
       LCD.Finish();
    }
 
-   FT801IMPL_SPI LCD;std::map<WarningMessage, const char* PROGMEM> WarningMessagesExplanation;
+   const char * PROGMEM warningMessageToString(WarningMessage warning) {
+      switch (warning) {
+         case WarningMessage::BatteryLowVoltage:
+         return WarningMessage_BatteryLowVoltage;
+         case WarningMessage::BatteryTemperature:
+         return WarningMessage_BatteryTemperature;
+         case WarningMessage::ControllerTemperature:
+         return WarningMessage_ControllerTemperature;
+         case WarningMessage::LVBattery:
+         return WarningMessage_LVBattery;
+         case WarningMessage::MotorTemperature:
+         return WarningMessage_MotorTemperature;
+         case WarningMessage::Precharge:
+         return WarningMessage_Precharge;
+         case WarningMessage::sbRIOTemperature:
+         return WarningMessage_sbRIOTemperature;
+      }
+      return WarningMessage_Invalid;
+   }
+
+   FT801IMPL_SPI LCD;
 };

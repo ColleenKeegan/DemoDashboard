@@ -334,7 +334,7 @@ public:
 
    FT_GEStatus PrintText(int16_t x, int16_t y, uint8_t Font, uint16_t Options,
       const char *fmt, ...);FT_GEStatus PrintTextFlash(int16_t x, int16_t y,
-      uint8_t Font, uint16_t Options, char *fmt PROGMEM, ...);
+      uint8_t Font, uint16_t Options, const char *fmt PROGMEM, ...);
 
    //apis to render all the commands to hardware
    FT_GEStatus Flush(void);//api to flush out all the commands to FT_GC, does not wait for the completion of the rendering
@@ -892,7 +892,7 @@ FT_GEStatus FT_GC<FT_Trans>::PrintText(int16_t x, int16_t y, uint8_t Font,
 
 template<class FT_Trans>
 FT_GEStatus FT_GC<FT_Trans>::PrintTextFlash(int16_t x, int16_t y, uint8_t Font,
-   uint16_t Options, char *fmt PROGMEM, ...) {
+   uint16_t Options, const char *fmt PROGMEM, ...) {
 
    char s[64];
    char format[64];
