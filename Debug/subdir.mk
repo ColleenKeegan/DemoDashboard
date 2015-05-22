@@ -4,12 +4,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../CPFECANLib.cpp \
+../FEDashLCD.cpp \
 ../main.cpp 
 
 OBJS += \
+./CPFECANLib.o \
+./FEDashLCD.o \
 ./main.o 
 
 CPP_DEPS += \
+./CPFECANLib.d \
+./FEDashLCD.d \
 ./main.d 
 
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <FT_VM801P43_50.h>
+#include "CPFECANLib.h"
 
 static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
 static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
@@ -9,7 +10,35 @@ static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "BATTERY PACK LOW
 static const char PROGMEM WarningMessage_LVBattery[] = "GLV LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_sbRIOTemperature[] = "sbRIO WARM: %.0fC";
 static const char PROGMEM WarningMessage_Precharge[] = "HV SYSTEM PRECHARGING: %.0fV";
-static const char PROGMEM WarningMessage_Invalid[] = "INVALID WARNING";
+static const char PROGMEM WarningMessage_Invalid[] = "INVALID WARNING MSG";
+static const char PROGMEM WarningMessage_BSPD[] = "BSPD ERROR";
+static const char PROGMEM WarningMessage_IMD[] = "IMD ERROR";
+static const char PROGMEM WarningMessage_RemotePit[] = "Remote Request";
+static const char PROGMEM WarningMessage_EStop[] = "An E-Stop is Pressed";
+static const char PROGMEM WarningMessage_NoCellComms[] = "NO CELL COMMS";
+static const char PROGMEM WarningMessage_MCOverSpeed[] = "MC Over Speed";
+static const char PROGMEM WarningMessage_MCOverCurrent[] = "MC Over Current";
+static const char PROGMEM WarningMessage_MCOverVoltage[] = "MC Over Voltage";
+static const char PROGMEM WarningMessage_MCOverTemp[] = "MC Inverter Over Temp";
+static const char PROGMEM WarningMessage_MCDirectionCommand[] = "MC Change of Direction Error";
+static const char PROGMEM WarningMessage_MCInverterResponseTimeout[] = "MC Inverter Response Timeout";
+static const char PROGMEM WarningMessage_MCDesatFault[] = "MC Desat Fault";
+static const char PROGMEM WarningMessage_MCHardwareOverCurrentFault[] = "MC HW Over Current";
+static const char PROGMEM WarningMessage_MCUnderVoltage[] = "MC Under Voltage";
+static const char PROGMEM WarningMessage_MCCommandMessageLost[] = "MC Command Message Lost";
+static const char PROGMEM WarningMessage_MCMotorOverTemp[] = "Motor Over Temp";
+static const char PROGMEM WarningMessage_MCModAOverTemp[] = "Module A Over Temp";
+static const char PROGMEM WarningMessage_MCModBOverTemp[] = "Module B Over Temp";
+static const char PROGMEM WarningMessage_MCModCOverTemp[] = "Module C Over Temp";
+static const char PROGMEM WarningMessage_MCPCBOverTemp[] = "PCB Over Temp";
+static const char PROGMEM WarningMessage_MCGateDrv1OverTemp[] = "Gate DRV 1 Over Temp";
+static const char PROGMEM WarningMessage_MCGateDrv2OverTemp[] = "Gate DRV 2 Over Temp";
+static const char PROGMEM WarningMessage_MCGateDrv3OverTemp[] = "Gate DRV 3 Over Temp";
+static const char PROGMEM WarningMessage_MCCurrentSensorFault[] = "MC Current Sensor Fault";
+static const char PROGMEM WarningMessage_MCResolverNotConnected[] = "Resolver Not Connected";
+static const char PROGMEM WarningMessage_ShutdownLatchTripped[] = "Shutdown Latch Tripped";
+static const char PROGMEM WarningMessage_UnknownBMS[] = "An Unknown BMS Error Has Occurred";
+static const char PROGMEM WarningMessage_RemoteEmergency[] = "REMOTE EMERGENCY SHUTDOWN";
 
 static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 205, 212, 49, 110, 219,
    48, 20, 6, 224, 71, 209, 40, 129, 34, 0, 57, 116, 208, 100, 122, 200, 160,
@@ -44,11 +73,57 @@ static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 205, 212, 49, 110, 219,
    35, 109, 94, 174, 63, 246, 134, 111, 79, 247, 55, 221, 89, 198, 125, 59,
    51, 159, 199, 246, 203, 232, 127, 1, 157, 31, 141, 8};
 
+static constexpr uint8_t WarningCANMessageID = 0xF1;
+static constexpr uint8_t DashCAN1ID = 0xF0;
+static constexpr uint8_t DashCAN2ID = 0xF2;
+static constexpr uint8_t DashCAN3ID = 0xF3;
+static constexpr uint8_t DashCAN4ID = 0xF4;
+
+static const CPFECANLib::MSG PROGMEM DashCAN1MSG = {
+   {  DashCAN1ID}, 8, 0, 0, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN1Mask = {
+   {  0xFFF}, 8, 1, 1, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN2MSG = {
+   {  DashCAN2ID}, 8, 0, 0, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN2Mask = {
+   {  0xFFF}, 8, 1, 1, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN3MSG = {
+   {  DashCAN3ID}, 8, 0, 0, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN3Mask = {
+   {  0xFFF}, 8, 1, 1, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN4MSG = {
+   {  DashCAN4ID}, 8, 0, 0, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCAN4Mask = {
+   {  0xFFF}, 8, 1, 1, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCANWarningMSG = {
+   {  WarningCANMessageID}, 8, 0, 0, 0
+};
+
+static const CPFECANLib::MSG PROGMEM DashCANWarningMask = {
+   {  0xFFF}, 8, 1, 1, 0
+};
+
 class FEDashLCD {
 public:
    enum class DashPages
       : uint8_t {
-         Primary, ReturnToPits, Warning, Danger, WaitingForCAN
+         Primary, Warning, WaitingForCAN
    };
 
    enum class WarningMessage
@@ -59,8 +134,72 @@ public:
       BatteryLowVoltage,
       LVBattery,
       sbRIOTemperature,
-      Precharge
+      Precharge,
+      BSPD,
+      IMD,
+      RemoteReturnToPits,
+      EStopInterrupted,
+      NoCellComms,
+      MCOverSpeed,
+      MCOverCurrent,
+      MCOverVoltage,
+      MCOverTemp,
+      MCDirectionCommand,
+      MCInverterResponseTimeout,
+      MCDesatFault,
+      MCHardwareOverCurrentFault,
+      MCUnderVoltage,
+      MCCommandMessageLost,
+      MCMotorOverTemp,
+      MCModAOverTemp,
+      MCModBOverTem,
+      MCModCOverTemp,
+      MCPCBOverTemp,
+      MCGateDrv1OverTemp,
+      MCGateDrv2OverTemp,
+      MCDateDrv3OverTemp,
+      MCCurrentSensorFault,
+      MCResolverNotConnected,
+      ShutdownLatchTripped,
+      UnknownBMS,
+      RemoteEmergency
    };
+
+   enum class WarningSeverity
+      : uint8_t {
+         ShortWarning, LongWarning, ReturnToPits, Error, Danger
+   };
+
+   static constexpr uint8_t DashCAN1Mob = 0;
+   static constexpr uint8_t DashCAN2Mob = 1;
+   static constexpr uint8_t DashCAN3Mob = 2;
+   static constexpr uint8_t DashCAN4Mob = 3;
+   static constexpr uint8_t WarningCANMob = 5;
+
+   static FT801IMPL_SPI LCD;
+
+   typedef struct WarningCANMessage { //0xF1
+      WarningSeverity warningSeverity;
+      float associatedValue;
+      WarningMessage warningMessage;
+      uint8_t notOK;
+   } WarningCANMessage;
+
+   typedef struct DashCAN1 { //0xF0
+      uint8_t NDashPage;
+   } DashCAN1;
+   typedef struct DashCAN2 { //0xF2
+      float TMotor;
+      float TControllerMax;
+   } DashCAN2;
+   typedef struct DashCAN3 { //0xF3
+      float VBattery;
+      float VMinCell;
+   } DashCAN3;
+   typedef struct DashCAN4 { //0xF4
+      float VMaxCell;
+      float VMeanCell;
+   } DashCAN4;
 
    typedef struct DASHBOARD_DATA {
       union {
@@ -76,13 +215,13 @@ public:
       float VMeanCell;
       WarningMessage warningMessage;
       float warningValue;
-      bool warningIsErrorSeverity;
+      WarningSeverity warningSeverity;
 
    } DASHBOARD_DATA;
 
-   volatile DASHBOARD_DATA DashboardData;
+   static volatile DASHBOARD_DATA DashboardData;
 
-   void init() {
+   static void init() {
       Serial.begin(57600);
 
       if (bootupConfigure()) {
@@ -94,8 +233,11 @@ public:
 
       uploadLogoToController();
 
+      CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B1M, &CAN_RX_Int);
+      initCAN_RX();
+
       //Display Waiting For CAN Screen
-      DashboardData.DashPage.DashPage = DashPages::WaitingForCAN;
+      DashboardData.DashPage.DashPage = DashPages::Primary;
 
       //Default Values For Testing
       DashboardData.TMotor = 30.5;
@@ -104,10 +246,42 @@ public:
       DashboardData.VMaxCell = 4.12;
       DashboardData.VMeanCell = 4.02;
       DashboardData.VBattery = 13.24;
-
    }
 
-   void updateDisplay() {
+   static void initCAN_RX() {
+      RX_DashCAN1();
+      RX_DashCAN2();
+      RX_DashCAN3();
+      RX_DashCAN4();
+      RX_WarningCAN();
+   }
+
+   static void RX_DashCAN1() {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG,
+         &DashCAN1Mask);
+   }
+
+   static void RX_DashCAN2() {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG,
+         &DashCAN2Mask);
+   }
+
+   static void RX_DashCAN3() {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG,
+         &DashCAN3Mask);
+   }
+
+   static void RX_DashCAN4() {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG,
+         &DashCAN4Mask);
+   }
+
+   static void RX_WarningCAN() {
+      CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG,
+         &DashCANWarningMask);
+   }
+
+   static void updateDisplay() {
       switch (DashboardData.DashPage.DashPage) {
       case DashPages::WaitingForCAN:
          waitingForCAN();
@@ -118,9 +292,6 @@ public:
       case DashPages::Warning:
          warning();
          break;
-      case DashPages::Danger:
-         danger();
-         break;
       default:
          primary();
          break;
@@ -128,7 +299,7 @@ public:
    }
 
 private:
-   int16_t bootupConfigure() {
+   static int16_t bootupConfigure() {
       uint32_t chipid = 0;
       Serial.println(LCD.Init(FT_DISPLAY_RESOLUTION), HEX); //configure the display to the WQVGA
 
@@ -144,7 +315,7 @@ private:
       return 0;
    }
 
-   void uploadLogoToController() {
+   static void uploadLogoToController() {
       LCD.Cmd_Inflate(0);
       LCD.WriteCmdfromflash(CPRacingLogo, sizeof(CPRacingLogo));
       LCD.Finish();
@@ -157,42 +328,44 @@ private:
       LCD.Finish();
    }
 
-   void danger() {
-      uint32_t boxColor;
+   static void warning() {
+      bool displayBoxes;
+      const char *severityText;
+      uint32_t color = 0x00000;
 
-      if (millis() % 600 > 450)
-         boxColor = 0xFFFF00;
-      else if (millis() % 600 > 300)
-         boxColor = 0x00FF00;
-      else if (millis() % 600 > 150)
-         boxColor = 0x000000;
-      else
-         boxColor = 0xFF0000;
-
-      LCD.DLStart();
-      LCD.ColorRGB(boxColor);
-      LCD.ClearColorRGB(boxColor);
-      LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
-         FT_OPT_CENTER, "DANGER!");
-      LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29,
-         FT_OPT_CENTER, warningMessageToString(DashboardData.warningMessage),
-         DashboardData.warningValue);
-      LCD.ScissorSize(75, FT_DISPLAYHEIGHT);
-      LCD.ScissorXY(0, 0);
-      LCD.Clear(1, 1, 1);
-      LCD.ScissorXY(FT_DISPLAYWIDTH - 75, 0);
-      LCD.Clear(1, 1, 1);
-
-      LCD.DLEnd();
-      LCD.Finish();
-   }
-
-   void warning() {
-      bool displayBoxes = millis() % 500 > 250;
-      const char *severityText =
-         DashboardData.warningIsErrorSeverity ? "ERROR!" : "WARNING!";
-      uint32_t color =
-         DashboardData.warningIsErrorSeverity ? 0xFF0000 : 0xFFFF00;
+      switch (DashboardData.warningSeverity) {
+      case WarningSeverity::ShortWarning:
+      case WarningSeverity::LongWarning:
+         displayBoxes = millis() % 500 > 250;
+         severityText = "WARNING!";
+         color = 0xFFFF00;
+         break;
+      case WarningSeverity::Error:
+         displayBoxes = millis() % 500 > 250;
+         severityText = "ERROR!";
+         color = 0xFF0000;
+         break;
+      case WarningSeverity::Danger:
+         displayBoxes = true;
+         severityText = "DANGER!";
+         if (millis() % 600 > 450)
+            color = 0xFFFF00;
+         else if (millis() % 600 > 300)
+            color = 0x00FF00;
+         else if (millis() % 600 > 150)
+            color = 0x000000;
+         else
+            color = 0xFF0000;
+         break;
+      case WarningSeverity::ReturnToPits:
+         displayBoxes = true;
+         severityText = "Return to Pits";
+         color = 0xFFFF00;
+         break;
+      default:
+         displayBoxes = true;
+         severityText = "Unknown Severity";
+      }
 
       LCD.DLStart();
 
@@ -204,7 +377,7 @@ private:
          DashboardData.warningValue);
 
       if (displayBoxes) {
-         LCD.ClearColorRGB(0xFFFF00);
+         LCD.ClearColorRGB(color);
          LCD.ScissorSize(75, FT_DISPLAYHEIGHT);
          LCD.ScissorXY(0, 0);
          LCD.Clear(1, 1, 1);
@@ -216,12 +389,7 @@ private:
       LCD.Finish();
    }
 
-   void returnToPits() {
-      LCD.DLStart();
-
-   }
-
-   void primary() {
+   static void primary() {
       LCD.DLStart();
 
       LCD.ColorRGB(0xFF, 0x00, 0x00);
@@ -259,11 +427,11 @@ private:
       LCD.Finish();
    }
 
-   void waitingForCAN() {
+   static void waitingForCAN() {
       waitingForCAN(true);
    }
 
-   void waitingForCAN(bool withLogo) {
+   static void waitingForCAN(bool withLogo) {
       LCD.DLStart();
       const char Display_string[] = "Formula Electric 2015";
 
@@ -285,7 +453,7 @@ private:
       LCD.Finish();
    }
 
-   const char * PROGMEM warningMessageToString(WarningMessage warning) {
+   static const char * PROGMEM warningMessageToString(WarningMessage warning) {
       switch (warning) {
          case WarningMessage::BatteryLowVoltage:
          return WarningMessage_BatteryLowVoltage;
@@ -301,9 +469,103 @@ private:
          return WarningMessage_Precharge;
          case WarningMessage::sbRIOTemperature:
          return WarningMessage_sbRIOTemperature;
+         case WarningMessage::IMD:
+         return WarningMessage_IMD;
+         case WarningMessage::BSPD:
+         return WarningMessage_BSPD;
+         case WarningMessage::RemoteReturnToPits:
+         return WarningMessage_RemotePit;
+         case WarningMessage::EStopInterrupted:
+         return WarningMessage_EStop;
+         case WarningMessage::NoCellComms:
+         return WarningMessage_NoCellComms;
+         case WarningMessage::MCOverSpeed:
+         return WarningMessage_MCOverSpeed;
+         case WarningMessage::MCOverCurrent:
+         return WarningMessage_MCOverCurrent;
+         case WarningMessage::MCOverVoltage:
+         return WarningMessage_MCOverVoltage;
+         case WarningMessage::MCOverTemp:
+         return WarningMessage_MCOverTemp;
+         case WarningMessage::MCDirectionCommand:
+         return WarningMessage_MCDirectionCommand;
+         case WarningMessage::MCInverterResponseTimeout:
+         return WarningMessage_MCInverterResponseTimeout;
+         case WarningMessage::MCDesatFault:
+         return WarningMessage_MCDesatFault;
+         case WarningMessage::MCHardwareOverCurrentFault:
+         return WarningMessage_MCHardwareOverCurrentFault;
+         case WarningMessage::MCUnderVoltage:
+         return WarningMessage_MCUnderVoltage;
+         case WarningMessage::MCCommandMessageLost:
+         return WarningMessage_MCCommandMessageLost;
+         case WarningMessage::MCMotorOverTemp:
+         return WarningMessage_MCMotorOverTemp;
+         case WarningMessage::MCModAOverTemp:
+         return WarningMessage_MCModAOverTemp;
+         case WarningMessage::MCModBOverTem:
+         return WarningMessage_MCModBOverTemp;
+         case WarningMessage::MCModCOverTemp:
+         return WarningMessage_MCModCOverTemp;
+         case WarningMessage::MCPCBOverTemp:
+         return WarningMessage_MCPCBOverTemp;
+         case WarningMessage::MCGateDrv1OverTemp:
+         return WarningMessage_MCGateDrv1OverTemp;
+         case WarningMessage::MCGateDrv2OverTemp:
+         return WarningMessage_MCGateDrv2OverTemp;
+         case WarningMessage::MCDateDrv3OverTemp:
+         return WarningMessage_MCGateDrv3OverTemp;
+         case WarningMessage::MCCurrentSensorFault:
+         return WarningMessage_MCCurrentSensorFault;
+         case WarningMessage::MCResolverNotConnected:
+         return WarningMessage_MCResolverNotConnected;
+         case WarningMessage::ShutdownLatchTripped:
+         return WarningMessage_ShutdownLatchTripped;
+         case WarningMessage::UnknownBMS:
+         return WarningMessage_UnknownBMS;
+         case WarningMessage::RemoteEmergency:
+         return WarningMessage_RemoteEmergency;
       }
       return WarningMessage_Invalid;
    }
 
-   FT801IMPL_SPI LCD;
+   static void CAN_RX_Int(CPFECANLib::MSG *msg, uint8_t mobNum) {
+      switch (msg->identifier.standard) {
+      case DashCAN1ID:
+         FEDashLCD::DashCAN1 dashCAN1;
+         memcpy((void *) &dashCAN1, msg->data, sizeof(dashCAN1));
+         FEDashLCD::DashboardData.DashPage.NDashPage = dashCAN1.NDashPage;
+         RX_DashCAN1();
+         break;
+      case DashCAN2ID:
+         FEDashLCD::DashCAN2 dashCAN2;
+         memcpy((void *) &dashCAN2, msg->data, sizeof(dashCAN2));
+         FEDashLCD::DashboardData.TMotor = dashCAN2.TMotor;
+         FEDashLCD::DashboardData.TControllerMax = dashCAN2.TControllerMax;
+         RX_DashCAN2();
+         break;
+      case DashCAN3ID:
+         FEDashLCD::DashCAN3 dashCAN3;
+         memcpy((void *) &dashCAN3, msg->data, sizeof(dashCAN3));
+         FEDashLCD::DashboardData.VBattery = dashCAN3.VBattery;
+         FEDashLCD::DashboardData.VMinCell = dashCAN3.VMinCell;
+         RX_DashCAN3();
+         break;
+      case DashCAN4ID:
+         FEDashLCD::DashCAN4 dashCAN4;
+         memcpy((void *) &dashCAN4, msg->data, sizeof(dashCAN4));
+         FEDashLCD::DashboardData.VMaxCell = dashCAN4.VMaxCell;
+         FEDashLCD::DashboardData.VMeanCell = dashCAN4.VMeanCell;
+         RX_DashCAN4();
+         break;
+      case WarningCANMessageID:
+         FEDashLCD::WarningCANMessage warningCAN;
+         memcpy((void *) &warningCAN, msg->data, sizeof(warningCAN));
+         FEDashLCD::DashboardData.warningMessage = warningCAN.warningMessage;
+         FEDashLCD::DashboardData.warningSeverity = warningCAN.warningSeverity;
+         FEDashLCD::DashboardData.warningValue = warningCAN.associatedValue;
+         RX_WarningCAN();
+         break;
+      }
+   }
 };
