@@ -9,7 +9,7 @@ static const char PROGMEM WarningMessage_BatteryTemperature[] = "BATTERY WARM: %
 static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "BATTERY PACK LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_LVBattery[] = "GLV LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_sbRIOTemperature[] = "sbRIO WARM: %.0fC";
-static const char PROGMEM WarningMessage_Precharge[] = "HV SYSTEM PRECHARGING: %.0fV";
+static const char PROGMEM WarningMessage_Precharge[] = "HV PRECHARGING: %.0fV";
 static const char PROGMEM WarningMessage_Invalid[] = "INVALID WARNING MSG";
 static const char PROGMEM WarningMessage_BSPD[] = "BSPD ERROR";
 static const char PROGMEM WarningMessage_IMD[] = "IMD ERROR";
@@ -123,7 +123,7 @@ class FEDashLCD {
 public:
    enum class DashPages
       : uint8_t {
-         Primary, Warning, WaitingForCAN
+         Primary, Warning, WaitingForCAN, InPits
    };
 
    enum class WarningMessage
@@ -167,14 +167,14 @@ public:
 
    enum class WarningSeverity
       : uint8_t {
-         ShortWarning, LongWarning, ReturnToPits, Error, Danger
+         Okay, ShortWarning, LongWarning, ReturnToPits, Error, Danger
    };
 
    static constexpr uint8_t DashCAN1Mob = 0;
    static constexpr uint8_t DashCAN2Mob = 1;
    static constexpr uint8_t DashCAN3Mob = 2;
    static constexpr uint8_t DashCAN4Mob = 3;
-   static constexpr uint8_t WarningCANMob = 5;
+   static constexpr uint8_t WarningCANMob = 4;
 
    static FT801IMPL_SPI LCD;
 
@@ -221,6 +221,17 @@ public:
 
    static volatile DASHBOARD_DATA DashboardData;
 
+   static float swap(float d) {
+      float a;
+      unsigned char *dst = (unsigned char *) &a;
+      unsigned char *src = (unsigned char *) &d;
+      dst[0] = src[3];
+      dst[1] = src[2];
+      dst[2] = src[1];
+      dst[3] = src[0];
+      return a;
+   }
+
    static void init() {
       Serial.begin(57600);
 
@@ -233,52 +244,45 @@ public:
 
       uploadLogoToController();
 
-      CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B1M, &CAN_RX_Int);
+      CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B250K, &CAN_RX_Int);
       initCAN_RX();
 
       //Display Waiting For CAN Screen
-      DashboardData.DashPage.DashPage = DashPages::Primary;
+      DashboardData.DashPage.DashPage = DashPages::WaitingForCAN;
 
-      //Default Values For Testing
-      DashboardData.TMotor = 30.5;
-      DashboardData.TControllerMax = 50.35;
-      DashboardData.VMinCell = 3.69;
-      DashboardData.VMaxCell = 4.12;
-      DashboardData.VMeanCell = 4.02;
-      DashboardData.VBattery = 13.24;
    }
 
    static void initCAN_RX() {
-      RX_DashCAN1();
-      RX_DashCAN2();
-      RX_DashCAN3();
-      RX_DashCAN4();
-      RX_WarningCAN();
+      RX_DashCAN1(false);
+      RX_DashCAN2(false);
+      RX_DashCAN3(false);
+      RX_DashCAN4(false);
+      RX_WarningCAN(false);
    }
 
-   static void RX_DashCAN1() {
+   static void RX_DashCAN1(bool interruptMode) {
       CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG,
-         &DashCAN1Mask);
+         &DashCAN1Mask, interruptMode);
    }
 
-   static void RX_DashCAN2() {
+   static void RX_DashCAN2(bool interruptMode) {
       CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG,
-         &DashCAN2Mask);
+         &DashCAN2Mask, interruptMode);
    }
 
-   static void RX_DashCAN3() {
+   static void RX_DashCAN3(bool interruptMode) {
       CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG,
-         &DashCAN3Mask);
+         &DashCAN3Mask, interruptMode);
    }
 
-   static void RX_DashCAN4() {
+   static void RX_DashCAN4(bool interruptMode) {
       CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG,
-         &DashCAN4Mask);
+         &DashCAN4Mask, interruptMode);
    }
 
-   static void RX_WarningCAN() {
+   static void RX_WarningCAN(bool interruptMode) {
       CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG,
-         &DashCANWarningMask);
+         &DashCANWarningMask, interruptMode);
    }
 
    static void updateDisplay() {
@@ -292,8 +296,11 @@ public:
       case DashPages::Warning:
          warning();
          break;
+      case DashPages::InPits:
+         inPits();
+         break;
       default:
-         primary();
+         warning();
          break;
       }
    }
@@ -453,6 +460,13 @@ private:
       LCD.Finish();
    }
 
+   static void inPits() {
+      LCD.DLStart();
+
+      LCD.DLEnd();
+      LCD.Finish();
+   }
+
    static const char * PROGMEM warningMessageToString(WarningMessage warning) {
       switch (warning) {
          case WarningMessage::BatteryLowVoltage:
@@ -530,41 +544,44 @@ private:
    }
 
    static void CAN_RX_Int(CPFECANLib::MSG *msg, uint8_t mobNum) {
+      //Serial.printf("%X\n", msg->identifier.standard);
       switch (msg->identifier.standard) {
       case DashCAN1ID:
          FEDashLCD::DashCAN1 dashCAN1;
          memcpy((void *) &dashCAN1, msg->data, sizeof(dashCAN1));
          FEDashLCD::DashboardData.DashPage.NDashPage = dashCAN1.NDashPage;
-         RX_DashCAN1();
+         RX_DashCAN1(true);
          break;
       case DashCAN2ID:
          FEDashLCD::DashCAN2 dashCAN2;
          memcpy((void *) &dashCAN2, msg->data, sizeof(dashCAN2));
-         FEDashLCD::DashboardData.TMotor = dashCAN2.TMotor;
-         FEDashLCD::DashboardData.TControllerMax = dashCAN2.TControllerMax;
-         RX_DashCAN2();
+         FEDashLCD::DashboardData.TMotor = swap(dashCAN2.TMotor);
+         FEDashLCD::DashboardData.TControllerMax = swap(
+            dashCAN2.TControllerMax);
+         RX_DashCAN2(true);
          break;
       case DashCAN3ID:
          FEDashLCD::DashCAN3 dashCAN3;
          memcpy((void *) &dashCAN3, msg->data, sizeof(dashCAN3));
-         FEDashLCD::DashboardData.VBattery = dashCAN3.VBattery;
-         FEDashLCD::DashboardData.VMinCell = dashCAN3.VMinCell;
-         RX_DashCAN3();
+         FEDashLCD::DashboardData.VBattery = swap(dashCAN3.VBattery);
+         FEDashLCD::DashboardData.VMinCell = swap(dashCAN3.VMinCell);
+         RX_DashCAN3(true);
          break;
       case DashCAN4ID:
          FEDashLCD::DashCAN4 dashCAN4;
          memcpy((void *) &dashCAN4, msg->data, sizeof(dashCAN4));
-         FEDashLCD::DashboardData.VMaxCell = dashCAN4.VMaxCell;
-         FEDashLCD::DashboardData.VMeanCell = dashCAN4.VMeanCell;
-         RX_DashCAN4();
+         FEDashLCD::DashboardData.VMaxCell = swap(dashCAN4.VMaxCell);
+         FEDashLCD::DashboardData.VMeanCell = swap(dashCAN4.VMeanCell);
+         RX_DashCAN4(true);
          break;
       case WarningCANMessageID:
          FEDashLCD::WarningCANMessage warningCAN;
          memcpy((void *) &warningCAN, msg->data, sizeof(warningCAN));
          FEDashLCD::DashboardData.warningMessage = warningCAN.warningMessage;
          FEDashLCD::DashboardData.warningSeverity = warningCAN.warningSeverity;
-         FEDashLCD::DashboardData.warningValue = warningCAN.associatedValue;
-         RX_WarningCAN();
+         FEDashLCD::DashboardData.warningValue = swap(
+            warningCAN.associatedValue);
+         RX_WarningCAN(true);
          break;
       }
    }

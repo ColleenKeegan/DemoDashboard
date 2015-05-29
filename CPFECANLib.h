@@ -12,15 +12,14 @@
 #include <stdlib.h>
 #include "arduino/Arduino.h"
 
-#define BIT0 0x00
-#define BIT1 0x01
-#define BIT2 0x02
-#define BIT3 0x04
-#define BIT4 0x08
-#define BIT5 0x10
-#define BIT6 0x20
-#define BIT7 0x40
-#define BIT8 0x80
+#define BIT0 0x01
+#define BIT1 0x02
+#define BIT2 0x04
+#define BIT3 0x08
+#define BIT4 0x10
+#define BIT5 0x20
+#define BIT6 0x40
+#define BIT7 0x80
 
 class CPFECANLib {
 public:
@@ -59,8 +58,13 @@ public:
 
    static void init(CAN_BAUDRATE baud, CAN_MSG_RX func) {
       rxIntFunc = func;
-      // CAN: On
-      CANGCON = 0x02;
+
+      CANGCON = (1 << SWRES);
+
+      // MOb0..7 Interrupts: MOb0: Off, MOb1: Off, MOb2: Off, MOb3: Off, MOb4: Off, MOb5: Off, MOb6: Off, MOb7: Off
+      CANIE2 = 0x00;
+      // MOb8..14 Interrupts: MOb8: Off, MOb9: Off, MOb10: Off, MOb11: Off, MOb12: Off, MOb13: Off, MOb14: Off
+      CANIE1 = 0x00;
       // CAN Interrupts:
       // Timer Overrun: Off
       // General Errors: Off
@@ -70,11 +74,7 @@ public:
       // Receive: On
       // Bus Off: Off
       // All, except Timer Overrun: Off
-      CANGIE = ENRX;
-      // MOb0..7 Interrupts: MOb0: Off, MOb1: Off, MOb2: Off, MOb3: Off, MOb4: Off, MOb5: Off, MOb6: Off, MOb7: Off
-      CANIE2 = 0x00;
-      // MOb8..14 Interrupts: MOb8: Off, MOb9: Off, MOb10: Off, MOb11: Off, MOb12: Off, MOb13: Off, MOb14: Off
-      CANIE1 = 0x00;
+      CANGIE = (1 << ENRX) | (1 << ENIT);
       // Highest Interrupt Priority: MOb0
       CANHPMOB = 0x00;
 
@@ -102,6 +102,15 @@ public:
       }
       // CAN Timer Clock Period: 1.000 us
       CANTCON = 0x00;
+      CANGCON |= (1 << ENASTB);
+
+      for (int i = 0; i < 16; ++i) {
+         CANPAGE = i << 4;
+         CANCDMOB = 0x00;
+         CANSTMOB = 0x00;
+      }
+
+      sei();
    }
 
    static void disableAllMOB() {
@@ -112,6 +121,13 @@ public:
    }
    static void disableMOB(uint8_t n) {
       setMOB(n);
+
+      if (n < 8) {
+         CANIE2 &= ~(1 << n);
+      } else {
+         CANIE1 &= !(1 << (n - 8));
+      }
+
       CANCDMOB = 0x00;
    }
    static void sendMsgUsingMOB(uint8_t n, MSG *msg) {
@@ -125,25 +141,37 @@ public:
 
       CANCDMOB = BIT6 + (((msg->ide) && 1) << 4) + (msg->dlc & 0x0F); //Must happen last
    }
-   static void enableMOBAsRX(uint8_t n, const MSG *msg, const MSG *mask) {
+   static void enableMOBAsRX(uint8_t n, const MSG *msg, const MSG *mask,
+      bool interruptMode) {
       setMOB(n);
-      setID(msg->ide, msg->identifier);
-      CANIDT4 |= (msg->rtr && 1) << RTRTAG;
 
-      setMask(msg->ide, mask->identifier);
-      CANIDM4 |= ((mask->rtr && 1) << RTRMSK) + ((mask->ide && 1) << IDEMSK);
+      if (!interruptMode) {
+         if (n < 8) {
+            CANIE2 |= 1 << n;
+         } else {
+            CANIE1 |= 1 << (n - 8);
+         }
+
+         setID(msg->ide, msg->identifier);
+         CANIDT4 |= (msg->rtr && 1) << RTRTAG;
+
+         setMask(msg->ide, mask->identifier);
+         CANIDM4 |= ((mask->rtr && 1) << RTRMSK) + ((mask->ide && 1) << IDEMSK);
+      }
 
       CANCDMOB = BIT7 + (((msg->ide) && 1) << 4) + (msg->dlc & 0x0F); //Must happen last
    }
    static void enableMOBAsRX_PROGMEM(uint8_t n, const MSG *msgFLASH,
-      const MSG *maskFLASH) {
+      const MSG *maskFLASH, bool interruptMode) {
       MSG msg;
       MSG mask;
 
       memcpy_P((void *) &msg, msgFLASH, sizeof(MSG));
-      memcpy_P((void *) &mask, maskFLASH, sizeof(MSG));
 
-      enableMOBAsRX(n, &msg, &mask);
+      if (!interruptMode)
+         memcpy_P((void *) &mask, maskFLASH, sizeof(MSG));
+
+      enableMOBAsRX(n, &msg, &mask, interruptMode);
    }
    static void enableMOBAsFrameBuffer(uint8_t n, MSG *msg) {
       //TODO: Implement Frame Buffer Mode
@@ -153,58 +181,6 @@ public:
       MSG msg;
       uint8_t msgData[8];
       msg.data = msgData;
-
-      switch (CANSIT1) {
-      case BIT0:
-         CANPAGE = 0x00;
-         break;
-      case BIT1:
-         CANPAGE = 0x10;
-         break;
-      case BIT2:
-         CANPAGE = 0x20;
-         break;
-      case BIT3:
-         CANPAGE = 0x30;
-         break;
-      case BIT4:
-         CANPAGE = 0x40;
-         break;
-      case BIT5:
-         CANPAGE = 0x50;
-         break;
-      case BIT6:
-         CANPAGE = 0x60;
-         break;
-      case BIT7:
-         CANPAGE = 0x70;
-         break;
-      default:
-         switch (CANSIT2) {
-         case BIT0:
-            CANPAGE = 0x80;
-            break;
-         case BIT1:
-            CANPAGE = 0x90;
-            break;
-         case BIT2:
-            CANPAGE = 0xA0;
-            break;
-         case BIT3:
-            CANPAGE = 0xB0;
-            break;
-         case BIT4:
-            CANPAGE = 0xC0;
-            break;
-         case BIT5:
-            CANPAGE = 0xD0;
-            break;
-         case BIT6:
-            CANPAGE = 0xE0;
-            break;
-         }
-      }
-      CANSTMOB &= ~(1 << RXOK);
 
       for (int i = 0; i < 8; i++) {
          msg.data[i] = CANMSG;
@@ -224,10 +200,10 @@ public:
 
 private:
    static void setMOB(uint8_t MOB) {
-      CANPAGE = MOB;
+      CANPAGE = MOB << 4;
    }
 
-   static void setID(bool ide, MSG_ID id) {
+   static void setMask(bool ide, MSG_ID id) {
       if (!ide) {
          CANIDM1 = (id.standard >> 3) & 0xFF;
          CANIDM2 = (id.standard << 5) & 0xFF;
@@ -240,7 +216,7 @@ private:
          CANIDM4 = (id.extended << 3) & 0xF8;
       }
    }
-   static void setMask(bool ide, MSG_ID id) {
+   static void setID(bool ide, MSG_ID id) {
       if (!ide) {
          CANIDT1 = (id.standard >> 3) & 0xFF;
          CANIDT2 = (id.standard << 5) & 0xFF;
