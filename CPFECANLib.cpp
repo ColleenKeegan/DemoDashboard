@@ -12,7 +12,6 @@
 ISR(CANIT_vect,ISR_BLOCK) {
    uint8_t origCANPAGE = CANPAGE;
    while (CANSIT2 | CANSIT1) {
-      //Serial.printf("CANSIT1: 0x%X\nCANSIT2: 0x%X\n", CANSIT1, CANSIT2);
 
       if (CANSIT2 & BIT0) CANPAGE = 0x00;
       else if (CANSIT2 & BIT1) CANPAGE = 0x10;
@@ -34,9 +33,7 @@ ISR(CANIT_vect,ISR_BLOCK) {
          CANSTMOB = 0x00;
          CPFECANLib::rxInt();
       }
-      //Serial.printf("CANSIT1: 0x%X\nCANSIT2: 0x%X\n", CANSIT1, CANSIT2);
    }
-   //Serial.println("Exit\n");
    CANPAGE = origCANPAGE;
 }
 

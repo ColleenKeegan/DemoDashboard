@@ -3,6 +3,7 @@
 #include <FT_VM801P43_50.h>
 #include "CPFECANLib.h"
 #include "float16.hpp"
+#include "arduino/Arduino.h"
 
 static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
 static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
@@ -226,24 +227,15 @@ public:
 
    static volatile DASHBOARD_DATA DashboardData;
 
-   static float swap(float d) {
-      float a;
-      unsigned char *dst = (unsigned char *) &a;
-      unsigned char *src = (unsigned char *) &d;
-      dst[0] = src[3];
-      dst[1] = src[2];
-      dst[2] = src[1];
-      dst[3] = src[0];
-      return a;
-   }
+   inline static void TIMER_OVF_INT() {
+      ++CAN_OVFCount;
 
-   static uint16_t swap(uint16_t d) {
-      uint16_t a;
-      unsigned char *dst = (unsigned char *) &a;
-      unsigned char *src = (unsigned char *) &d;
-      dst[0] = src[1];
-      dst[1] = src[0];
-      return a;
+      if (CAN_OVFCount > CAN_TIMER_OVF_COUNT_MAX) {
+         CAN_OVFCount = 0;
+
+         FEDashLCD::DashboardData.DashPage.DashPage =
+            FEDashLCD::DashPages::WaitingForCAN;
+      }
    }
 
    static void init() {
@@ -264,6 +256,9 @@ public:
       //Display Waiting For CAN Screen
       DashboardData.DashPage.DashPage = DashPages::WaitingForCAN;
 
+      //Init CAN timeout timer
+      TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024
+      TIMSK0 = (1 << TOIE2); //Timer 2 OVF Interrupt
    }
 
    static void initCAN_RX() {
@@ -320,6 +315,9 @@ public:
    }
 
 private:
+   static const uint8_t CAN_TIMER_OVF_COUNT_MAX = 60;
+   static volatile uint8_t CAN_OVFCount;
+
    static int16_t bootupConfigure() {
       uint32_t chipid = 0;
       Serial.println(LCD.Init(FT_DISPLAY_RESOLUTION), HEX); //configure the display to the WQVGA
@@ -559,7 +557,8 @@ private:
    }
 
    static void CAN_RX_Int(CPFECANLib::MSG *msg, uint8_t mobNum) {
-      //Serial.printf("%X\n", msg->identifier.standard);
+      resetTimeoutTimer();
+
       switch (msg->identifier.standard) {
       case DashCAN1ID:
          FEDashLCD::DashCAN1 dashCAN1;
@@ -608,5 +607,28 @@ private:
          RX_WarningCAN(true);
          break;
       }
+   }
+   static float swap(float d) {
+      float a;
+      unsigned char *dst = (unsigned char *) &a;
+      unsigned char *src = (unsigned char *) &d;
+      dst[0] = src[3];
+      dst[1] = src[2];
+      dst[2] = src[1];
+      dst[3] = src[0];
+      return a;
+   }
+
+   static uint16_t swap(uint16_t d) {
+      uint16_t a;
+      unsigned char *dst = (unsigned char *) &a;
+      unsigned char *src = (unsigned char *) &d;
+      dst[0] = src[1];
+      dst[1] = src[0];
+      return a;
+   }
+
+   static void resetTimeoutTimer() {
+      CAN_OVFCount = 0;
    }
 };
