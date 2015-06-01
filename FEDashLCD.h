@@ -172,37 +172,6 @@ public:
          Okay, ShortWarning, LongWarning, ReturnToPits, Error, Danger
    };
 
-   static constexpr uint8_t DashCAN1Mob = 0;
-   static constexpr uint8_t DashCAN2Mob = 1;
-   static constexpr uint8_t DashCAN3Mob = 2;
-   static constexpr uint8_t DashCAN4Mob = 3;
-   static constexpr uint8_t WarningCANMob = 4;
-
-   typedef struct WarningCANMessage { //0xF1
-      WarningSeverity warningSeverity;
-      float associatedValue;
-      WarningMessage warningMessage;
-      uint8_t notOK;
-   } WarningCANMessage;
-
-   typedef struct DashCAN1 { //0xF0
-      uint8_t NDashPage;
-   } DashCAN1;
-   typedef struct DashCAN2 { //0xF2
-      uint16_t TMotor;
-      uint16_t TControllerMax;
-      uint16_t TCellMax;
-      uint16_t TCellMean;
-   } DashCAN2;
-   typedef struct DashCAN3 { //0xF3
-      uint16_t VBattery;
-      uint16_t VMinCell;
-   } DashCAN3;
-   typedef struct DashCAN4 { //0xF4
-      uint16_t VMaxCell;
-      uint16_t VMeanCell;
-   } DashCAN4;
-
    typedef struct DASHBOARD_DATA {
       union {
          uint8_t NDashPage;
@@ -246,10 +215,6 @@ public:
       }
    }
 
-   static void transmitDashboardInfo() {
-
-   }
-
    static void init() {
       Serial.begin(57600);
 
@@ -277,39 +242,6 @@ public:
       TCCR1B = (1 << CS1); // CLK / 8 for ~30 OVF/sec
       TIMSK1 |= (1 << TOIE1); //Timer 1 OVF Interrupt
 
-   }
-
-   static void initCAN_RX() {
-      RX_DashCAN1(false);
-      RX_DashCAN2(false);
-      RX_DashCAN3(false);
-      RX_DashCAN4(false);
-      RX_WarningCAN(false);
-   }
-
-   static void RX_DashCAN1(bool interruptMode) {
-      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG,
-         &DashCAN1Mask, interruptMode);
-   }
-
-   static void RX_DashCAN2(bool interruptMode) {
-      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG,
-         &DashCAN2Mask, interruptMode);
-   }
-
-   static void RX_DashCAN3(bool interruptMode) {
-      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG,
-         &DashCAN3Mask, interruptMode);
-   }
-
-   static void RX_DashCAN4(bool interruptMode) {
-      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG,
-         &DashCAN4Mask, interruptMode);
-   }
-
-   static void RX_WarningCAN(bool interruptMode) {
-      CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG,
-         &DashCANWarningMask, interruptMode);
    }
 
    static void updateDisplay() {
@@ -340,6 +272,74 @@ private:
    static volatile uint8_t TransOVFCount;
 
    static FT801IMPL_SPI LCD;
+
+   static constexpr uint8_t DashCAN1Mob = 0;
+   static constexpr uint8_t DashCAN2Mob = 1;
+   static constexpr uint8_t DashCAN3Mob = 2;
+   static constexpr uint8_t DashCAN4Mob = 3;
+   static constexpr uint8_t WarningCANMob = 4;
+
+   typedef struct WarningCANMessage { //0xF1
+      WarningSeverity warningSeverity;
+      float associatedValue;
+      WarningMessage warningMessage;
+      uint8_t notOK;
+   } WarningCANMessage;
+
+   typedef struct DashCAN1 { //0xF0
+      uint8_t NDashPage;
+   } DashCAN1;
+   typedef struct DashCAN2 { //0xF2
+      uint16_t TMotor;
+      uint16_t TControllerMax;
+      uint16_t TCellMax;
+      uint16_t TCellMean;
+   } DashCAN2;
+   typedef struct DashCAN3 { //0xF3
+      uint16_t VBattery;
+      uint16_t VMinCell;
+   } DashCAN3;
+   typedef struct DashCAN4 { //0xF4
+      uint16_t VMaxCell;
+      uint16_t VMeanCell;
+   } DashCAN4;
+
+   static void initCAN_RX() {
+      RX_DashCAN1(false);
+      RX_DashCAN2(false);
+      RX_DashCAN3(false);
+      RX_DashCAN4(false);
+      RX_WarningCAN(false);
+   }
+
+   static void transmitDashboardInfo() {
+
+   }
+
+   static void RX_DashCAN1(bool interruptMode) {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG,
+         &DashCAN1Mask, interruptMode);
+   }
+
+   static void RX_DashCAN2(bool interruptMode) {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG,
+         &DashCAN2Mask, interruptMode);
+   }
+
+   static void RX_DashCAN3(bool interruptMode) {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG,
+         &DashCAN3Mask, interruptMode);
+   }
+
+   static void RX_DashCAN4(bool interruptMode) {
+      CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG,
+         &DashCAN4Mask, interruptMode);
+   }
+
+   static void RX_WarningCAN(bool interruptMode) {
+      CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG,
+         &DashCANWarningMask, interruptMode);
+   }
 
    static int16_t bootupConfigure() {
       uint32_t chipid = 0;
