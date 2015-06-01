@@ -178,8 +178,6 @@ public:
    static constexpr uint8_t DashCAN4Mob = 3;
    static constexpr uint8_t WarningCANMob = 4;
 
-   static FT801IMPL_SPI LCD;
-
    typedef struct WarningCANMessage { //0xF1
       WarningSeverity warningSeverity;
       float associatedValue;
@@ -227,7 +225,7 @@ public:
 
    static volatile DASHBOARD_DATA DashboardData;
 
-   inline static void TIMER_OVF_INT() {
+   inline static void TIMER2_OVF_INT() { //Timer 2 OVF INT for CAN Timeout
       ++CAN_OVFCount;
 
       if (CAN_OVFCount > CAN_TIMER_OVF_COUNT_MAX) {
@@ -236,6 +234,20 @@ public:
          FEDashLCD::DashboardData.DashPage.DashPage =
             FEDashLCD::DashPages::WaitingForCAN;
       }
+   }
+
+   inline static void TIMER1_OVF_INT() { //Timer 2 OVF INT for CAN Timeout
+      ++TransOVFCount;
+
+      if (TransOVFCount >= TRANS_TIMER_OVF_COUNT_MAX) {
+         TransOVFCount = 0;
+
+         transmitDashboardInfo();
+      }
+   }
+
+   static void transmitDashboardInfo() {
+
    }
 
    static void init() {
@@ -256,9 +268,15 @@ public:
       //Display Waiting For CAN Screen
       DashboardData.DashPage.DashPage = DashPages::WaitingForCAN;
 
-      //Init CAN timeout timer
+      //Init CAN timeout timer (Timer 2)
       TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024
       TIMSK0 = (1 << TOIE2); //Timer 2 OVF Interrupt
+
+      //Init Data Transmission Timer (Timer 1)
+      TCCR1A = 0x00; //Normal Mode, no CCR Output
+      TCCR1B = (1 << CS1); // CLK / 8 for ~30 OVF/sec
+      TIMSK1 |= (1 << TOIE1); //Timer 1 OVF Interrupt
+
    }
 
    static void initCAN_RX() {
@@ -317,6 +335,11 @@ public:
 private:
    static const uint8_t CAN_TIMER_OVF_COUNT_MAX = 60;
    static volatile uint8_t CAN_OVFCount;
+
+   static const uint8_t TRANS_TIMER_OVF_COUNT_MAX = 3;
+   static volatile uint8_t TransOVFCount;
+
+   static FT801IMPL_SPI LCD;
 
    static int16_t bootupConfigure() {
       uint32_t chipid = 0;
