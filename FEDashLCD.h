@@ -2,15 +2,16 @@
 #include <stdint.h>
 #include <FT_VM801P43_50.h>
 #include "CPFECANLib.h"
+#include "float16.hpp"
 
 static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
 static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
 static const char PROGMEM WarningMessage_BatteryTemperature[] = "BATTERY WARM: %.2fC";
-static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "BATTERY PACK LOW VOLTAGE: %.2fV";
+static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "PACK LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_LVBattery[] = "GLV LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_sbRIOTemperature[] = "sbRIO WARM: %.0fC";
 static const char PROGMEM WarningMessage_Precharge[] = "HV PRECHARGING: %.0fV";
-static const char PROGMEM WarningMessage_Invalid[] = "INVALID WARNING MSG";
+static const char PROGMEM WarningMessage_Invalid[] = "INVALID MSG";
 static const char PROGMEM WarningMessage_BSPD[] = "BSPD ERROR";
 static const char PROGMEM WarningMessage_IMD[] = "IMD ERROR";
 static const char PROGMEM WarningMessage_RemotePit[] = "Remote Request";
@@ -19,25 +20,25 @@ static const char PROGMEM WarningMessage_NoCellComms[] = "NO CELL COMMS";
 static const char PROGMEM WarningMessage_MCOverSpeed[] = "MC Over Speed";
 static const char PROGMEM WarningMessage_MCOverCurrent[] = "MC Over Current";
 static const char PROGMEM WarningMessage_MCOverVoltage[] = "MC Over Voltage";
-static const char PROGMEM WarningMessage_MCOverTemp[] = "MC Inverter Over Temp";
-static const char PROGMEM WarningMessage_MCDirectionCommand[] = "MC Change of Direction Error";
-static const char PROGMEM WarningMessage_MCInverterResponseTimeout[] = "MC Inverter Response Timeout";
+static const char PROGMEM WarningMessage_MCOverTemp[] = "MC Inverter Overtemp";
+static const char PROGMEM WarningMessage_MCDirectionCommand[] = "MC Direction Error";
+static const char PROGMEM WarningMessage_MCInverterResponseTimeout[] = "MC Inverter Timeout";
 static const char PROGMEM WarningMessage_MCDesatFault[] = "MC Desat Fault";
-static const char PROGMEM WarningMessage_MCHardwareOverCurrentFault[] = "MC HW Over Current";
+static const char PROGMEM WarningMessage_MCHardwareOverCurrentFault[] = "MC HW Over-Current";
 static const char PROGMEM WarningMessage_MCUnderVoltage[] = "MC Under Voltage";
 static const char PROGMEM WarningMessage_MCCommandMessageLost[] = "MC Command Message Lost";
 static const char PROGMEM WarningMessage_MCMotorOverTemp[] = "Motor Over Temp";
-static const char PROGMEM WarningMessage_MCModAOverTemp[] = "Module A Over Temp";
-static const char PROGMEM WarningMessage_MCModBOverTemp[] = "Module B Over Temp";
-static const char PROGMEM WarningMessage_MCModCOverTemp[] = "Module C Over Temp";
-static const char PROGMEM WarningMessage_MCPCBOverTemp[] = "PCB Over Temp";
-static const char PROGMEM WarningMessage_MCGateDrv1OverTemp[] = "Gate DRV 1 Over Temp";
-static const char PROGMEM WarningMessage_MCGateDrv2OverTemp[] = "Gate DRV 2 Over Temp";
-static const char PROGMEM WarningMessage_MCGateDrv3OverTemp[] = "Gate DRV 3 Over Temp";
-static const char PROGMEM WarningMessage_MCCurrentSensorFault[] = "MC Current Sensor Fault";
+static const char PROGMEM WarningMessage_MCModAOverTemp[] = "Module A Overtemp";
+static const char PROGMEM WarningMessage_MCModBOverTemp[] = "Module B Overtemp";
+static const char PROGMEM WarningMessage_MCModCOverTemp[] = "Module C Overtemp";
+static const char PROGMEM WarningMessage_MCPCBOverTemp[] = "PCB Overtemp";
+static const char PROGMEM WarningMessage_MCGateDrv1OverTemp[] = "Gate DRV 1 Overtemp";
+static const char PROGMEM WarningMessage_MCGateDrv2OverTemp[] = "Gate DRV 2 Overtemp";
+static const char PROGMEM WarningMessage_MCGateDrv3OverTemp[] = "Gate DRV 3 Overtemp";
+static const char PROGMEM WarningMessage_MCCurrentSensorFault[] = "MC Curr Sensor Fault";
 static const char PROGMEM WarningMessage_MCResolverNotConnected[] = "Resolver Not Connected";
 static const char PROGMEM WarningMessage_ShutdownLatchTripped[] = "Shutdown Latch Tripped";
-static const char PROGMEM WarningMessage_UnknownBMS[] = "An Unknown BMS Error Has Occurred";
+static const char PROGMEM WarningMessage_UnknownBMS[] = "Unknown BMS Error";
 static const char PROGMEM WarningMessage_RemoteEmergency[] = "REMOTE EMERGENCY SHUTDOWN";
 
 static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 205, 212, 49, 110, 219,
@@ -189,16 +190,18 @@ public:
       uint8_t NDashPage;
    } DashCAN1;
    typedef struct DashCAN2 { //0xF2
-      float TMotor;
-      float TControllerMax;
+      uint16_t TMotor;
+      uint16_t TControllerMax;
+      uint16_t TCellMax;
+      uint16_t TCellMean;
    } DashCAN2;
    typedef struct DashCAN3 { //0xF3
-      float VBattery;
-      float VMinCell;
+      uint16_t VBattery;
+      uint16_t VMinCell;
    } DashCAN3;
    typedef struct DashCAN4 { //0xF4
-      float VMaxCell;
-      float VMeanCell;
+      uint16_t VMaxCell;
+      uint16_t VMeanCell;
    } DashCAN4;
 
    typedef struct DASHBOARD_DATA {
@@ -209,6 +212,8 @@ public:
 
       float TMotor;
       float TControllerMax;
+      float TCellMax;
+      float TCellMean;
       float VBattery;
       float VMinCell;
       float VMaxCell;
@@ -232,6 +237,15 @@ public:
       return a;
    }
 
+   static uint16_t swap(uint16_t d) {
+      uint16_t a;
+      unsigned char *dst = (unsigned char *) &a;
+      unsigned char *src = (unsigned char *) &d;
+      dst[0] = src[1];
+      dst[1] = src[0];
+      return a;
+   }
+
    static void init() {
       Serial.begin(57600);
 
@@ -244,7 +258,7 @@ public:
 
       uploadLogoToController();
 
-      CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B250K, &CAN_RX_Int);
+      CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B1M, &CAN_RX_Int);
       initCAN_RX();
 
       //Display Waiting For CAN Screen
@@ -413,6 +427,7 @@ private:
       LCD.PrintText(5, 170, 28, 0, "TMotor: %.2f", DashboardData.TMotor);
       LCD.PrintText(5, 195, 28, 0, "TControllerMax: %.2f",
          DashboardData.TControllerMax);
+      LCD.PrintText(5, 220, 28, 0, "TCellMax: %.2f", DashboardData.TCellMax);
 
       LCD.ColorRGB(0xFFFFFF);
       LCD.Cmd_FGColor(0xFF0000);
@@ -555,23 +570,32 @@ private:
       case DashCAN2ID:
          FEDashLCD::DashCAN2 dashCAN2;
          memcpy((void *) &dashCAN2, msg->data, sizeof(dashCAN2));
-         FEDashLCD::DashboardData.TMotor = swap(dashCAN2.TMotor);
-         FEDashLCD::DashboardData.TControllerMax = swap(
-            dashCAN2.TControllerMax);
+         float16::toFloat32(&(FEDashLCD::DashboardData.TMotor),
+            swap(dashCAN2.TMotor));
+         float16::toFloat32(&(FEDashLCD::DashboardData.TControllerMax),
+            swap(dashCAN2.TControllerMax));
+         float16::toFloat32(&(FEDashLCD::DashboardData.TCellMax),
+            swap(dashCAN2.TCellMax));
+         float16::toFloat32(&(FEDashLCD::DashboardData.TCellMean),
+            swap(dashCAN2.TCellMean));
          RX_DashCAN2(true);
          break;
       case DashCAN3ID:
          FEDashLCD::DashCAN3 dashCAN3;
          memcpy((void *) &dashCAN3, msg->data, sizeof(dashCAN3));
-         FEDashLCD::DashboardData.VBattery = swap(dashCAN3.VBattery);
-         FEDashLCD::DashboardData.VMinCell = swap(dashCAN3.VMinCell);
+         float16::toFloat32(&FEDashLCD::DashboardData.VBattery,
+            swap(dashCAN3.VBattery));
+         float16::toFloat32(&FEDashLCD::DashboardData.VMinCell,
+            swap(dashCAN3.VMinCell));
          RX_DashCAN3(true);
          break;
       case DashCAN4ID:
          FEDashLCD::DashCAN4 dashCAN4;
          memcpy((void *) &dashCAN4, msg->data, sizeof(dashCAN4));
-         FEDashLCD::DashboardData.VMaxCell = swap(dashCAN4.VMaxCell);
-         FEDashLCD::DashboardData.VMeanCell = swap(dashCAN4.VMeanCell);
+         float16::toFloat32(&FEDashLCD::DashboardData.VMaxCell,
+            swap(dashCAN4.VMaxCell));
+         float16::toFloat32(&FEDashLCD::DashboardData.VMeanCell,
+            swap(dashCAN4.VMeanCell));
          RX_DashCAN4(true);
          break;
       case WarningCANMessageID:
