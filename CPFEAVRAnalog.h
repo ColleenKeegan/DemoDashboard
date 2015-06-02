@@ -16,12 +16,24 @@ class CPFEAVRAnalog {
 public:
    typedef void (*ConversionHandler)(uint16_t result, void *info);
 
+   CPFEAVRAnalog() {
+      this->analogPinNumber = 8;
+      handler = nullptr;
+      handlerInfo = nullptr;
+      currentConversion = nullptr;
+   }
+
    CPFEAVRAnalog(uint8_t analogPinNumber) {
       this->analogPinNumber = analogPinNumber;
       handler = nullptr;
       handlerInfo = nullptr;
       currentConversion = nullptr;
    }
+
+   void setPinNumber(uint8_t analogPinNumber) {
+      this->analogPinNumber = analogPinNumber;
+   }
+
    void startConversion(ConversionHandler *handler, void *handlerInfo) {
       if (adcAvailable()) {
          this->handler = handler;
@@ -39,13 +51,13 @@ public:
       return currentConversion ? false : true;
    }
 
-   inline static void adcInterruptHandler() {
+   static void adcInterruptHandler() {
       if (!adcAvailable()) {
          uint16_t result;
          result = ADCL;
          result |= ADCH << 8;
 
-         currentConversion->handler(result, currentConversion->handlerInfo);
+         (*currentConversion->handler)(result, currentConversion->handlerInfo);
          currentConversion = nullptr;
       }
    }

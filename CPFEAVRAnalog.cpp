@@ -10,6 +10,8 @@
 #include "arduino/Arduino.h"
 #include "CPFEAVRAnalog.h"
 
+CPFEAVRAnalog* CPFEAVRAnalog::currentConversion;
+
 ISR(ADC_vect) {
    CPFEAVRAnalog::adcInterruptHandler();
 }
