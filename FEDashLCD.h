@@ -82,6 +82,7 @@ static constexpr uint8_t DashCAN1ID = 0xF0;
 static constexpr uint8_t DashCAN2ID = 0xF2;
 static constexpr uint8_t DashCAN3ID = 0xF3;
 static constexpr uint8_t DashCAN4ID = 0xF4;
+static constexpr uint8_t DashCANInputID = 0xF5;
 
 static const CPFECANLib::MSG PROGMEM DashCAN1MSG = {
    {  DashCAN1ID}, 8, 0, 0, 0
@@ -244,6 +245,16 @@ public:
       TCCR1B = (1 << CS1); // CLK / 8 for ~30 OVF/sec
       TIMSK1 |= (1 << TOIE1); //Timer 1 OVF Interrupt
 
+      //Init Rotary Switches
+      CPFERotarySwitch::init(12);
+
+      for (int i = 0; i < CPFERotarySwitch::NUM_ROTARYS; ++i) {
+         previousRotaryPositions[i] = 0;
+      }
+
+      //Init Digital Inputs for Buttons
+      DDRC &= ~((1 << 4) - 1); //Set direction
+      PORTC |= ((1 << 4) - 1); //Enable pullups
    }
 
    static void updateDisplay() {
@@ -274,15 +285,14 @@ private:
    static volatile uint8_t TransOVFCount;
 
    static FT801IMPL_SPI LCD;
-   static CPFERotarySwitch RedRotary;
-   static CPFERotarySwitch YellowRotary;
-   static CPFERotarySwitch BlackRotary;
+   static uint8_t previousRotaryPositions[CPFERotarySwitch::NUM_ROTARYS];
 
-   static static constexpr uint8_t DashCAN1Mob = 0;
+   static constexpr uint8_t DashCAN1Mob = 0;
    static constexpr uint8_t DashCAN2Mob = 1;
    static constexpr uint8_t DashCAN3Mob = 2;
    static constexpr uint8_t DashCAN4Mob = 3;
    static constexpr uint8_t WarningCANMob = 4;
+   static constexpr uint8_t DashCANInputMob = 5;
 
    typedef struct WarningCANMessage { //0xF1
       WarningSeverity warningSeverity;
@@ -309,6 +319,13 @@ private:
       uint16_t VMeanCell;
    } DashCAN4;
 
+   typedef struct DashCANInput { //0xF5
+      uint8_t ButtonsArray;
+      uint8_t RedRotary;
+      uint8_t YellowRotary;
+      uint8_t BlackRotary;
+   };
+
    static void initCAN_RX() {
       RX_DashCAN1(false);
       RX_DashCAN2(false);
@@ -318,7 +335,27 @@ private:
    }
 
    static void transmitDashboardInfo() {
+      DashCANInput data;
+      CPFECANLib::MSG msg;
 
+      msg.identifier.standard = DashCANInputMob;
+      msg.data = &data;
+      msg.dlc = 8;
+      msg.ide = 0;
+      msg.rtr = 0;
+
+      data.ButtonsArray = PINC;
+      data.BlackRotary = CPFERotarySwitch::getPosition(
+         CPFERotarySwitch::RotarySwitches::BLACK);
+      data.YellowRotary = CPFERotarySwitch::getPosition(
+         CPFERotarySwitch::RotarySwitches::YELLOW);
+      data.RedRotary = CPFERotarySwitch::getPosition(
+         CPFERotarySwitch::RotarySwitches::RED);
+
+      CPFECANLib::sendMsgUsingMOB(DashCANInputMob, &msg);
+
+      //Request Updated Positions for next iteration
+      CPFERotarySwitch::requestUpdatedPositions();
    }
 
    static void RX_DashCAN1(bool interruptMode) {

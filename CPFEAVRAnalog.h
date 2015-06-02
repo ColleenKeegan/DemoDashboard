@@ -34,7 +34,7 @@ public:
       this->analogPinNumber = analogPinNumber;
    }
 
-   void startConversion(ConversionHandler *handler, void *handlerInfo) {
+   void startConversion(ConversionHandler handler, void *handlerInfo) {
       if (adcAvailable()) {
          this->handler = handler;
          this->handlerInfo = handlerInfo;
@@ -64,7 +64,7 @@ public:
 
 private:
    uint8_t analogPinNumber;
-   ConversionHandler *handler;
+   ConversionHandler handler;
    void *handlerInfo;
 
    static CPFEAVRAnalog *currentConversion;
