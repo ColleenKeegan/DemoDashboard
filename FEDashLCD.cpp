@@ -9,6 +9,10 @@
 #include "FEDashLCD.h"
 
 FT801IMPL_SPI FEDashLCD::LCD;
+CPFERotarySwitch FEDashLCD::RedRotary(1, 12);
+CPFERotarySwitch FEDashLCD::YellowRotary(2, 12);
+CPFERotarySwitch FEDashLCD::BlackRotary(3, 12);
+
 volatile FEDashLCD::DASHBOARD_DATA FEDashLCD::DashboardData;
 volatile uint8_t FEDashLCD::CAN_OVFCount = 0;
 volatile uint8_t FEDashLCD::TransOVFCount = 0;

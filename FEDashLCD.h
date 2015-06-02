@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <FT_VM801P43_50.h>
+
 #include "CPFECANLib.h"
 #include "float16.hpp"
 #include "arduino/Arduino.h"
+#include "CPFERotarySwitch.h"
 
 static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
 static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
@@ -272,8 +274,11 @@ private:
    static volatile uint8_t TransOVFCount;
 
    static FT801IMPL_SPI LCD;
+   static CPFERotarySwitch RedRotary;
+   static CPFERotarySwitch YellowRotary;
+   static CPFERotarySwitch BlackRotary;
 
-   static constexpr uint8_t DashCAN1Mob = 0;
+   static static constexpr uint8_t DashCAN1Mob = 0;
    static constexpr uint8_t DashCAN2Mob = 1;
    static constexpr uint8_t DashCAN3Mob = 2;
    static constexpr uint8_t DashCAN4Mob = 3;

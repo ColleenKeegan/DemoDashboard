@@ -8,6 +8,8 @@ public:
    CPFERotarySwitch(uint8_t pin, uint8_t positionCount) {
       this->pin = pin;
       this->positionCount = positionCount;
+
+      AIO
    }
 
    uint8_t getPosition() {
