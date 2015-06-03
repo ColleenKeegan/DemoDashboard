@@ -24,6 +24,7 @@ C++_DEPS :=
 OBJS := 
 CXX_DEPS := 
 ASM_DEPS := 
+SIZEDUMMY := 
 S_UPPER_DEPS := 
 CPP_DEPS := 
 

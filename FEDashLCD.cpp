@@ -13,6 +13,7 @@ FT801IMPL_SPI FEDashLCD::LCD;
 volatile FEDashLCD::DASHBOARD_DATA FEDashLCD::DashboardData;
 volatile uint8_t FEDashLCD::CAN_OVFCount = 0;
 volatile uint8_t FEDashLCD::TransOVFCount = 0;
+volatile uint8_t FEDashLCD::RotaryDispOVFCount = 0;
 
 SIGNAL(TIMER2_OVF_vect) { //CAN Message Timeout
    FEDashLCD::TIMER2_OVF_INT();

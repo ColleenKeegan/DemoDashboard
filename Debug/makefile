@@ -49,6 +49,9 @@ endif
 FLASH_IMAGE += \
 FE2015Dashboard.hex \
 
+SIZEDUMMY += \
+sizedummy \
+
 AVRDUDEDUMMY += \
 avrdudedummy \
 
@@ -70,6 +73,12 @@ FE2015Dashboard.hex: FE2015Dashboard.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
+sizedummy: FE2015Dashboard.elf
+	@echo 'Invoking: Print Size'
+	-avr-size --format=avr --mcu=at90can128 FE2015Dashboard.elf
+	@echo 'Finished building: $@'
+	@echo ' '
+
 avrdudedummy: FE2015Dashboard.elf
 	@echo 'Invoking: AVRDude'
 	/opt/local/bin/avrdude -pc128 -carduino -P/dev/tty.usbserial-A603X73G -b57600 -v -D -Uflash:w:FE2015Dashboard.hex:a
@@ -78,10 +87,10 @@ avrdudedummy: FE2015Dashboard.elf
 
 # Other Targets
 clean:
-	-$(RM) $(C_UPPER_DEPS)$(AVRDUDEDUMMY)$(S_DEPS)$(C_DEPS)$(FLASH_IMAGE)$(CC_DEPS)$(ELFS)$(C++_DEPS)$(OBJS)$(CXX_DEPS)$(ASM_DEPS)$(S_UPPER_DEPS)$(CPP_DEPS) FE2015Dashboard.elf
+	-$(RM) $(C_UPPER_DEPS)$(AVRDUDEDUMMY)$(S_DEPS)$(C_DEPS)$(FLASH_IMAGE)$(CC_DEPS)$(ELFS)$(C++_DEPS)$(OBJS)$(CXX_DEPS)$(ASM_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(CPP_DEPS) FE2015Dashboard.elf
 	-@echo ' '
 
-secondary-outputs: $(FLASH_IMAGE) $(AVRDUDEDUMMY)
+secondary-outputs: $(FLASH_IMAGE) $(SIZEDUMMY) $(AVRDUDEDUMMY)
 
 .PHONY: all clean dependents
 .SECONDARY:

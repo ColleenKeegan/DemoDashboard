@@ -4,19 +4,22 @@
 void rotarySwitchResultHandler(uint16_t result, void *info);
 
 class CPFERotarySwitch {
-   static uint8_t positionCount;
-   static int8_t currentPositionRetrieval;
-   static bool pendingRetrievalRequest;
-
+public:
    static const uint8_t NUM_ROTARYS = 3;
-   static const uint8_t RED_ADC = 0;
-   static const uint8_t YELLOW_ADC = 1;
-   static const uint8_t BLACK_ADC = 2;
 
    enum class RotarySwitches
       : uint8_t {
          RED, YELLOW, BLACK
    };
+private:
+
+   static uint8_t positionCount;
+   static int8_t currentPositionRetrieval;
+   static bool pendingRetrievalRequest;
+
+   static const uint8_t RED_ADC = 0;
+   static const uint8_t YELLOW_ADC = 1;
+   static const uint8_t BLACK_ADC = 2;
 
    static CPFEAVRAnalog analogPins[NUM_ROTARYS];
    static uint8_t positions[NUM_ROTARYS];

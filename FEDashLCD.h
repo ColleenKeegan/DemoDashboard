@@ -193,6 +193,10 @@ public:
       float warningValue;
       WarningSeverity warningSeverity;
 
+      uint8_t previousRotaryPositions[CPFERotarySwitch::NUM_ROTARYS];
+      bool rotaryOverride;
+      CPFERotarySwitch::RotarySwitches rotaryToShow;
+
    } DASHBOARD_DATA;
 
    static volatile DASHBOARD_DATA DashboardData;
@@ -208,13 +212,19 @@ public:
       }
    }
 
-   inline static void TIMER1_OVF_INT() { //Timer 2 OVF INT for CAN Timeout
+   inline static void TIMER1_OVF_INT() { //Timer 1 OVF INT for CAN TX & Rotary Display
       ++TransOVFCount;
+      ++RotaryDispOVFCount;
 
       if (TransOVFCount >= TRANS_TIMER_OVF_COUNT_MAX) {
          TransOVFCount = 0;
 
          transmitDashboardInfo();
+      }
+
+      if (RotaryDispOVFCount >= ROTARY_DISP_TIMER_OVF_COUNT_MAX) {
+         RotaryDispOVFCount = 0;
+         DashboardData.rotaryOverride = false;
       }
    }
 
@@ -248,33 +258,34 @@ public:
       //Init Rotary Switches
       CPFERotarySwitch::init(12);
 
-      for (int i = 0; i < CPFERotarySwitch::NUM_ROTARYS; ++i) {
-         previousRotaryPositions[i] = 0;
-      }
-
       //Init Digital Inputs for Buttons
       DDRC &= ~((1 << 4) - 1); //Set direction
       PORTC |= ((1 << 4) - 1); //Enable pullups
    }
 
    static void updateDisplay() {
-      switch (DashboardData.DashPage.DashPage) {
-      case DashPages::WaitingForCAN:
-         waitingForCAN();
-         break;
-      case DashPages::Primary:
-         primary();
-         break;
-      case DashPages::Warning:
-         warning();
-         break;
-      case DashPages::InPits:
-         inPits();
-         break;
-      default:
-         warning();
-         break;
+      if (DashboardData.rotaryOverride) {
+         rotaryOverride();
+      } else {
+         switch (DashboardData.DashPage.DashPage) {
+         case DashPages::WaitingForCAN:
+            waitingForCAN();
+            break;
+         case DashPages::Primary:
+            primary();
+            break;
+         case DashPages::Warning:
+            warning();
+            break;
+         case DashPages::InPits:
+            inPits();
+            break;
+         default:
+            warning();
+            break;
+         }
       }
+
    }
 
 private:
@@ -284,8 +295,10 @@ private:
    static const uint8_t TRANS_TIMER_OVF_COUNT_MAX = 3;
    static volatile uint8_t TransOVFCount;
 
+   static const uint8_t ROTARY_DISP_TIMER_OVF_COUNT_MAX = 30;
+   static volatile uint8_t RotaryDispOVFCount;
+
    static FT801IMPL_SPI LCD;
-   static uint8_t previousRotaryPositions[CPFERotarySwitch::NUM_ROTARYS];
 
    static constexpr uint8_t DashCAN1Mob = 0;
    static constexpr uint8_t DashCAN2Mob = 1;
@@ -339,7 +352,7 @@ private:
       CPFECANLib::MSG msg;
 
       msg.identifier.standard = DashCANInputMob;
-      msg.data = &data;
+      msg.data = (uint8_t *) &data;
       msg.dlc = 8;
       msg.ide = 0;
       msg.rtr = 0;
@@ -351,6 +364,28 @@ private:
          CPFERotarySwitch::RotarySwitches::YELLOW);
       data.RedRotary = CPFERotarySwitch::getPosition(
          CPFERotarySwitch::RotarySwitches::RED);
+
+      if (data.BlackRotary
+         != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::BLACK]) {
+         DashboardData.rotaryOverride = true;
+         DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::BLACK;
+         RotaryDispOVFCount = 0;
+      } else if (data.YellowRotary
+         != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::YELLOW]) {
+         DashboardData.rotaryOverride = true;
+         DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::YELLOW;
+         RotaryDispOVFCount = 0;
+      } else if (data.RedRotary
+         != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::RED]) {
+         DashboardData.rotaryOverride = true;
+         DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::RED;
+         RotaryDispOVFCount = 0;
+      }
+
+      for (int i = 0; i < CPFERotarySwitch::NUM_ROTARYS; ++i) {
+         DashboardData.previousRotaryPositions[i] =
+            CPFERotarySwitch::getPosition((CPFERotarySwitch::RotarySwitches) i);
+      }
 
       CPFECANLib::sendMsgUsingMOB(DashCANInputMob, &msg);
 
@@ -540,6 +575,34 @@ private:
 
    static void inPits() {
       LCD.DLStart();
+
+      LCD.DLEnd();
+      LCD.Finish();
+   }
+
+   static void rotaryOverride() {
+      uint32_t color = 0x000000;
+
+      switch (DashboardData.rotaryToShow) {
+      case CPFERotarySwitch::RotarySwitches::BLACK:
+         color = 0x000000;
+         break;
+      case CPFERotarySwitch::RotarySwitches::YELLOW:
+         color = 0xFFFF00;
+         break;
+      case CPFERotarySwitch::RotarySwitches::RED:
+         color = 0xFF0000;
+         break;
+      }
+
+      LCD.DLStart();
+      LCD.ClearColorRGB(color);
+      LCD.Clear(1, 1, 1);
+
+      LCD.ColorRGB(~color);
+      LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 32,
+         FT_OPT_CENTER, "%d",
+         CPFERotarySwitch::getPosition(DashboardData.rotaryToShow));
 
       LCD.DLEnd();
       LCD.Finish();
