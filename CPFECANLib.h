@@ -133,17 +133,21 @@ public:
    static void sendMsgUsingMOB(uint8_t n, MSG *msg) {
       setMOB(n);
       setID(msg->ide, msg->identifier);
+      CANCDMOB = (msg->dlc & 0x0F);
       CANIDT4 |= (msg->rtr && 1) << RTRTAG;
+      CANSTMOB = 0x00;
 
       for (int i = 0; i < 8; i++) {
          CANMSG = msg->data[i];
       }
 
-      CANCDMOB = BIT6 + (((msg->ide) && 1) << 4) + (msg->dlc & 0x0F); //Must happen last
+      CANCDMOB |= (1 << CONMOB0) + (((msg->ide) && 1) << 4); //Must happen last
    }
    static void enableMOBAsRX(uint8_t n, const MSG *msg, const MSG *mask,
       bool interruptMode) {
       setMOB(n);
+
+      CANSTMOB = 0x00;
 
       if (!interruptMode) {
          if (n < 8) {
@@ -159,7 +163,7 @@ public:
          CANIDM4 |= ((mask->rtr && 1) << RTRMSK) + ((mask->ide && 1) << IDEMSK);
       }
 
-      CANCDMOB = BIT7 + (((msg->ide) && 1) << 4) + (msg->dlc & 0x0F); //Must happen last
+      CANCDMOB = (1 << CONMOB1) | (((msg->ide) && 1) << 4) | (msg->dlc & 0x0F); //Must happen last
    }
    static void enableMOBAsRX_PROGMEM(uint8_t n, const MSG *msgFLASH,
       const MSG *maskFLASH, bool interruptMode) {
