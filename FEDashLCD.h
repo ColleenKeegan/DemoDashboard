@@ -44,6 +44,52 @@ static const char PROGMEM WarningMessage_ShutdownLatchTripped[] = "Shutdown Latc
 static const char PROGMEM WarningMessage_UnknownBMS[] = "Unknown BMS Error";
 static const char PROGMEM WarningMessage_RemoteEmergency[] = "REMOTE EMERGENCY SHUTDOWN";
 
+static const uint8_t ROTARY_MAX_DESC_LENGTH = 32;
+
+static const char PROGMEM RotaryRed1[] = "TRQ-1";
+static const char PROGMEM RotaryRed2[] = "TRQ-2";
+static const char PROGMEM RotaryRed3[] = "TRQ-3";
+static const char PROGMEM RotaryRed4[] = "TRQ-4";
+static const char PROGMEM RotaryRed5[] = "TRQ-5";
+static const char PROGMEM RotaryRed6[] = "TRQ-6";
+static const char PROGMEM RotaryRed7[] = "TRQ-7";
+static const char PROGMEM RotaryRed8[] = "TRQ-8";
+static const char PROGMEM RotaryRedUnused[] = "Invalid";
+
+PGM_P const RotaryRedStringTable[] PROGMEM =
+{
+   RotaryRed1, RotaryRed2, RotaryRed3, RotaryRed4, RotaryRed5, RotaryRed6, RotaryRed7, RotaryRed8
+};
+
+static const char PROGMEM RotaryYellow1[] = "REGEN-1";
+static const char PROGMEM RotaryYellow2[] = "REGEN-2";
+static const char PROGMEM RotaryYellow3[] = "REGEN-3";
+static const char PROGMEM RotaryYellow4[] = "REGEN-4";
+static const char PROGMEM RotaryYellow5[] = "REGEN-5";
+static const char PROGMEM RotaryYellow6[] = "REGEN-6";
+static const char PROGMEM RotaryYellow7[] = "REGEN-7";
+static const char PROGMEM RotaryYellow8[] = "REGEN-8";
+static const char PROGMEM RotaryYellowUnused[] = "Invalid";
+
+PGM_P const RotaryYellowStringTable[] = { RotaryYellow1, RotaryYellow2,
+   RotaryYellow3, RotaryYellow4, RotaryYellow5, RotaryYellow6, RotaryYellow7,
+   RotaryYellow8 };
+
+static const char PROGMEM RotaryBlack1[] = "MULTI-1";
+static const char PROGMEM RotaryBlack2[] = "MULTI-2";
+static const char PROGMEM RotaryBlack3[] = "MULTI-3";
+static const char PROGMEM RotaryBlack4[] = "MULTI-4";
+static const char PROGMEM RotaryBlack5[] = "MULTI-5";
+static const char PROGMEM RotaryBlack6[] = "MULTI-6";
+static const char PROGMEM RotaryBlack7[] = "MULTI-7";
+static const char PROGMEM RotaryBlack8[] = "MULTI-8";
+static const char PROGMEM RotaryBlackUnused[] = "Invalid";
+
+PGM_P const RotaryBlackStringTable[] PROGMEM =
+{
+   RotaryBlack1, RotaryBlack2, RotaryBlack3, RotaryBlack4, RotaryBlack5, RotaryBlack6, RotaryBlack7, RotaryBlack8
+};
+
 static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 205, 212, 49, 110, 219,
    48, 20, 6, 224, 71, 209, 40, 129, 34, 0, 57, 116, 208, 100, 122, 200, 160,
    209, 163, 6, 193, 118, 111, 144, 35, 248, 8, 25, 53, 8, 49, 157, 14, 25,
@@ -582,16 +628,28 @@ private:
 
    static void rotaryOverride() {
       uint32_t color = 0x000000;
+      uint8_t position = CPFERotarySwitch::getPosition(
+         DashboardData.rotaryToShow);
+      char positionDescription[ROTARY_MAX_DESC_LENGTH];
 
       switch (DashboardData.rotaryToShow) {
       case CPFERotarySwitch::RotarySwitches::BLACK:
          color = 0x000000;
+         strncpy_P(positionDescription,
+            (PGM_P) pgm_read_word(&(RotaryBlackStringTable[position])),
+            ROTARY_MAX_DESC_LENGTH);
          break;
       case CPFERotarySwitch::RotarySwitches::YELLOW:
          color = 0xFFFF00;
+         strncpy_P(positionDescription,
+            (PGM_P) pgm_read_word(&(RotaryYellowStringTable[position])),
+            ROTARY_MAX_DESC_LENGTH);
          break;
       case CPFERotarySwitch::RotarySwitches::RED:
          color = 0xFF0000;
+         strncpy_P(positionDescription,
+            (PGM_P) pgm_read_word(&(RotaryRedStringTable[position])),
+            ROTARY_MAX_DESC_LENGTH);
          break;
       }
 
@@ -601,8 +659,8 @@ private:
 
       LCD.ColorRGB(~color);
       LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 32,
-         FT_OPT_CENTER, "%d",
-         CPFERotarySwitch::getPosition(DashboardData.rotaryToShow));
+         FT_OPT_CENTER, "%d", position);
+      LCD.PrintText(25, 25, 31, 0, "%s", positionDescription);
 
       LCD.DLEnd();
       LCD.Finish();
