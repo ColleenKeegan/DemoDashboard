@@ -58,7 +58,7 @@ static const char PROGMEM RotaryRedUnused[] = "Invalid";
 
 PGM_P const RotaryRedStringTable[] PROGMEM =
 {
-   RotaryRed1, RotaryRed2, RotaryRed3, RotaryRed4, RotaryRed5, RotaryRed6, RotaryRed7, RotaryRed8
+   RotaryRed1, RotaryRed2, RotaryRed3, RotaryRed4, RotaryRed5, RotaryRed6, RotaryRed7, RotaryRed8, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused
 };
 
 static const char PROGMEM RotaryYellow1[] = "REGEN-1";
@@ -73,13 +73,14 @@ static const char PROGMEM RotaryYellowUnused[] = "Invalid";
 
 PGM_P const RotaryYellowStringTable[] = { RotaryYellow1, RotaryYellow2,
    RotaryYellow3, RotaryYellow4, RotaryYellow5, RotaryYellow6, RotaryYellow7,
-   RotaryYellow8 };
+   RotaryYellow8, RotaryYellowUnused, RotaryYellowUnused, RotaryYellowUnused,
+   RotaryYellowUnused };
 
-static const char PROGMEM RotaryBlack1[] = "MULTI-1";
-static const char PROGMEM RotaryBlack2[] = "MULTI-2";
-static const char PROGMEM RotaryBlack3[] = "MULTI-3";
-static const char PROGMEM RotaryBlack4[] = "MULTI-4";
-static const char PROGMEM RotaryBlack5[] = "MULTI-5";
+static const char PROGMEM RotaryBlack1[] = "Default";
+static const char PROGMEM RotaryBlack2[] = "Pit";
+static const char PROGMEM RotaryBlack3[] = "BrakeBal";
+static const char PROGMEM RotaryBlack4[] = "Throttle";
+static const char PROGMEM RotaryBlack5[] = "Code";
 static const char PROGMEM RotaryBlack6[] = "MULTI-6";
 static const char PROGMEM RotaryBlack7[] = "MULTI-7";
 static const char PROGMEM RotaryBlack8[] = "MULTI-8";
@@ -87,7 +88,7 @@ static const char PROGMEM RotaryBlackUnused[] = "Invalid";
 
 PGM_P const RotaryBlackStringTable[] PROGMEM =
 {
-   RotaryBlack1, RotaryBlack2, RotaryBlack3, RotaryBlack4, RotaryBlack5, RotaryBlack6, RotaryBlack7, RotaryBlack8
+   RotaryBlack1, RotaryBlack2, RotaryBlack3, RotaryBlack4, RotaryBlack5, RotaryBlack6, RotaryBlack7, RotaryBlack8, RotaryBlackUnused, RotaryBlackUnused,RotaryBlackUnused,RotaryBlackUnused
 };
 
 static const char PROGMEM MCState0[] = "SC.Initial";
@@ -200,7 +201,7 @@ class FEDashLCD {
 public:
    enum class DashPages
       : uint8_t {
-         Primary, Warning, WaitingForCAN, InPits
+         Primary, Warning, WaitingForCAN, InPits, BrakeBal, Throttle, Code
    };
 
    enum class WarningMessage
@@ -311,6 +312,8 @@ public:
 
    inline static void TIMER2_OVF_INT() { //Timer 2 OVF INT for CAN Timeout
       ++CAN_OVFCount;
+      ++TransOVFCount;
+      ++RotaryDispOVFCount;
 
       if (CAN_OVFCount > CAN_TIMER_OVF_COUNT_MAX) {
          CAN_OVFCount = 0;
@@ -318,16 +321,11 @@ public:
          FEDashLCD::DashboardData.DashPage.DashPage =
             FEDashLCD::DashPages::WaitingForCAN;
       }
-   }
-
-   inline static void TIMER1_OVF_INT() { //Timer 1 OVF INT for CAN TX & Rotary Display
-      ++TransOVFCount;
-      ++RotaryDispOVFCount;
 
       if (TransOVFCount >= TRANS_TIMER_OVF_COUNT_MAX) {
          TransOVFCount = 0;
 
-         transmitDashboardInfo();
+         //transmitDashboardInfo();
       }
 
       if (RotaryDispOVFCount >= ROTARY_DISP_TIMER_OVF_COUNT_MAX) {
@@ -355,13 +353,8 @@ public:
       DashboardData.DashPage.DashPage = DashPages::WaitingForCAN;
 
       //Init CAN timeout timer (Timer 2)
-      TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024
+      TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024 for 63 OVF/sec
       TIMSK2 = (1 << TOIE2); //Timer 2 OVF Interrupt
-
-      //Init Data Transmission Timer (Timer 1)
-      TCCR1A = 0x00; //Normal Mode, no CCR Output
-      TCCR1B = (1 << CS1); // CLK / 8 for ~30 OVF/sec
-      TIMSK1 |= (1 << TOIE1); //Timer 1 OVF Interrupt
 
       //Init Rotary Switches
       CPFERotarySwitch::init(12);
@@ -372,7 +365,31 @@ public:
    }
 
    static void updateDisplay() {
-      CPFERotarySwitch::runTasks();
+      //CPFERotarySwitch::runTasks();
+
+      FEDashLCD::DashboardData.DashPage.NDashPage = dashCAN1.NDashPage;
+      float16::toFloat32(&DashboardData.nMotor, swap(dashCAN1.nMotor));
+      float16::toFloat32(&DashboardData.VHVBattery, swap(dashCAN1.VHVBattery));
+      float16::toFloat32(&DashboardData.IHVBattery, swap(dashCAN1.IHVBattery));
+
+      float16::toFloat32(&DashboardData.TMotor, swap(dashCAN2.TMotor));
+      float16::toFloat32(&DashboardData.TControllerMax,
+         swap(dashCAN2.TControllerMax));
+      float16::toFloat32(&DashboardData.TCellMax, swap(dashCAN2.TCellMax));
+      float16::toFloat32(&DashboardData.TCellMean, swap(dashCAN2.TCellMean));
+
+      float16::toFloat32(&DashboardData.VBattery, swap(dashCAN3.VBattery));
+      float16::toFloat32(&DashboardData.VMinCell, swap(dashCAN3.VMinCell));
+      float16::toFloat32(&DashboardData.pBrakeF, swap(dashCAN3.pBrakeF));
+      float16::toFloat32(&DashboardData.pBrakeR, swap(dashCAN3.pBrakeR));
+
+      float16::toFloat32(&DashboardData.VMaxCell, swap(dashCAN4.VMaxCell));
+      float16::toFloat32(&DashboardData.VMeanCell, swap(dashCAN4.VMeanCell));
+      float16::toFloat32(&DashboardData.rBrakeBal, swap(dashCAN4.rBrakeBal));
+
+      FEDashLCD::DashboardData.warningMessage = warningCAN.warningMessage;
+      FEDashLCD::DashboardData.warningSeverity = warningCAN.warningSeverity;
+      FEDashLCD::DashboardData.warningValue = swap(warningCAN.associatedValue);
 
       if (DashboardData.rotaryOverride) {
          rotaryOverride();
@@ -390,6 +407,15 @@ public:
          case DashPages::InPits:
             inPits();
             break;
+//         case DashPages::BrakeBal:
+//            brakeBalPage();
+//            break;
+//         case DashPages::Throttle:
+//            throttlePage();
+//            break;
+//         case DashPages::Code:
+//            codePage();
+//            break;
          default:
             warning();
             break;
@@ -402,10 +428,10 @@ private:
    static const uint8_t CAN_TIMER_OVF_COUNT_MAX = 60;
    static volatile uint8_t CAN_OVFCount;
 
-   static const uint8_t TRANS_TIMER_OVF_COUNT_MAX = 3;
+   static const uint8_t TRANS_TIMER_OVF_COUNT_MAX = 12;
    static volatile uint8_t TransOVFCount;
 
-   static const uint8_t ROTARY_DISP_TIMER_OVF_COUNT_MAX = 30;
+   static const uint8_t ROTARY_DISP_TIMER_OVF_COUNT_MAX = 60;
    static volatile uint8_t RotaryDispOVFCount;
 
    static FT801IMPL_SPI LCD;
@@ -455,7 +481,13 @@ private:
       uint8_t RedRotary;
       uint8_t YellowRotary;
       uint8_t BlackRotary;
-   };
+   } DashCANInput;
+
+   static volatile DashCAN1 dashCAN1;
+   static volatile DashCAN2 dashCAN2;
+   static volatile DashCAN3 dashCAN3;
+   static volatile DashCAN4 dashCAN4;
+   static volatile WarningCANMessage warningCAN;
 
    static void initCAN_RX() {
       RX_DashCAN1(false);
@@ -539,7 +571,7 @@ private:
 
    static int16_t bootupConfigure() {
       uint32_t chipid = 0;
-      Serial.println(LCD.Init(FT_DISPLAY_RESOLUTION), HEX); //configure the display to the WQVGA
+      Serial.println(LCD.Init(FT_DISPLAY_RESOLUTION, 0, false), HEX); //configure the display to the WQVGA
 
       chipid = LCD.Read32(FT_ROM_CHIPID);
 
@@ -647,13 +679,13 @@ private:
       LCD.PrintText(5, 215, 28, 0, "TCellMax: %.2f", DashboardData.TCellMax);
       LCD.PrintText(5, 240, 28, 0, "TCellMean: %.2f", DashboardData.TCellMean);
 
-      LCD.ColorRGB(0xFF, 0x00, 0x00);
-      LCD.PrintText(185, 0, 29, 0, "Battery Info:");
-      LCD.ColorRGB(0xFF, 0xFF, 0xFF);
-      LCD.PrintText(185, 30, 28, 0, "VMinCell: %.2f", DashboardData.VMinCell);
-      LCD.PrintText(185, 55, 28, 0, "VMaxCell: %.2f", DashboardData.VMaxCell);
-      LCD.PrintText(185, 80, 28, 0, "VMeanCell: %.2f", DashboardData.VMeanCell);
-      LCD.PrintText(185, 105, 28, 0, "VBattery: %.2f", DashboardData.VBattery);
+      LCD.ColorRGB(0xFFFFFF);
+      LCD.Cmd_FGColor(0x0000FF);
+      LCD.Cmd_BGColor(0x0000FF);
+      LCD.Cmd_Slider(FT_DISPLAYWIDTH - 150, 20, 20, 180, 0,
+         (uint16_t) 4500 + (uint16_t) DashboardData.nMotor, 4500);
+      LCD.ColorRGB(0xFF0000);
+      LCD.PrintText(FT_DISPLAYWIDTH - 150, 240, 31, FT_OPT_CENTER, "SP");
 
       LCD.ColorRGB(0xFFFFFF);
       LCD.Cmd_FGColor(0xFF0000);
@@ -668,7 +700,7 @@ private:
       LCD.Cmd_BGColor(0xFF0000);
       LCD.Cmd_Slider(FT_DISPLAYWIDTH - 90, 20, 20, 180, 0,
          100 - (uint16_t) DashboardData.TControllerMax, 100);
-      LCD.ColorRGB(0xFF0000);
+      LCD.ColorRGB(0x0000FF);
       LCD.PrintText(FT_DISPLAYWIDTH - 80, 240, 31, FT_OPT_CENTER, "C");
 
       LCD.DLEnd();
@@ -746,6 +778,18 @@ private:
 
       LCD.DLEnd();
       LCD.Finish();
+   }
+
+   void brakeBalPage() {
+
+   }
+
+   void codePage() {
+
+   }
+
+   void throttlePage() {
+
    }
 
    static const char * PROGMEM warningMessageToString(WarningMessage warning) {
@@ -829,54 +873,27 @@ private:
 
       switch (msg->identifier.standard) {
       case DashCAN1ID:
-         FEDashLCD::DashCAN1 dashCAN1;
          memcpy((void *) &dashCAN1, msg->data, sizeof(dashCAN1));
-         FEDashLCD::DashboardData.DashPage.NDashPage = dashCAN1.NDashPage;
-         float16::toFloat32(&DashboardData.nMotor, swap(dashCAN1.nMotor));
-         float16::toFloat32(&DashboardData.VHVBattery,
-            swap(dashCAN1.VHVBattery));
-         float16::toFloat32(&DashboardData.IHVBattery,
-            swap(dashCAN1.IHVBattery));
          RX_DashCAN1(true);
          break;
       case DashCAN2ID:
-         FEDashLCD::DashCAN2 dashCAN2;
          memcpy((void *) &dashCAN2, msg->data, sizeof(dashCAN2));
-         float16::toFloat32(&DashboardData.TMotor, swap(dashCAN2.TMotor));
-         float16::toFloat32(&DashboardData.TControllerMax,
-            swap(dashCAN2.TControllerMax));
-         float16::toFloat32(&DashboardData.TCellMax, swap(dashCAN2.TCellMax));
-         float16::toFloat32(&DashboardData.TCellMean, swap(dashCAN2.TCellMean));
          RX_DashCAN2(true);
          break;
       case DashCAN3ID:
-         FEDashLCD::DashCAN3 dashCAN3;
          memcpy((void *) &dashCAN3, msg->data, sizeof(dashCAN3));
-         float16::toFloat32(&DashboardData.VBattery, swap(dashCAN3.VBattery));
-         float16::toFloat32(&DashboardData.VMinCell, swap(dashCAN3.VMinCell));
-         float16::toFloat32(&DashboardData.pBrakeF, swap(dashCAN3.pBrakeF));
-         float16::toFloat32(&DashboardData.pBrakeR, swap(dashCAN3.pBrakeR));
-
          RX_DashCAN3(true);
          break;
       case DashCAN4ID:
-         FEDashLCD::DashCAN4 dashCAN4;
          memcpy((void *) &dashCAN4, msg->data, sizeof(dashCAN4));
-         float16::toFloat32(&DashboardData.VMaxCell, swap(dashCAN4.VMaxCell));
-         float16::toFloat32(&DashboardData.VMeanCell, swap(dashCAN4.VMeanCell));
-         float16::toFloat32(&DashboardData.rBrakeBal, swap(dashCAN4.rBrakeBal));
          RX_DashCAN4(true);
          break;
       case WarningCANMessageID:
-         FEDashLCD::WarningCANMessage warningCAN;
          memcpy((void *) &warningCAN, msg->data, sizeof(warningCAN));
-         FEDashLCD::DashboardData.warningMessage = warningCAN.warningMessage;
-         FEDashLCD::DashboardData.warningSeverity = warningCAN.warningSeverity;
-         FEDashLCD::DashboardData.warningValue = swap(
-            warningCAN.associatedValue);
          RX_WarningCAN(true);
          break;
       }
+
    }
    static float swap(float d) {
       float a;

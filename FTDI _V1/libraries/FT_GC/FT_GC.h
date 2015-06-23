@@ -160,7 +160,7 @@ public:
    /* Api to set cs, pdn, int pin. CS pin is mandatory. If PDN and INT pins are set then gpios are initialized */
    FT_GC();/* base class constructor */
    ~FT_GC();/* base class destructor */
-   FT_Status Init(uint8_t ResType, uint16_t options1);//API to set the resolution of output display	
+   FT_Status Init(uint8_t ResType, uint16_t options1, bool flipped);	//API to set the resolution of output display
    FT_Status Init(uint16_t hperiod, uint16_t vperiod, uint16_t hfrontporch,
       uint16_t hbackporch, uint16_t hpulsewidth, uint16_t vfrontporch,
       uint16_t vbackporch, uint16_t vpulsewidth, uint8_t polarity,
@@ -387,7 +387,8 @@ FT_GC<FT_Trans>::~FT_GC() {
 
 /* API to initialize the display wrt input configuration */
 template<class FT_Trans>
-FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
+FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0,
+   bool flipped = 0) {
    if (IntPin != -1) {
       FT_INT_DDR &= ~FT_INT_PIN;
    }
@@ -408,6 +409,8 @@ FT_Status FT_GC<FT_Trans>::Init(uint8_t ResType, uint16_t options1 = 0) {
       /* Set to use external clock */
       HostCommand(FT_CLKEXT);
    }
+
+   FT_Trans::Write(REG_ROTATE, (uint8_t) flipped);
 
    /* change the clock to maximum SPI operating frequency */
    //FT_Trans::ChangeClock(SPI_CLOCK_DIV2); //change the clock to normal operating frequency - harcoded wrt due
