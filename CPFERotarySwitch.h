@@ -9,7 +9,7 @@ public:
 
    enum class RotarySwitches
       : uint8_t {
-         RED, YELLOW, BLACK
+         YELLOW, RED, BLACK
    };
 private:
 
@@ -17,8 +17,8 @@ private:
    static int8_t currentPositionRetrieval;
    static bool pendingRetrievalRequest;
 
-   static const uint8_t RED_ADC = 0;
-   static const uint8_t YELLOW_ADC = 1;
+   static const uint8_t RED_ADC = 1;
+   static const uint8_t YELLOW_ADC = 0;
    static const uint8_t BLACK_ADC = 2;
 
    static CPFEAVRAnalog analogPins[NUM_ROTARYS];
@@ -30,6 +30,10 @@ public:
       CPFERotarySwitch::positionCount = positionCount;
       pendingRetrievalRequest = false;
       currentPositionRetrieval = -1;
+
+      for (int i = 0; i < NUM_ROTARYS; ++i) {
+         analogPins[i].analogPinNumber = i;
+      }
    }
 
    static void requestUpdatedPositions() {
@@ -54,11 +58,17 @@ public:
    }
 
    static void resultHandler(uint16_t result, void *info) {
-      if (currentPositionRetrieval > 0) {
+      Serial.printf("%d, %d\n", result, currentPositionRetrieval);
+
+      if (currentPositionRetrieval >= 0) {
          positions[currentPositionRetrieval] = result / (1024 / positionCount);
+         Serial.printf("%d\n", positions[currentPositionRetrieval]);
 
          if (currentPositionRetrieval < NUM_ROTARYS - 1) {
             ++currentPositionRetrieval;
+            pendingRetrievalRequest = true;
+         } else {
+            currentPositionRetrieval = 0;
             pendingRetrievalRequest = true;
          }
       }

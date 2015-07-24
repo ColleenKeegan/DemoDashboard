@@ -14,6 +14,7 @@ volatile FEDashLCD::DASHBOARD_DATA FEDashLCD::DashboardData;
 volatile uint8_t FEDashLCD::CAN_OVFCount = 0;
 volatile uint8_t FEDashLCD::TransOVFCount = 0;
 volatile uint8_t FEDashLCD::RotaryDispOVFCount = 0;
+volatile uint8_t FEDashLCD::LEDFlashOVFCount = 0;
 volatile FEDashLCD::DashCAN1 FEDashLCD::dashCAN1;
 volatile FEDashLCD::DashCAN2 FEDashLCD::dashCAN2;
 volatile FEDashLCD::DashCAN3 FEDashLCD::dashCAN3;

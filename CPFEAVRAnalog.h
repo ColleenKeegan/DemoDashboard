@@ -15,12 +15,18 @@ class CPFEAVRAnalog {
 
 public:
    typedef void (*ConversionHandler)(uint16_t result, void *info);
+   uint8_t analogPinNumber;
 
    CPFEAVRAnalog() {
-      this->analogPinNumber = 8;
+      this->analogPinNumber = 0;
       handler = nullptr;
       handlerInfo = nullptr;
       currentConversion = nullptr;
+
+      ADCSRA = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // Set ADC prescaler to 128 - 125KHz sample rate @ 16MHz
+      ADMUX = (1 << REFS0);
+      // Set ADC reference to AVCC
+      ADCSRA |= (1 << ADEN) | (1 << ADIE); // Enable ADC, ADC Interrupt Enable
    }
 
    CPFEAVRAnalog(uint8_t analogPinNumber) {
@@ -28,6 +34,9 @@ public:
       handler = nullptr;
       handlerInfo = nullptr;
       currentConversion = nullptr;
+      ADMUX = (1 << REFS0);
+      ADCSRA = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // Set ADC prescaler to 128 - 125KHz sample rate @ 16MHz
+      ADCSRA |= (1 << ADEN) | (1 << ADIE); // Enable ADC, ADC Interrupt Enable
    }
 
    void setPinNumber(uint8_t analogPinNumber) {
@@ -40,9 +49,7 @@ public:
          this->handlerInfo = handlerInfo;
          currentConversion = this;
 
-         ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // Set ADC prescaler to 128 - 125KHz sample rate @ 16MHz
          ADMUX = (1 << REFS0) | (analogPinNumber & 0xF); // Set ADC reference to AVCC
-         ADCSRA = (1 << ADEN) | (1 << ADIE); // Enable ADC, ADC Interrupt Enable
          ADCSRA |= (1 << ADSC);  // Start A2D Conversions
       }
    }
@@ -63,7 +70,6 @@ public:
    }
 
 private:
-   uint8_t analogPinNumber;
    ConversionHandler handler;
    void *handlerInfo;
 
