@@ -657,9 +657,6 @@ private:
       ShutdownState eShutdownState;
       uint16_t vCar;
       uint16_t tCurrentDelta;
-   };
-
-   typedef struct DashCAN3Driving {
       uint16_t VCellMin;
    };
 
@@ -709,7 +706,6 @@ private:
 
    typedef union DashCAN3 { //0xF3
       uint8_t data[8];
-      DashCAN3Driving driving;
    };
 
    typedef union DashCAN4 { //0xF4
@@ -919,7 +915,7 @@ private:
       float16::toFloat32(&rBrakeBalLast, swap(dashCAN1.driving.rBrakeBalLast));
       float16::toFloat32(&vCar, swap(dashCAN2.driving.vCar));
       float16::toFloat32(&tCurrentDelta, swap(dashCAN2.driving.tCurrentDelta));
-      float16::toFloat32(&VCellMin, swap(dashCAN3.driving.VCellMin));
+      float16::toFloat32(&VCellMin, swap(dashCAN2.driving.VCellMin));
 
       LCD.DLStart();
 
