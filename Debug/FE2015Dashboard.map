@@ -1076,7 +1076,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x69f0
+.text           0x00000000     0x6a1a
  *(.vectors)
  .vectors       0x00000000       0x94 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
                 0x00000000                __vectors
@@ -1129,423 +1129,441 @@ END GROUP
                 0x00000c24        0xb ./main.o
  .progmem.data._ZL14ShutdownState0
                 0x00000c2f        0xb ./main.o
+ .progmem.data._ZL18MCStateStringTable
+                0x00000c3a       0x10 ./main.o
+ .progmem.data._ZL8MCState7
+                0x00000c4a        0x9 ./main.o
+ .progmem.data._ZL8MCState6
+                0x00000c53        0x8 ./main.o
+ .progmem.data._ZL8MCState5
+                0x00000c5b        0xc ./main.o
+ .progmem.data._ZL8MCState4
+                0x00000c67        0xa ./main.o
+ .progmem.data._ZL8MCState3
+                0x00000c71        0xc ./main.o
+ .progmem.data._ZL8MCState2
+                0x00000c7d       0x12 ./main.o
+ .progmem.data._ZL8MCState1
+                0x00000c8f        0xb ./main.o
+ .progmem.data._ZL8MCState0
+                0x00000c9a        0xb ./main.o
  .progmem.data._ZL22RotaryBlackStringTable
-                0x00000c3a       0x18 ./main.o
+                0x00000ca5       0x18 ./main.o
  .progmem.data._ZL17RotaryBlackUnused
-                0x00000c52        0x8 ./main.o
- .progmem.data._ZL12RotaryBlack8
-                0x00000c5a        0x8 ./main.o
- .progmem.data._ZL12RotaryBlack7
-                0x00000c62        0x8 ./main.o
- .progmem.data._ZL12RotaryBlack6
-                0x00000c6a        0x8 ./main.o
- .progmem.data._ZL12RotaryBlack5
-                0x00000c72        0x5 ./main.o
- .progmem.data._ZL12RotaryBlack4
-                0x00000c77        0x9 ./main.o
- .progmem.data._ZL12RotaryBlack3
-                0x00000c80        0x9 ./main.o
- .progmem.data._ZL12RotaryBlack2
-                0x00000c89        0x4 ./main.o
- .progmem.data._ZL12RotaryBlack1
-                0x00000c8d        0x8 ./main.o
- .progmem.data._ZL23RotaryYellowStringTable
-                0x00000c95       0x18 ./main.o
- .progmem.data._ZL18RotaryYellowUnused
-                0x00000cad        0x8 ./main.o
- .progmem.data._ZL13RotaryYellow8
-                0x00000cb5        0x8 ./main.o
- .progmem.data._ZL13RotaryYellow7
                 0x00000cbd        0x8 ./main.o
- .progmem.data._ZL13RotaryYellow6
+ .progmem.data._ZL12RotaryBlack8
                 0x00000cc5        0x8 ./main.o
- .progmem.data._ZL13RotaryYellow5
+ .progmem.data._ZL12RotaryBlack7
                 0x00000ccd        0x8 ./main.o
- .progmem.data._ZL13RotaryYellow4
+ .progmem.data._ZL12RotaryBlack6
                 0x00000cd5        0x8 ./main.o
+ .progmem.data._ZL12RotaryBlack5
+                0x00000cdd        0x5 ./main.o
+ .progmem.data._ZL12RotaryBlack4
+                0x00000ce2        0x9 ./main.o
+ .progmem.data._ZL12RotaryBlack3
+                0x00000ceb        0x9 ./main.o
+ .progmem.data._ZL12RotaryBlack2
+                0x00000cf4        0x4 ./main.o
+ .progmem.data._ZL12RotaryBlack1
+                0x00000cf8        0x8 ./main.o
+ .progmem.data._ZL23RotaryYellowStringTable
+                0x00000d00       0x18 ./main.o
+ .progmem.data._ZL18RotaryYellowUnused
+                0x00000d18        0x8 ./main.o
+ .progmem.data._ZL13RotaryYellow8
+                0x00000d20        0x8 ./main.o
+ .progmem.data._ZL13RotaryYellow7
+                0x00000d28        0x8 ./main.o
+ .progmem.data._ZL13RotaryYellow6
+                0x00000d30        0x8 ./main.o
+ .progmem.data._ZL13RotaryYellow5
+                0x00000d38        0x8 ./main.o
+ .progmem.data._ZL13RotaryYellow4
+                0x00000d40        0xa ./main.o
  .progmem.data._ZL13RotaryYellow3
-                0x00000cdd        0xa ./main.o
+                0x00000d4a        0xa ./main.o
  .progmem.data._ZL13RotaryYellow2
-                0x00000ce7        0xa ./main.o
+                0x00000d54        0xa ./main.o
  .progmem.data._ZL13RotaryYellow1
-                0x00000cf1        0xa ./main.o
+                0x00000d5e        0xa ./main.o
  .progmem.data._ZL20RotaryRedStringTable
-                0x00000cfb       0x18 ./main.o
+                0x00000d68       0x18 ./main.o
  .progmem.data._ZL15RotaryRedUnused
-                0x00000d13        0x8 ./main.o
+                0x00000d80        0x8 ./main.o
  .progmem.data._ZL10RotaryRed8
-                0x00000d1b        0x6 ./main.o
+                0x00000d88        0x8 ./main.o
  .progmem.data._ZL10RotaryRed7
-                0x00000d21        0x6 ./main.o
+                0x00000d90        0x8 ./main.o
  .progmem.data._ZL10RotaryRed6
-                0x00000d27        0x6 ./main.o
+                0x00000d98        0x8 ./main.o
  .progmem.data._ZL10RotaryRed5
-                0x00000d2d        0x6 ./main.o
+                0x00000da0        0x6 ./main.o
  .progmem.data._ZL10RotaryRed4
-                0x00000d33        0x6 ./main.o
+                0x00000da6        0x6 ./main.o
  .progmem.data._ZL10RotaryRed3
-                0x00000d39        0x6 ./main.o
+                0x00000dac        0x6 ./main.o
  .progmem.data._ZL10RotaryRed2
-                0x00000d3f        0x5 ./main.o
+                0x00000db2        0x6 ./main.o
  .progmem.data._ZL10RotaryRed1
-                0x00000d44        0x7 ./main.o
+                0x00000db8        0x7 ./main.o
  .progmem.data._ZL30WarningMessage_RemoteEmergency
-                0x00000d4b       0x1a ./main.o
+                0x00000dbf       0x1a ./main.o
  .progmem.data._ZL25WarningMessage_UnknownBMS
-                0x00000d65       0x12 ./main.o
+                0x00000dd9       0x12 ./main.o
  .progmem.data._ZL35WarningMessage_ShutdownLatchTripped
-                0x00000d77       0x17 ./main.o
+                0x00000deb       0x17 ./main.o
  .progmem.data._ZL37WarningMessage_MCResolverNotConnected
-                0x00000d8e       0x17 ./main.o
+                0x00000e02       0x17 ./main.o
  .progmem.data._ZL35WarningMessage_MCCurrentSensorFault
-                0x00000da5       0x15 ./main.o
+                0x00000e19       0x15 ./main.o
  .progmem.data._ZL33WarningMessage_MCGateDrv3OverTemp
-                0x00000dba       0x14 ./main.o
+                0x00000e2e       0x14 ./main.o
  .progmem.data._ZL33WarningMessage_MCGateDrv2OverTemp
-                0x00000dce       0x14 ./main.o
+                0x00000e42       0x14 ./main.o
  .progmem.data._ZL33WarningMessage_MCGateDrv1OverTemp
-                0x00000de2       0x14 ./main.o
+                0x00000e56       0x14 ./main.o
  .progmem.data._ZL28WarningMessage_MCPCBOverTemp
-                0x00000df6        0xd ./main.o
+                0x00000e6a        0xd ./main.o
  .progmem.data._ZL29WarningMessage_MCModCOverTemp
-                0x00000e03       0x12 ./main.o
+                0x00000e77       0x12 ./main.o
  .progmem.data._ZL29WarningMessage_MCModBOverTemp
-                0x00000e15       0x12 ./main.o
+                0x00000e89       0x12 ./main.o
  .progmem.data._ZL29WarningMessage_MCModAOverTemp
-                0x00000e27       0x12 ./main.o
+                0x00000e9b       0x12 ./main.o
  .progmem.data._ZL30WarningMessage_MCMotorOverTemp
-                0x00000e39       0x10 ./main.o
+                0x00000ead       0x10 ./main.o
  .progmem.data._ZL35WarningMessage_MCCommandMessageLost
-                0x00000e49       0x18 ./main.o
+                0x00000ebd       0x18 ./main.o
  .progmem.data._ZL29WarningMessage_MCUnderVoltage
-                0x00000e61       0x11 ./main.o
+                0x00000ed5       0x11 ./main.o
  .progmem.data._ZL41WarningMessage_MCHardwareOverCurrentFault
-                0x00000e72       0x13 ./main.o
+                0x00000ee6       0x13 ./main.o
  .progmem.data._ZL27WarningMessage_MCDesatFault
-                0x00000e85        0xf ./main.o
+                0x00000ef9        0xf ./main.o
  .progmem.data._ZL40WarningMessage_MCInverterResponseTimeout
-                0x00000e94       0x14 ./main.o
+                0x00000f08       0x14 ./main.o
  .progmem.data._ZL33WarningMessage_MCDirectionCommand
-                0x00000ea8       0x13 ./main.o
+                0x00000f1c       0x13 ./main.o
  .progmem.data._ZL25WarningMessage_MCOverTemp
-                0x00000ebb       0x15 ./main.o
+                0x00000f2f       0x15 ./main.o
  .progmem.data._ZL28WarningMessage_MCOverVoltage
-                0x00000ed0       0x10 ./main.o
+                0x00000f44       0x10 ./main.o
  .progmem.data._ZL28WarningMessage_MCOverCurrent
-                0x00000ee0       0x10 ./main.o
+                0x00000f54       0x10 ./main.o
  .progmem.data._ZL26WarningMessage_MCOverSpeed
-                0x00000ef0        0xe ./main.o
+                0x00000f64        0xe ./main.o
  .progmem.data._ZL26WarningMessage_NoCellComms
-                0x00000efe        0xe ./main.o
+                0x00000f72        0xe ./main.o
  .progmem.data._ZL20WarningMessage_EStop
-                0x00000f0c       0x15 ./main.o
+                0x00000f80       0x15 ./main.o
  .progmem.data._ZL24WarningMessage_RemotePit
-                0x00000f21        0xf ./main.o
+                0x00000f95        0xf ./main.o
  .progmem.data._ZL18WarningMessage_IMD
-                0x00000f30        0xa ./main.o
+                0x00000fa4        0xa ./main.o
  .progmem.data._ZL19WarningMessage_BSPD
-                0x00000f3a        0xb ./main.o
+                0x00000fae        0xb ./main.o
  .progmem.data._ZL22WarningMessage_Invalid
-                0x00000f45        0xc ./main.o
+                0x00000fb9        0xc ./main.o
  .progmem.data._ZL24WarningMessage_Precharge
-                0x00000f51       0x16 ./main.o
+                0x00000fc5       0x16 ./main.o
  .progmem.data._ZL31WarningMessage_sbRIOTemperature
-                0x00000f67       0x12 ./main.o
+                0x00000fdb       0x12 ./main.o
  .progmem.data._ZL24WarningMessage_LVBattery
-                0x00000f79       0x17 ./main.o
+                0x00000fed       0x17 ./main.o
  .progmem.data._ZL32WarningMessage_BatteryLowVoltage
-                0x00000f90       0x18 ./main.o
+                0x00001004       0x18 ./main.o
  .progmem.data._ZL33WarningMessage_BatteryTemperature
-                0x00000fa8       0x14 ./main.o
+                0x0000101c       0x14 ./main.o
  .progmem.data._ZL31WarningMessage_MotorTemperature
-                0x00000fbc       0x12 ./main.o
+                0x00001030       0x12 ./main.o
  .progmem.data._ZL36WarningMessage_ControllerTemperature
-                0x00000fce       0x17 ./main.o
- .progmem.data  0x00000fe5       0xfa /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
-                0x000010e0                . = ALIGN (0x2)
- *fill*         0x000010df        0x1 
+                0x00001042       0x17 ./main.o
+ .progmem.data  0x00001059       0xfa /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                0x00001154                . = ALIGN (0x2)
+ *fill*         0x00001153        0x1 
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x000010e0                __ctors_start = .
+                0x00001154                __ctors_start = .
  *(.ctors)
- .ctors         0x000010e0        0x2 ./arduino/HardwareSerial.o
- .ctors         0x000010e2        0x2 ./CPFERotarySwitch.o
- .ctors         0x000010e4        0x2 ./FEDashLCD.o
-                0x000010e6                __ctors_end = .
-                0x000010e6                __dtors_start = .
+ .ctors         0x00001154        0x2 ./arduino/HardwareSerial.o
+ .ctors         0x00001156        0x2 ./CPFERotarySwitch.o
+ .ctors         0x00001158        0x2 ./FEDashLCD.o
+                0x0000115a                __ctors_end = .
+                0x0000115a                __dtors_start = .
  *(.dtors)
-                0x000010e6                __dtors_end = .
+                0x0000115a                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x000010e6        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
-                0x000010e6                __init
+ .init0         0x0000115a        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+                0x0000115a                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x000010e6        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .init2         0x0000115a        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x000010f2       0x1a /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_copy_data.o)
-                0x000010f2                __do_copy_data
- .init4         0x0000110c       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_clear_bss.o)
-                0x0000110c                __do_clear_bss
+ .init4         0x00001166       0x1a /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_copy_data.o)
+                0x00001166                __do_copy_data
+ .init4         0x00001180       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_clear_bss.o)
+                0x00001180                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
  *(.init6)
- .init6         0x0000111c       0x20 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_ctors.o)
-                0x0000111c                __do_global_ctors
+ .init6         0x00001190       0x20 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_ctors.o)
+                0x00001190                __do_global_ctors
  *(.init6)
  *(.init7)
  *(.init7)
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000113c        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+ .init9         0x000011b0        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
  *(.init9)
  *(.text)
- .text          0x00001144        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
-                0x00001144                __vector_20
-                0x00001144                __vector_28
-                0x00001144                __vector_34
-                0x00001144                __vector_24
-                0x00001144                __vector_12
-                0x00001144                __bad_interrupt
-                0x00001144                __vector_31
-                0x00001144                __vector_35
-                0x00001144                __vector_23
-                0x00001144                __vector_30
-                0x00001144                __vector_11
-                0x00001144                __vector_13
-                0x00001144                __vector_19
-                0x00001144                __vector_27
-                0x00001144                __vector_33
-                0x00001144                __vector_9
-                0x00001144                __vector_15
-                0x00001144                __vector_36
-                0x00001144                __vector_29
-                0x00001144                __vector_26
-                0x00001144                __vector_14
-                0x00001144                __vector_16
-                0x00001144                __vector_22
-                0x00001148                . = ALIGN (0x2)
+ .text          0x000011b8        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
+                0x000011b8                __vector_20
+                0x000011b8                __vector_28
+                0x000011b8                __vector_34
+                0x000011b8                __vector_24
+                0x000011b8                __vector_12
+                0x000011b8                __bad_interrupt
+                0x000011b8                __vector_31
+                0x000011b8                __vector_35
+                0x000011b8                __vector_23
+                0x000011b8                __vector_30
+                0x000011b8                __vector_11
+                0x000011b8                __vector_13
+                0x000011b8                __vector_19
+                0x000011b8                __vector_27
+                0x000011b8                __vector_33
+                0x000011b8                __vector_9
+                0x000011b8                __vector_15
+                0x000011b8                __vector_36
+                0x000011b8                __vector_29
+                0x000011b8                __vector_26
+                0x000011b8                __vector_14
+                0x000011b8                __vector_16
+                0x000011b8                __vector_22
+                0x000011bc                . = ALIGN (0x2)
  *(.text.*)
  .text.avr-libc
-                0x00001148      0x748 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
-                0x00001148                vfprintf
+                0x000011bc      0x748 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+                0x000011bc                vfprintf
  .text._ZN14HardwareSerial4peekEv
-                0x00001890        0x6 ./arduino/HardwareSerial.o
-                0x00001890                _ZN14HardwareSerial4peekEv
+                0x00001904        0x6 ./arduino/HardwareSerial.o
+                0x00001904                _ZN14HardwareSerial4peekEv
  .text._ZN14HardwareSerial9availableEv
-                0x00001896       0x30 ./arduino/HardwareSerial.o
-                0x00001896                _ZN14HardwareSerial9availableEv
+                0x0000190a       0x30 ./arduino/HardwareSerial.o
+                0x0000190a                _ZN14HardwareSerial9availableEv
  .text._ZN14HardwareSerial4readEv
-                0x000018c6       0x56 ./arduino/HardwareSerial.o
-                0x000018c6                _ZN14HardwareSerial4readEv
+                0x0000193a       0x56 ./arduino/HardwareSerial.o
+                0x0000193a                _ZN14HardwareSerial4readEv
  .text._ZN14HardwareSerial5flushEv
-                0x0000191c       0x1c ./arduino/HardwareSerial.o
-                0x0000191c                _ZN14HardwareSerial5flushEv
+                0x00001990       0x1c ./arduino/HardwareSerial.o
+                0x00001990                _ZN14HardwareSerial5flushEv
  .text._ZN14HardwareSerial5writeEh
-                0x00001938       0x3a ./arduino/HardwareSerial.o
-                0x00001938                _ZN14HardwareSerial5writeEh
+                0x000019ac       0x3a ./arduino/HardwareSerial.o
+                0x000019ac                _ZN14HardwareSerial5writeEh
  .text.__vector_21
-                0x00001972       0x80 ./arduino/HardwareSerial.o
-                0x00001972                __vector_21
+                0x000019e6       0x80 ./arduino/HardwareSerial.o
+                0x000019e6                __vector_21
  .text.__vector_32
-                0x000019f2       0x80 ./arduino/HardwareSerial.o
-                0x000019f2                __vector_32
+                0x00001a66       0x80 ./arduino/HardwareSerial.o
+                0x00001a66                __vector_32
  .text._ZN14HardwareSerial5beginEl
-                0x00001a72      0x1d4 ./arduino/HardwareSerial.o
-                0x00001a72                _ZN14HardwareSerial5beginEl
+                0x00001ae6      0x1d4 ./arduino/HardwareSerial.o
+                0x00001ae6                _ZN14HardwareSerial5beginEl
  .text.startup._GLOBAL__sub_I_rx_buffer
-                0x00001c46      0x110 ./arduino/HardwareSerial.o
+                0x00001cba      0x110 ./arduino/HardwareSerial.o
  .text._ZN5Print5writeEPKhj
-                0x00001d56       0x5a ./arduino/Print.o
-                0x00001d56                _ZN5Print5writeEPKhj
+                0x00001dca       0x5a ./arduino/Print.o
+                0x00001dca                _ZN5Print5writeEPKhj
  .text._ZN5Print5printEPKc
-                0x00001db0       0x20 ./arduino/Print.o
-                0x00001db0                _ZN5Print5printEPKc
+                0x00001e24       0x20 ./arduino/Print.o
+                0x00001e24                _ZN5Print5printEPKc
  .text._ZN5Print7printlnEPKc
-                0x00001dd0       0x66 ./arduino/Print.o
-                0x00001dd0                _ZN5Print7printlnEPKc
+                0x00001e44       0x66 ./arduino/Print.o
+                0x00001e44                _ZN5Print7printlnEPKc
  .text._ZN5Print7printlnEii
-                0x00001e36      0x28c ./arduino/Print.o
-                0x00001e36                _ZN5Print7printlnEii
+                0x00001eaa      0x28c ./arduino/Print.o
+                0x00001eaa                _ZN5Print7printlnEii
  .text._ZN5Print7printlnEmi
-                0x000020c2      0x13e ./arduino/Print.o
-                0x000020c2                _ZN5Print7printlnEmi
+                0x00002136      0x13e ./arduino/Print.o
+                0x00002136                _ZN5Print7printlnEmi
  .text._ZN5Print6printfEPKcz
-                0x00002200       0x84 ./arduino/Print.o
-                0x00002200                _ZN5Print6printfEPKcz
+                0x00002274       0x84 ./arduino/Print.o
+                0x00002274                _ZN5Print6printfEPKcz
  .text.__vector_1
-                0x00002284       0x62 ./arduino/WInterrupts.o
-                0x00002284                __vector_1
+                0x000022f8       0x62 ./arduino/WInterrupts.o
+                0x000022f8                __vector_1
  .text.__vector_2
-                0x000022e6       0x62 ./arduino/WInterrupts.o
-                0x000022e6                __vector_2
+                0x0000235a       0x62 ./arduino/WInterrupts.o
+                0x0000235a                __vector_2
  .text.__vector_3
-                0x00002348       0x62 ./arduino/WInterrupts.o
-                0x00002348                __vector_3
+                0x000023bc       0x62 ./arduino/WInterrupts.o
+                0x000023bc                __vector_3
  .text.__vector_4
-                0x000023aa       0x62 ./arduino/WInterrupts.o
-                0x000023aa                __vector_4
+                0x0000241e       0x62 ./arduino/WInterrupts.o
+                0x0000241e                __vector_4
  .text.__vector_5
-                0x0000240c       0x62 ./arduino/WInterrupts.o
-                0x0000240c                __vector_5
+                0x00002480       0x62 ./arduino/WInterrupts.o
+                0x00002480                __vector_5
  .text.__vector_6
-                0x0000246e       0x62 ./arduino/WInterrupts.o
-                0x0000246e                __vector_6
+                0x000024e2       0x62 ./arduino/WInterrupts.o
+                0x000024e2                __vector_6
  .text.__vector_7
-                0x000024d0       0x62 ./arduino/WInterrupts.o
-                0x000024d0                __vector_7
+                0x00002544       0x62 ./arduino/WInterrupts.o
+                0x00002544                __vector_7
  .text.__vector_8
-                0x00002532       0x62 ./arduino/WInterrupts.o
-                0x00002532                __vector_8
+                0x000025a6       0x62 ./arduino/WInterrupts.o
+                0x000025a6                __vector_8
  .text.__vector_17
-                0x00002594       0x94 ./arduino/wiring.o
-                0x00002594                __vector_17
- .text.millis   0x00002628       0x18 ./arduino/wiring.o
-                0x00002628                millis
- .text.delay    0x00002640       0x58 ./arduino/wiring.o
-                0x00002640                delay
+                0x00002608       0x94 ./arduino/wiring.o
+                0x00002608                __vector_17
+ .text.millis   0x0000269c       0x18 ./arduino/wiring.o
+                0x0000269c                millis
+ .text.delay    0x000026b4       0x58 ./arduino/wiring.o
+                0x000026b4                delay
  .text.delayMicroseconds
-                0x00002698       0x1c ./arduino/wiring.o
-                0x00002698                delayMicroseconds
- .text.init     0x000026b4       0x46 ./arduino/wiring.o
-                0x000026b4                init
+                0x0000270c       0x1c ./arduino/wiring.o
+                0x0000270c                delayMicroseconds
+ .text.init     0x00002728       0x46 ./arduino/wiring.o
+                0x00002728                init
  .text._ZN8SPIClass5beginEv
-                0x000026fa       0x2e ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
-                0x000026fa                _ZN8SPIClass5beginEv
+                0x0000276e       0x2e ./FTDI _V1/libraries/FT_GC/FT_Transport_SPI/SPI.o
+                0x0000276e                _ZN8SPIClass5beginEv
  .text.__vector_25
-                0x00002728       0x78 ./CPFEAVRAnalog.o
-                0x00002728                __vector_25
+                0x0000279c       0x78 ./CPFEAVRAnalog.o
+                0x0000279c                __vector_25
  .text.__vector_18
-                0x000027a0      0x2d6 ./CPFECANLib.o
-                0x000027a0                __vector_18
+                0x00002814      0x2d6 ./CPFECANLib.o
+                0x00002814                __vector_18
  .text._Z25rotarySwitchResultHandlerjPv
-                0x00002a76       0xba ./CPFERotarySwitch.o
-                0x00002a76                _Z25rotarySwitchResultHandlerjPv
+                0x00002aea       0xba ./CPFERotarySwitch.o
+                0x00002aea                _Z25rotarySwitchResultHandlerjPv
  .text.startup._GLOBAL__sub_I__ZN16CPFERotarySwitch13positionCountE
-                0x00002b30       0x80 ./CPFERotarySwitch.o
+                0x00002ba4       0x80 ./CPFERotarySwitch.o
  .text.__vector_10
-                0x00002bb0       0xbe ./FEDashLCD.o
-                0x00002bb0                __vector_10
+                0x00002c24       0xbe ./FEDashLCD.o
+                0x00002c24                __vector_10
  .text.startup._GLOBAL__sub_I__ZN9FEDashLCD3LCDE
-                0x00002c6e       0x46 ./FEDashLCD.o
+                0x00002ce2       0x46 ./FEDashLCD.o
  .text._ZN9FEDashLCD10CAN_RX_IntEPN10CPFECANLib3MSGEh
-                0x00002cb4      0x156 ./main.o
-                0x00002cb4                _ZN9FEDashLCD10CAN_RX_IntEPN10CPFECANLib3MSGEh
+                0x00002d28      0x156 ./main.o
+                0x00002d28                _ZN9FEDashLCD10CAN_RX_IntEPN10CPFECANLib3MSGEh
  .text._ZN5FT_GCI16FT_Transport_SPIE6FinishEv
-                0x00002e0a      0x128 ./main.o
-                0x00002e0a                _ZN5FT_GCI16FT_Transport_SPIE6FinishEv
+                0x00002e7e      0x128 ./main.o
+                0x00002e7e                _ZN5FT_GCI16FT_Transport_SPIE6FinishEv
  .text._ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
-                0x00002f32      0x1a8 ./main.o
-                0x00002f32                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
+                0x00002fa6      0x1a8 ./main.o
+                0x00002fa6                _ZN5FT_GCI16FT_Transport_SPIE15ChkGetFreeSpaceEj
  .text._ZN5FT_GCI16FT_Transport_SPIE20TransferCmdfromflashEPKhm
-                0x000030da      0x306 ./main.o
-                0x000030da                _ZN5FT_GCI16FT_Transport_SPIE20TransferCmdfromflashEPKhm
+                0x0000314e      0x306 ./main.o
+                0x0000314e                _ZN5FT_GCI16FT_Transport_SPIE20TransferCmdfromflashEPKhm
  .text._ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
-                0x000033e0      0x1ba ./main.o
-                0x000033e0                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
+                0x00003454      0x1ba ./main.o
+                0x00003454                _ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm
  .text._ZN5FT_GCI16FT_Transport_SPIE8WriteCmdEm.constprop.27
-                0x0000359a      0x1e0 ./main.o
+                0x0000360e      0x1e0 ./main.o
  .text._ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
-                0x0000377a      0x2fa ./main.o
-                0x0000377a                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
+                0x000037ee      0x2fa ./main.o
+                0x000037ee                _ZN5FT_GCI16FT_Transport_SPIE11TransferCmdEPhm
  .text._ZN5FT_GCI16FT_Transport_SPIE8Cmd_TextEiihjPKc
-                0x00003a74      0x16a ./main.o
-                0x00003a74                _ZN5FT_GCI16FT_Transport_SPIE8Cmd_TextEiihjPKc
+                0x00003ae8      0x16a ./main.o
+                0x00003ae8                _ZN5FT_GCI16FT_Transport_SPIE8Cmd_TextEiihjPKc
  .text._ZN5FT_GCI16FT_Transport_SPIE9PrintTextEiihjPKcz.constprop.24
-                0x00003bde      0x188 ./main.o
+                0x00003c52      0x188 ./main.o
  .text._ZN5FT_GCI16FT_Transport_SPIE14PrintTextFlashEiihjPKcz
-                0x00003d66      0x1b0 ./main.o
-                0x00003d66                _ZN5FT_GCI16FT_Transport_SPIE14PrintTextFlashEiihjPKcz
+                0x00003dda      0x1b0 ./main.o
+                0x00003dda                _ZN5FT_GCI16FT_Transport_SPIE14PrintTextFlashEiihjPKcz
  .text._ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
-                0x00003f16      0x33e ./main.o
-                0x00003f16                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
+                0x00003f8a      0x33e ./main.o
+                0x00003f8a                _ZN5FT_GCI16FT_Transport_SPIE19ActiveInternalClockEv
  .text._ZN9FEDashLCD4initEv
-                0x00004254     0x1146 ./main.o
-                0x00004254                _ZN9FEDashLCD4initEv
+                0x000042c8     0x1146 ./main.o
+                0x000042c8                _ZN9FEDashLCD4initEv
  .text.startup.main
-                0x0000539a     0x10ec ./main.o
-                0x0000539a                main
+                0x0000540e     0x10a2 ./main.o
+                0x0000540e                main
  .text.libgcc.div
-                0x00006486       0x28 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodhi4.o)
-                0x00006486                __udivmodhi4
+                0x000064b0       0x28 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodhi4.o)
+                0x000064b0                __udivmodhi4
  .text.libgcc.div
-                0x000064ae       0x26 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_divmodhi4.o)
-                0x000064ae                __divmodhi4
-                0x000064ae                _div
+                0x000064d8       0x26 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_divmodhi4.o)
+                0x000064d8                __divmodhi4
+                0x000064d8                _div
  .text.libgcc.div
-                0x000064d4       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
-                0x000064d4                __udivmodsi4
+                0x000064fe       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_udivmodsi4.o)
+                0x000064fe                __udivmodsi4
  .text.libgcc.div
-                0x00006518       0x28 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_divmodsi4.o)
-                0x00006518                __divmodsi4
+                0x00006542       0x28 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_divmodsi4.o)
+                0x00006542                __divmodsi4
  .text.libgcc.div
-                0x00006540       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_negsi2.o)
-                0x00006540                __negsi2
+                0x0000656a       0x10 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_negsi2.o)
+                0x0000656a                __negsi2
  .text.libgcc.mul
-                0x00006550       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
-                0x00006550                __muluhisi3
+                0x0000657a       0x14 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_muluhisi3.o)
+                0x0000657a                __muluhisi3
  .text.libgcc.mul
-                0x00006564        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulshisi3.o)
-                0x00006564                __mulshisi3
-                0x00006568                __mulohisi3
- .text.libgcc   0x00006570        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
-                0x00006570                __tablejump_elpm__
+                0x0000658e        0xc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_mulshisi3.o)
+                0x0000658e                __mulshisi3
+                0x00006592                __mulohisi3
+ .text.libgcc   0x0000659a        0x8 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_tablejump_elpm.o)
+                0x0000659a                __tablejump_elpm__
  .text.libgcc.mul
-                0x00006578       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
-                0x00006578                __umulhisi3
+                0x000065a2       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_umulhisi3.o)
+                0x000065a2                __umulhisi3
  .text.avr-libc.fplib
-                0x00006596       0x58 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fixunssfsi.o)
-                0x00006596                __fixunssfsi
+                0x000065c0       0x58 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+                0x000065c0                __fixunssfsi
  .text.avr-libc.fplib
-                0x000065ee       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fp_split3.o)
-                0x000065ee                __fp_split3
-                0x000065fe                __fp_splitA
+                0x00006618       0x44 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fp_split3.o)
+                0x00006618                __fp_split3
+                0x00006628                __fp_splitA
  .text.avr-libc.fplib
-                0x00006632        0xe /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fp_zero.o)
-                0x00006632                __fp_zero
-                0x00006634                __fp_szero
+                0x0000665c        0xe /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libm.a(fp_zero.o)
+                0x0000665c                __fp_zero
+                0x0000665e                __fp_szero
  .text.avr-libc
-                0x00006640      0x1b0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
-                0x00006640                __ftoa_engine
+                0x0000666a      0x1b0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                0x0000666a                __ftoa_engine
  .text.avr-libc
-                0x000067f0       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy_P.o)
-                0x000067f0                memcpy_P
+                0x0000681a       0x12 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(memcpy_P.o)
+                0x0000681a                memcpy_P
  .text.avr-libc
-                0x00006802        0xe /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strcpy_P.o)
-                0x00006802                strcpy_P
+                0x0000682c        0xe /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strcpy_P.o)
+                0x0000682c                strcpy_P
  .text.avr-libc
-                0x00006810       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy_P.o)
-                0x00006810                strncpy_P
+                0x0000683a       0x1e /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strncpy_P.o)
+                0x0000683a                strncpy_P
  .text.avr-libc
-                0x0000682e       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
-                0x0000682e                strnlen_P
+                0x00006858       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen_P.o)
+                0x00006858                strnlen_P
  .text.avr-libc
-                0x00006844       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
-                0x00006844                strnlen
+                0x0000686e       0x16 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(strnlen.o)
+                0x0000686e                strnlen
  .text.avr-libc
-                0x0000685a       0x64 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
-                0x0000685a                fputc
+                0x00006884       0x64 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(fputc.o)
+                0x00006884                fputc
  .text.avr-libc
-                0x000068be       0x72 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
-                0x000068be                vsnprintf
+                0x000068e8       0x72 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(vsnprintf.o)
+                0x000068e8                vsnprintf
  .text.avr-libc
-                0x00006930       0xbc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
-                0x00006930                __ultoa_invert
-                0x000069ec                . = ALIGN (0x2)
+                0x0000695a       0xbc /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+                0x0000695a                __ultoa_invert
+                0x00006a16                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000069ec        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
-                0x000069ec                exit
-                0x000069ec                _exit
+ .fini9         0x00006a16        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+                0x00006a16                exit
+                0x00006a16                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1564,11 +1582,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000069ec        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
+ .fini0         0x00006a16        0x4 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/avr51/libgcc.a(_exit.o)
  *(.fini0)
-                0x000069f0                _etext = .
+                0x00006a1a                _etext = .
 
-.data           0x00800100      0x1bc load address 0x000069f0
+.data           0x00800100      0x1bc load address 0x00006a1a
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/local/CrossPack-AVR-20131216/lib/gcc/avr/4.8.1/../../../../avr/lib/avr51/crtcan128.o
@@ -1678,7 +1696,7 @@ END GROUP
  .rodata.str1.1
                 0x0080012e      0x147 ./main.o
                                 0x14a (size before relaxing)
- .rodata.CSWTCH.110
+ .rodata.CSWTCH.109
                 0x00800275       0x46 ./main.o
  *(.gnu.linkonce.d*)
                 0x008002bc                . = ALIGN (0x2)
@@ -1768,8 +1786,8 @@ END GROUP
                 0x0080046c                _ZN9FEDashLCD3LCDE
  *(COMMON)
                 0x0080047b                PROVIDE (__bss_end, .)
-                0x000069f0                __data_load_start = LOADADDR (.data)
-                0x00006bac                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00006a1a                __data_load_start = LOADADDR (.data)
+                0x00006bd6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080047b        0x0
                 0x0080047b                PROVIDE (__noinit_start, .)

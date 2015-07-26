@@ -63,13 +63,13 @@ static const char PROGMEM WarningMessage_RemoteEmergency[] =
 static const uint8_t ROTARY_MAX_DESC_LENGTH = 32;
 
 static const char PROGMEM RotaryRed1[] = "MC Off";
-static const char PROGMEM RotaryRed2[] = "80Nm";
+static const char PROGMEM RotaryRed2[] = "120Nm";
 static const char PROGMEM RotaryRed3[] = "120Nm";
-static const char PROGMEM RotaryRed4[] = "160Nm";
-static const char PROGMEM RotaryRed5[] = "240Nm";
-static const char PROGMEM RotaryRed6[] = "TRQ-6";
-static const char PROGMEM RotaryRed7[] = "TRQ-7";
-static const char PROGMEM RotaryRed8[] = "TRQ-8";
+static const char PROGMEM RotaryRed4[] = "120Nm";
+static const char PROGMEM RotaryRed5[] = "120Nm";
+static const char PROGMEM RotaryRed6[] = "Invalid";
+static const char PROGMEM RotaryRed7[] = "Invalid";
+static const char PROGMEM RotaryRed8[] = "Invalid";
 static const char PROGMEM RotaryRedUnused[] = "Invalid";
 
 PGM_P const RotaryRedStringTable[] PROGMEM =
@@ -77,10 +77,10 @@ PGM_P const RotaryRedStringTable[] PROGMEM =
    RotaryRed1, RotaryRed2, RotaryRed3, RotaryRed4, RotaryRed5, RotaryRed6, RotaryRed7, RotaryRed8, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused
 };
 
-static const char PROGMEM RotaryYellow1[] = "CLK DIV 4";
-static const char PROGMEM RotaryYellow2[] = "CLK DIV 2";
-static const char PROGMEM RotaryYellow3[] = "CLK DIV 0";
-static const char PROGMEM RotaryYellow4[] = "Invalid";
+static const char PROGMEM RotaryYellow1[] = "CLK DIV 8";
+static const char PROGMEM RotaryYellow2[] = "CLK DIV 4";
+static const char PROGMEM RotaryYellow3[] = "CLK DIV 2";
+static const char PROGMEM RotaryYellow4[] = "CLK DIV 0";
 static const char PROGMEM RotaryYellow5[] = "Invalid";
 static const char PROGMEM RotaryYellow6[] = "Invalid";
 static const char PROGMEM RotaryYellow7[] = "Invalid";
@@ -113,13 +113,14 @@ static const char PROGMEM MCState0[] = "SC.Initial";
 static const char PROGMEM MCState1[] = "SC.History";
 static const char PROGMEM MCState2[] = "SC.ShallowHistory";
 static const char PROGMEM MCState3[] = "SC.Terminal";
-static const char PROGMEM MCState4[] = "CurrentDrop";
-static const char PROGMEM MCState5[] = "Enabled";
-static const char PROGMEM MCState6[] = "Disabled";
+static const char PROGMEM MCState4[] = "TransDiag";
+static const char PROGMEM MCState5[] = "CurrentDrop";
+static const char PROGMEM MCState6[] = "Enabled";
+static const char PROGMEM MCState7[] = "Disabled";
 
 PGM_P const MCStateStringTable[] PROGMEM =
 {
-   MCState0, MCState1, MCState2, MCState3, MCState4, MCState5, MCState6
+   MCState0, MCState1, MCState2, MCState3, MCState4, MCState5, MCState6, MCState7
 };
 
 static const char PROGMEM ShutdownState0[] = "SC.Initial";
@@ -638,11 +639,11 @@ private:
    static constexpr uint8_t DashCANInputMob = 5;
 
    typedef struct WarningCANMessage { //0xF1
-      uint8_t NDashPage;
       WarningSeverity warningSeverity;
       float associatedValue;
       WarningMessage warningMessage;
       uint8_t notOK;
+      uint8_t NDashPage;
    } WarningCANMessage;
 
    typedef struct DashCAN1Driving {
@@ -744,7 +745,7 @@ private:
       msg.ide = 0;
       msg.rtr = 0;
 
-      data->ButtonsArray = PINC;
+      data->ButtonsArray = ~PINC;
       data->BlackRotary = CPFERotarySwitch::getPosition(
          CPFERotarySwitch::RotarySwitches::BLACK);
       data->YellowRotary = CPFERotarySwitch::getPosition(
@@ -752,12 +753,12 @@ private:
       data->RedRotary = CPFERotarySwitch::getPosition(
          CPFERotarySwitch::RotarySwitches::RED);
 
-      if (data->BlackRotary
-         != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::BLACK]) {
-         DashboardData.rotaryOverride = true;
-         DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::BLACK;
-         RotaryDispOVFCount = 0;
-      } else if (data->YellowRotary
+      /*if (data->BlackRotary
+       != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::BLACK]) {
+       DashboardData.rotaryOverride = true;
+       DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::BLACK;
+       RotaryDispOVFCount = 0;
+       } else */if (data->YellowRotary
          != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::YELLOW]) {
          DashboardData.rotaryOverride = true;
          DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::YELLOW;
@@ -875,7 +876,10 @@ private:
 
       LCD.DLStart();
 
-      LCD.ColorRGB(color);
+      LCD.ClearColorRGB(0xFFFFFF);
+      LCD.Clear(1, 1, 1);
+
+      LCD.ColorRGB(0x000000);
       LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
          FT_OPT_CENTER, severityText);
       LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29,
@@ -906,7 +910,7 @@ private:
          STATE_MAX_DESC_LENGTH);
       strncpy_P(MCControlStateDesc,
          (PGM_P) pgm_read_word(
-            &(ShutdownStateStringTable[(uint8_t) dashCAN2.driving.eMCControlState])),
+            &(MCStateStringTable[(uint8_t) dashCAN2.driving.eMCControlState])),
          STATE_MAX_DESC_LENGTH);
 
       float16::toFloat32(&TMC, swap(dashCAN1.driving.TMC));
