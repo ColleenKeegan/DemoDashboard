@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <avr/pgmspace.h>
 #include <FT_VM801P43_50.h>
 
 #include "CPFECANLib.h"

@@ -31,6 +31,6 @@ CPP_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
-arduino \
 FTDI\ _V1/libraries/FT_GC/FT_Transport_SPI \
+arduino \
 

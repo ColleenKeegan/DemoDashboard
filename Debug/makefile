@@ -81,7 +81,7 @@ sizedummy: FE2015Dashboard.elf
 
 avrdudedummy: FE2015Dashboard.elf
 	@echo 'Invoking: AVRDude'
-	/usr/local/CrossPack-AVR-20131216/bin/avrdude -pc128 -carduino -P/dev/tty.usbserial-A603X73G -b57600 -v -D -Uflash:w:FE2015Dashboard.hex:a
+	/usr/local/bin/avrdude -pc128 -carduino -P/dev/tty.usbserial-A603X73G -b57600 -v -D -Uflash:w:FE2015Dashboard.hex:a
 	@echo 'Finished building: $@'
 	@echo ' '
 
