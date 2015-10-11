@@ -7,6 +7,7 @@ CPP_SRCS += \
 ../CPFEAVRAnalog.cpp \
 ../CPFECANLib.cpp \
 ../CPFERotarySwitch.cpp \
+../DashLCD.cpp \
 ../FEDashLCD.cpp \
 ../main.cpp 
 
@@ -14,6 +15,7 @@ OBJS += \
 ./CPFEAVRAnalog.o \
 ./CPFECANLib.o \
 ./CPFERotarySwitch.o \
+./DashLCD.o \
 ./FEDashLCD.o \
 ./main.o 
 
@@ -21,6 +23,7 @@ CPP_DEPS += \
 ./CPFEAVRAnalog.d \
 ./CPFECANLib.d \
 ./CPFERotarySwitch.d \
+./DashLCD.d \
 ./FEDashLCD.d \
 ./main.d 
 
