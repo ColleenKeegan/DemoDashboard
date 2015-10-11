@@ -6,7 +6,7 @@
  *  Created on: May 21, 2015
  *      Author: thomaswillson
  */
-#include "FEDashLCD.h"
+#include "DashLCD.h"
 
 FT801IMPL_SPI FEDashLCD::LCD;
 

@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "arduino/Arduino.h"
-#include "FEDashLCD.h"
+#include "DashLCD.h"
 
 int main() {
    init(); //Arduino Timer Initialization, uses Timer 0 for millis() and other timing functions.
