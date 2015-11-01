@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <avr/pgmspace.h>
-#include <FT_VM801P43_50.h>
+#include "FTDI _V1/FT_VM801P43_50.h"
 
-#include "CPFECANLib.h"
+#include <AVRLibrary/CPFECANLib.h>
 #include "float16.hpp"
-#include "arduino/Arduino.h"
+#include <AVRLibrary/arduino/Arduino.h>
 #include "CPFERotarySwitch.h"
 
 static const uint8_t PROGMEM CPRacingLogo[] = {120, 156, 237, 91, 45, 116, 234,
@@ -448,36 +448,26 @@ protected:
 		msg.rtr = 0;
 
 		data->ButtonsArray = ~PINC;
-		data->BlackRotary = CPFERotarySwitch::getPosition(
-				CPFERotarySwitch::RotarySwitches::BLACK);
-		data->YellowRotary = CPFERotarySwitch::getPosition(
-				CPFERotarySwitch::RotarySwitches::YELLOW);
-		data->RedRotary = CPFERotarySwitch::getPosition(
-				CPFERotarySwitch::RotarySwitches::RED);
+		data->BlackRotary = CPFERotarySwitch::getPosition(CPFERotarySwitch::RotarySwitches::BLACK);
+		data->YellowRotary = CPFERotarySwitch::getPosition(CPFERotarySwitch::RotarySwitches::YELLOW);
+		data->RedRotary = CPFERotarySwitch::getPosition(CPFERotarySwitch::RotarySwitches::RED);
 
-		if (data->BlackRotary
-				!= DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::BLACK]) {
+		if (data->BlackRotary != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::BLACK]) {
 			DashboardData.rotaryOverride = true;
-			DashboardData.rotaryToShow =
-					CPFERotarySwitch::RotarySwitches::BLACK;
+			DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::BLACK;
 			RotaryDispOVFCount = 0;
-		} else if (data->YellowRotary
-				!= DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::YELLOW]) {
+		} else if (data->YellowRotary != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::YELLOW]) {
 			DashboardData.rotaryOverride = true;
-			DashboardData.rotaryToShow =
-					CPFERotarySwitch::RotarySwitches::YELLOW;
+			DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::YELLOW;
 			RotaryDispOVFCount = 0;
-		} else if (data->RedRotary
-				!= DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::RED]) {
+		} else if (data->RedRotary != DashboardData.previousRotaryPositions[(uint8_t) CPFERotarySwitch::RotarySwitches::RED]) {
 			DashboardData.rotaryOverride = true;
 			DashboardData.rotaryToShow = CPFERotarySwitch::RotarySwitches::RED;
 			RotaryDispOVFCount = 0;
 		}
 
 		for (int i = 0; i < CPFERotarySwitch::NUM_ROTARYS; ++i) {
-			DashboardData.previousRotaryPositions[i] =
-					CPFERotarySwitch::getPosition(
-							(CPFERotarySwitch::RotarySwitches) i);
+			DashboardData.previousRotaryPositions[i] = CPFERotarySwitch::getPosition((CPFERotarySwitch::RotarySwitches) i);
 		}
 
 		CPFECANLib::sendMsgUsingMOB(DashCANInputMob, &msg);
@@ -487,28 +477,23 @@ protected:
 	}
 
 	void RX_DashCAN1(bool interruptMode) {
-		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG,
-				&DashCAN1Mask, interruptMode);
+		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN1Mob, &DashCAN1MSG, &DashCAN1Mask, interruptMode);
 	}
 
 	void RX_DashCAN2(bool interruptMode) {
-		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG,
-				&DashCAN2Mask, interruptMode);
+		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN2Mob, &DashCAN2MSG, &DashCAN2Mask, interruptMode);
 	}
 
 	void RX_DashCAN3(bool interruptMode) {
-		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG,
-				&DashCAN3Mask, interruptMode);
+		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN3Mob, &DashCAN3MSG, &DashCAN3Mask, interruptMode);
 	}
 
 	void RX_DashCAN4(bool interruptMode) {
-		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG,
-				&DashCAN4Mask, interruptMode);
+		CPFECANLib::enableMOBAsRX_PROGMEM(DashCAN4Mob, &DashCAN4MSG, &DashCAN4Mask, interruptMode);
 	}
 
 	void RX_WarningCAN(bool interruptMode) {
-		CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG,
-				&DashCANWarningMask, interruptMode);
+		CPFECANLib::enableMOBAsRX_PROGMEM(WarningCANMob, &DashCANWarningMSG, &DashCANWarningMask, interruptMode);
 	}
 
 	int16_t bootupConfigure() {
@@ -538,11 +523,9 @@ protected:
 		const char Display_string[] = "Cal Poly FSAE";
 
 		LCD.ColorRGB(0xFF, 0xFF, 0xFF);
-		LCD.Cmd_Text(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 8, 29,
-				FT_OPT_CENTER, Display_string);
+		LCD.Cmd_Text(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 8, 29, FT_OPT_CENTER, Display_string);
 		LCD.ColorRGB(0xFF, 0x00, 0x00);
-		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 29,
-				FT_OPT_CENTER, "WAITING FOR CAN DATA...");
+		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 29, FT_OPT_CENTER, "WAITING FOR CAN DATA...");
 
 		if (withLogo) {
 			LCD.ColorRGB(0xFF, 0xFF, 0xFF);
@@ -557,25 +540,21 @@ protected:
 
 	void rotaryOverride() {
 		uint32_t color = 0x000000;
-		uint8_t position = CPFERotarySwitch::getPosition(
-				DashboardData.rotaryToShow);
+		uint8_t position = CPFERotarySwitch::getPosition(DashboardData.rotaryToShow);
 		char positionDescription[ROTARY_MAX_DESC_LENGTH];
 
 		switch (DashboardData.rotaryToShow) {
 		case CPFERotarySwitch::RotarySwitches::BLACK:
 			color = 0x000000;
-			strncpy_P(positionDescription, blackRotaryString(position),
-					ROTARY_MAX_DESC_LENGTH);
+			strncpy_P(positionDescription, blackRotaryString(position), ROTARY_MAX_DESC_LENGTH);
 			break;
 		case CPFERotarySwitch::RotarySwitches::YELLOW:
 			color = 0xFFFF00;
-			strncpy_P(positionDescription, yellowRotaryString(position),
-					ROTARY_MAX_DESC_LENGTH);
+			strncpy_P(positionDescription, yellowRotaryString(position), ROTARY_MAX_DESC_LENGTH);
 			break;
 		case CPFERotarySwitch::RotarySwitches::RED:
 			color = 0xFF0000;
-			strncpy_P(positionDescription, redRotaryString(position),
-					ROTARY_MAX_DESC_LENGTH);
+			strncpy_P(positionDescription, redRotaryString(position), ROTARY_MAX_DESC_LENGTH);
 			break;
 		}
 
@@ -584,8 +563,7 @@ protected:
 		LCD.Clear(1, 1, 1);
 
 		LCD.ColorRGB(~color);
-		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 31,
-				FT_OPT_CENTER, "%d", position);
+		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 2, 31, FT_OPT_CENTER, "%d", position);
 		LCD.PrintText(25, 25, 31, 0, "%s", positionDescription);
 
 		LCD.DLEnd();

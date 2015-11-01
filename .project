@@ -3,6 +3,7 @@
 	<name>FE2015Dashboard</name>
 	<comment></comment>
 	<projects>
+		<project>AVRLibrary</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
