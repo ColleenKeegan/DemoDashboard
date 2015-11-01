@@ -141,39 +141,17 @@ class FEDashLCD: public DashLCD {
 public:
 	enum class DashPages
 		: uint8_t {
-			Driving,
-		LapTrigger,
-		Warning,
-		Systems,
-		Brakes,
-		Electrical,
-		Suspension,
-		Drivetrain,
-		Performance,
-		WaitingForCAN
+			WaitingForCAN, Driving, LapTrigger, Warning, Systems, Brakes, Electrical, Suspension, Drivetrain, Performance,
 	};
 
 	enum class MCControlState
 		: uint8_t {
-			SC_Initial,
-		SC_History,
-		SC_ShallowHistory,
-		SC_Terminal,
-		CurrentDrop,
-		Enabled,
-		Disabled
+			SC_Initial, SC_History, SC_ShallowHistory, SC_Terminal, CurrentDrop, Enabled, Disabled
 	};
 
 	enum class ShutdownState
 		: uint8_t {
-			SC_Initial,
-		SC_History,
-		SC_ShallowHistory,
-		SC_Terminal,
-		AIR_Coolant_On,
-		AIR_On,
-		Precharge,
-		TSMS_Off
+			SC_Initial, SC_History, SC_ShallowHistory, SC_Terminal, AIR_Coolant_On, AIR_On, Precharge, TSMS_Off
 	};
 
 	enum class WarningSeverity
@@ -424,12 +402,8 @@ protected:
 		LCD.Clear(1, 1, 1);
 
 		LCD.ColorRGB(0x000000);
-		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
-				FT_OPT_CENTER, severityText);
-		LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29,
-				FT_OPT_CENTER,
-				warningMessageToString(warningCAN->warningMessage),
-				warningCAN->associatedValue);
+		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31, FT_OPT_CENTER, severityText);
+		LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29, FT_OPT_CENTER, warningMessageToString(warningCAN->warningMessage), warningCAN->associatedValue);
 
 		if (displayBoxes) {
 			LCD.ClearColorRGB(color);
@@ -445,28 +419,19 @@ protected:
 	}
 
 	void driving() {
-		float TMC, TMotor, TCellMax, rBrakeBalLast, vCar, tCurrentDelta,
-				VCellMin;
+		float TMC, TMotor, TCellMax, rBrakeBalLast, vCar, tCurrentDelta, VCellMin;
 		char ShutdownStateDesc[STATE_MAX_DESC_LENGTH];
 		char MCControlStateDesc[STATE_MAX_DESC_LENGTH];
 
-		strncpy_P(ShutdownStateDesc,
-				(PGM_P) pgm_read_word(
-						&(ShutdownStateStringTable[(uint8_t) dashCAN2->driving.eShutdownState])),
-				STATE_MAX_DESC_LENGTH);
-		strncpy_P(MCControlStateDesc,
-				(PGM_P) pgm_read_word(
-						&(MCStateStringTable[(uint8_t) dashCAN2->driving.eMCControlState])),
-				STATE_MAX_DESC_LENGTH);
+		strncpy_P(ShutdownStateDesc, (PGM_P) pgm_read_word(&(ShutdownStateStringTable[(uint8_t) dashCAN2->driving.eShutdownState])), STATE_MAX_DESC_LENGTH);
+		strncpy_P(MCControlStateDesc, (PGM_P) pgm_read_word(&(MCStateStringTable[(uint8_t) dashCAN2->driving.eMCControlState])), STATE_MAX_DESC_LENGTH);
 
 		float16::toFloat32(&TMC, swap(dashCAN1->driving.TMC));
 		float16::toFloat32(&TMotor, swap(dashCAN1->driving.TMotor));
 		float16::toFloat32(&TCellMax, swap(dashCAN1->driving.TCellMax));
-		float16::toFloat32(&rBrakeBalLast,
-				swap(dashCAN1->driving.rBrakeBalLast));
+		float16::toFloat32(&rBrakeBalLast, swap(dashCAN1->driving.rBrakeBalLast));
 		float16::toFloat32(&vCar, swap(dashCAN2->driving.vCar));
-		float16::toFloat32(&tCurrentDelta,
-				swap(dashCAN2->driving.tCurrentDelta));
+		float16::toFloat32(&tCurrentDelta, swap(dashCAN2->driving.tCurrentDelta));
 		float16::toFloat32(&VCellMin, swap(dashCAN2->driving.VCellMin));
 
 		LCD.DLStart();
@@ -487,16 +452,14 @@ protected:
 		LCD.ColorRGB(0xFFFFFF);
 		LCD.Cmd_FGColor(0xFF0000);
 		LCD.Cmd_BGColor(0xFF0000);
-		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 30, 20, 20, 180, 0,
-				100 - (uint16_t) TMotor, 100);
+		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 30, 20, 20, 180, 0, 100 - (uint16_t) TMotor, 100);
 		LCD.ColorRGB(0xFF0000);
 		LCD.PrintText(FT_DISPLAYWIDTH - 20, 240, 31, FT_OPT_CENTER, "M");
 
 		LCD.ColorRGB(0xFFFFFF);
 		LCD.Cmd_FGColor(0xFF0000);
 		LCD.Cmd_BGColor(0xFF0000);
-		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 90, 20, 20, 180, 0,
-				100 - (uint16_t) TMC, 100);
+		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 90, 20, 20, 180, 0, 100 - (uint16_t) TMC, 100);
 		LCD.ColorRGB(0xFF0000);
 		LCD.PrintText(FT_DISPLAYWIDTH - 80, 240, 31, FT_OPT_CENTER, "C");
 
@@ -523,11 +486,8 @@ protected:
 		LCD.Clear(1, 1, 1);
 
 		LCD.ColorRGB(0x000000);
-		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31,
-				FT_OPT_CENTER, "tLastLap: %02d:%02d.%03d", lMin, lSec, time);
-		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT * 3 / 4, 31,
-				FT_OPT_CENTER, "tLastLapDelta: %02d:%02d.%03d", dMin, dSec,
-				delta);
+		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31, FT_OPT_CENTER, "tLastLap: %02d:%02d.%03d", lMin, lSec, time);
+		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT * 3 / 4, 31, FT_OPT_CENTER, "tLastLapDelta: %02d:%02d.%03d", dMin, dSec, delta);
 
 		LCD.DLEnd();
 		LCD.Finish();
