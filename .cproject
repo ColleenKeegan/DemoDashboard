@@ -53,7 +53,7 @@
 									<listOptionValue builtIn="false" value="AVRLibrary"/>
 								</option>
 								<option id="de.innot.avreclipse.cpplinker.option.libpath.224704024" name="Libraries Path (-L)" superClass="de.innot.avreclipse.cpplinker.option.libpath" valueType="stringList">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/AVRLibrary}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/AVRLibrary/Debug}&quot;"/>
 								</option>
 								<inputType id="de.innot.avreclipse.tool.cpplinker.input.465115986" name="OBJ Files" superClass="de.innot.avreclipse.tool.cpplinker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "arduino/Arduino.h"
+#include <AVRLibrary/arduino/Arduino.h>
 
 #define TEAM FE //Other: FSAE
 
