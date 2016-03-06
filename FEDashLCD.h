@@ -201,7 +201,7 @@ public:
 	typedef union DashPage {
 		uint8_t NDashPage;
 		DashPages dashPage;
-	};
+	} DashPage;
 
 	typedef struct WarningCANMessage { //0xF1
 		uint8_t NDashPage; //Required
@@ -216,7 +216,7 @@ public:
 		uint16_t TMotor;
 		uint16_t TCellMax;
 		uint16_t rBrakeBalLast;
-	};
+	} DashCAN1Driving;
 
 	typedef struct DashCAN2Driving {
 		MCControlState eMCControlState;
@@ -224,36 +224,36 @@ public:
 		uint16_t vCar;
 		uint16_t tCurrentDelta;
 		uint16_t VCellMin;
-	};
+	} DashCAN2Driving;
 
 	typedef struct DashCAN1Trig {
 		uint32_t tLastLap;
 		uint32_t tLastLapDelta;
-	};
+	} DashCAN3Driving;
 
 	typedef struct DashCAN1Systems {
 		uint16_t TMCMax;
 		uint16_t TMotorMax;
 		uint16_t TCellMaxMax;
 		uint16_t VBatteryMin;
-	};
+	} DashCAN1Systems;
 
 	typedef struct DashCAN2Systems {
 		uint16_t VBattery;
-	};
+	} DashCAN2Systems;
 
 	typedef struct DashCAN1Brakes {
 		uint16_t pBrakeF;
 		uint16_t pBrakeR;
 		uint16_t rBrakeBal;
 		uint16_t pBrakeFMax;
-	};
+	} DashCAN1Brakes;
 
 	typedef struct DashCAN2Brakes {
 		uint16_t pBrakeRMax;
 		uint16_t rBrakeBalMin;
 		uint16_t rBrakeBalmax;
-	};
+	} DashCAN2Brakes;
 
 	typedef union DashCAN1 { //0xF0
 		uint8_t data[8];
@@ -261,22 +261,22 @@ public:
 		DashCAN1Trig trig;
 		DashCAN1Systems systems;
 		DashCAN1Brakes brakes;
-	};
+	} DashCAN1;
 
 	typedef union DashCAN2 { //0xF2
 		uint8_t data[8];
 		DashCAN2Driving driving;
 		DashCAN2Systems systems;
 		DashCAN2Brakes brakes;
-	};
+	} DashCAN2;
 
 	typedef union DashCAN3 { //0xF3
 		uint8_t data[8];
-	};
+	} DashCAN3;
 
 	typedef union DashCAN4 { //0xF4
 		uint8_t data[8];
-	};
+	} DashCAN4;
 
 	DashCAN1 *dashCAN1 = (DashCAN1 *) dashCAN1Data;
 	DashCAN2 *dashCAN2 = (DashCAN2 *) dashCAN2Data;
