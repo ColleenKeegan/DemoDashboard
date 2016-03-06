@@ -219,8 +219,6 @@ public:
 		return;
 	}
 
-	static const uint8_t WaitingForCANDashPageNumber = 0;
-
 	enum class OutputState
 		: uint8_t {
 			Off, Flashing, On
@@ -233,6 +231,7 @@ public:
 		OutputState yellowLED;
 		OutputState greenLED;
 
+		bool waitingForCANOverride;
 		uint8_t previousRotaryPositions[CPFERotarySwitch::NUM_ROTARYS];
 		bool rotaryOverride;
 		CPFERotarySwitch::RotarySwitches rotaryToShow;
@@ -253,8 +252,7 @@ public:
 
 		if (CAN_OVFCount > CAN_TIMER_OVF_COUNT_MAX) {
 			CAN_OVFCount = 0;
-			DashboardData.NDashPage = WaitingForCANDashPageNumber;
-
+			DashboardData.waitingForCANOverride = true;
 		}
 
 		if (RotaryDispOVFCount >= ROTARY_DISP_TIMER_OVF_COUNT_MAX) {
@@ -293,6 +291,7 @@ public:
 			Serial.println("Init Failed");
 		}
 
+		DashboardData.waitingForCANOverride = true;
 		waitingForCAN(false); //Faster boot.
 		LCD.DisplayOn();
 
@@ -300,9 +299,6 @@ public:
 
 		CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B250K, canRxIntFunc);
 		initCAN_RX();
-
-		//Display Waiting For CAN Screen
-		DashboardData.NDashPage = WaitingForCANDashPageNumber;
 
 		//Init CAN timeout timer (Timer 2)
 		TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024 for 63 OVF/sec
@@ -349,6 +345,8 @@ public:
 
 		if (DashboardData.rotaryOverride) {
 			rotaryOverride();
+		} else if (DashboardData.waitingForCANOverride) {
+			waitingForCAN();
 		} else {
 			updateDashboard();
 		}
