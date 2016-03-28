@@ -290,8 +290,6 @@ public:
 	}
 
 	void updateDashboard() {
-		dashPage->NDashPage = warningCAN->NDashPage;
-
 		switch (dashPage->dashPage) {
 		case DashPages::Brakes:
 			brakes();

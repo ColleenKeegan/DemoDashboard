@@ -452,7 +452,7 @@ protected:
 		DashCANInput *data = (DashCANInput*) dataBuffer;
 		CPFECANLib::MSG msg;
 
-		msg.identifier.standard = 0x15;
+		msg.identifier.standard = DashCANInputID;
 		msg.data = (uint8_t *) &dataBuffer;
 		msg.dlc = 8;
 		msg.ide = 0;
