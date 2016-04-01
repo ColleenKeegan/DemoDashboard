@@ -146,7 +146,7 @@ public:
 
 	enum class MCControlState
 		: uint8_t {
-			SC_Initial, SC_History, SC_ShallowHistory, SC_Terminal, CurrentDrop, Enabled, Disabled
+			SC_Initial, SC_History, SC_ShallowHistory, SC_Terminal, BroadcastDiag, CurrentDrop, Enabled, Disabled
 	};
 
 	enum class ShutdownState
@@ -359,6 +359,9 @@ protected:
 		bool displayBoxes;
 		const char *severityText;
 		uint32_t color = 0x00000;
+		float associatedValue;
+
+		float16::toFloat32(&associatedValue, warningCAN->associatedValue);
 
 		switch (warningCAN->warningSeverity) {
 		case WarningSeverity::ShortWarning:
@@ -401,7 +404,7 @@ protected:
 
 		LCD.ColorRGB(0x000000);
 		LCD.PrintText(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT / 4, 31, FT_OPT_CENTER, severityText);
-		LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29, FT_OPT_CENTER, warningMessageToString(warningCAN->warningMessage), warningCAN->associatedValue);
+		LCD.PrintTextFlash(FT_DISPLAYWIDTH / 2, FT_DISPLAYHEIGHT - 100, 29, FT_OPT_CENTER, warningMessageToString(warningCAN->warningMessage), associatedValue);
 
 		if (displayBoxes) {
 			LCD.ClearColorRGB(color);
