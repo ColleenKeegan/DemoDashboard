@@ -60,7 +60,7 @@ public:
 		Serial.printf("%d, %d\n", result, currentPositionRetrieval);
 
 		if (currentPositionRetrieval >= 0) {
-			positions[currentPositionRetrieval] = result / (1024 / positionCount);
+			positions[currentPositionRetrieval] = (uint8_t)(positionCount - (float)result / (1024.0 / (float)positionCount));
 			Serial.printf("%d\n", positions[currentPositionRetrieval]);
 
 			if (currentPositionRetrieval < NUM_ROTARYS - 1) {
