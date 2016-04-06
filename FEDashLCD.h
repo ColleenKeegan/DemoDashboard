@@ -472,7 +472,7 @@ protected:
 		uint32_t color = 0x00000;
 		float associatedValue;
 
-		float16::toFloat32(&associatedValue, warningCAN->associatedValue);
+		associatedValue = swap(warningCAN->associatedValue);
 
 		switch (warningCAN->warningSeverity) {
 			case WarningSeverity::ShortWarning:
