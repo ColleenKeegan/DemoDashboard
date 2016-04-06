@@ -10,17 +10,12 @@
 
 #include "DashLCD.h"
 
-static const char PROGMEM WarningMessage_ControllerTemperature[] =
-"CONTROLLER WARM: %.2fC";
-static const char PROGMEM WarningMessage_MotorTemperature[] =
-"MOTOR WARM: %.2fC";
-static const char PROGMEM WarningMessage_BatteryTemperature[] =
-"BATTERY WARM: %.2fC";
-static const char PROGMEM WarningMessage_BatteryLowVoltage[] =
-"PACK LOW VOLTAGE: %.2fV";
+static const char PROGMEM WarningMessage_ControllerTemperature[] = "CONTROLLER WARM: %.2fC";
+static const char PROGMEM WarningMessage_MotorTemperature[] = "MOTOR WARM: %.2fC";
+static const char PROGMEM WarningMessage_BatteryTemperature[] = "BATTERY WARM: %.2fC";
+static const char PROGMEM WarningMessage_BatteryLowVoltage[] = "PACK LOW VOLTAGE: %.2fV";
 static const char PROGMEM WarningMessage_LVBattery[] = "GLV LOW VOLTAGE: %.2fV";
-static const char PROGMEM WarningMessage_sbRIOTemperature[] =
-"sbRIO WARM: %.0fC";
+static const char PROGMEM WarningMessage_sbRIOTemperature[] = "sbRIO WARM: %.0fC";
 static const char PROGMEM WarningMessage_Precharge[] = "HV PRECHARGING: %.0fV";
 static const char PROGMEM WarningMessage_Invalid[] = "INVALID MSG";
 static const char PROGMEM WarningMessage_BSPD[] = "BSPD ERROR";
@@ -32,36 +27,25 @@ static const char PROGMEM WarningMessage_MCOverSpeed[] = "MC Over Speed";
 static const char PROGMEM WarningMessage_MCOverCurrent[] = "MC Over Current";
 static const char PROGMEM WarningMessage_MCOverVoltage[] = "MC Over Voltage";
 static const char PROGMEM WarningMessage_MCOverTemp[] = "MC Inverter Overtemp";
-static const char PROGMEM WarningMessage_MCDirectionCommand[] =
-"MC Direction Error";
-static const char PROGMEM WarningMessage_MCInverterResponseTimeout[] =
-"MC Inverter Timeout";
+static const char PROGMEM WarningMessage_MCDirectionCommand[] = "MC Direction Error";
+static const char PROGMEM WarningMessage_MCInverterResponseTimeout[] = "MC Inverter Timeout";
 static const char PROGMEM WarningMessage_MCDesatFault[] = "MC Desat Fault";
-static const char PROGMEM WarningMessage_MCHardwareOverCurrentFault[] =
-"MC HW Over-Current";
+static const char PROGMEM WarningMessage_MCHardwareOverCurrentFault[] = "MC HW Over-Current";
 static const char PROGMEM WarningMessage_MCUnderVoltage[] = "MC Under Voltage";
-static const char PROGMEM WarningMessage_MCCommandMessageLost[] =
-"MC Command Message Lost";
+static const char PROGMEM WarningMessage_MCCommandMessageLost[] = "MC Command Message Lost";
 static const char PROGMEM WarningMessage_MCMotorOverTemp[] = "Motor Over Temp";
 static const char PROGMEM WarningMessage_MCModAOverTemp[] = "Module A Overtemp";
 static const char PROGMEM WarningMessage_MCModBOverTemp[] = "Module B Overtemp";
 static const char PROGMEM WarningMessage_MCModCOverTemp[] = "Module C Overtemp";
 static const char PROGMEM WarningMessage_MCPCBOverTemp[] = "PCB Overtemp";
-static const char PROGMEM WarningMessage_MCGateDrv1OverTemp[] =
-"Gate DRV 1 Overtemp";
-static const char PROGMEM WarningMessage_MCGateDrv2OverTemp[] =
-"Gate DRV 2 Overtemp";
-static const char PROGMEM WarningMessage_MCGateDrv3OverTemp[] =
-"Gate DRV 3 Overtemp";
-static const char PROGMEM WarningMessage_MCCurrentSensorFault[] =
-"MC Curr Sensor Fault";
-static const char PROGMEM WarningMessage_MCResolverNotConnected[] =
-"Resolver Not Connected";
-static const char PROGMEM WarningMessage_ShutdownLatchTripped[] =
-"Shutdown Latch Tripped";
+static const char PROGMEM WarningMessage_MCGateDrv1OverTemp[] = "Gate DRV 1 Overtemp";
+static const char PROGMEM WarningMessage_MCGateDrv2OverTemp[] = "Gate DRV 2 Overtemp";
+static const char PROGMEM WarningMessage_MCGateDrv3OverTemp[] = "Gate DRV 3 Overtemp";
+static const char PROGMEM WarningMessage_MCCurrentSensorFault[] = "MC Curr Sensor Fault";
+static const char PROGMEM WarningMessage_MCResolverNotConnected[] = "Resolver Not Connected";
+static const char PROGMEM WarningMessage_ShutdownLatchTripped[] = "Shutdown Latch Tripped";
 static const char PROGMEM WarningMessage_UnknownBMS[] = "Unknown BMS Error";
-static const char PROGMEM WarningMessage_RemoteEmergency[] =
-"REMOTE EMERGENCY SHUTDOWN";
+static const char PROGMEM WarningMessage_RemoteEmergency[] = "REMOTE EMERGENCY SHUTDOWN";
 
 static const char PROGMEM RotaryRed1[] = "MC Off";
 static const char PROGMEM RotaryRed2[] = "120Nm";
@@ -137,11 +121,44 @@ PGM_P const ShutdownStateStringTable[] PROGMEM =
 	ShutdownState0, ShutdownState1, ShutdownState2, ShutdownState3, ShutdownState4, ShutdownState5, ShutdownState6
 };
 
+static const size_t BMS_CHARGING_STATE_MAX_LENGTH = 15;
+
+static const char PROGMEM BMSChargingState0[] = "Disconnected";
+static const char PROGMEM BMSChargingState1[] = "Pre-Charging";
+static const char PROGMEM BMSChargingState2[] = "Main Charge";
+static const char PROGMEM BMSChargingState3[] = "Balancing";
+static const char PROGMEM BMSChargingState4[] = "Charge Finished";
+static const char PROGMEM BMSChargingState5[] = "Charging Error";
+
+PGM_P const BMSChargingStateStringTable[] PROGMEM =
+{
+	BMSChargingState0, BMSChargingState1, BMSChargingState2, BMSChargingState3, BMSChargingState4, BMSChargingState5
+};
+
+static const size_t BMS_CHARGING_ERROR_MAX_LENGTH = 50;
+
+static const char PROGMEM BMSChargingError0[] = "No Error";
+static const char PROGMEM BMSChargingError1[] = "No Cell Comms";
+static const char PROGMEM BMSChargingError2[] = "No Cell Comms";
+static const char PROGMEM BMSChargingError3[] = "Maximum Duration Exceeded";
+static const char PROGMEM BMSChargingError4[] = "No Cell Comms";
+static const char PROGMEM BMSChargingError5[] = "Cannot Set Balancing";
+static const char PROGMEM BMSChargingError6[] = "Cell Temps Too High";
+static const char PROGMEM BMSChargingError7[] = "No Cell Comms";
+static const char PROGMEM BMSChargingError8[] = "Num Cells Mismatch";
+static const char PROGMEM BMSChargingError9[] = "Cells Overvoltage";
+static const char PROGMEM BMSChargingError10[] = "Cell Protection Event";
+
+PGM_P const BMSChargingErrorStringTable[] PROGMEM =
+{
+	BMSChargingError0, BMSChargingError1, BMSChargingError2, BMSChargingError3, BMSChargingError4, BMSChargingError5, BMSChargingError6, BMSChargingError7, BMSChargingError8, BMSChargingError9, BMSChargingError10
+};
+
 class FEDashLCD: public DashLCD {
 public:
 	enum class DashPages
 		: uint8_t {
-			WaitingForCAN, Driving, LapTrigger, Warning, Systems, Brakes, Electrical, Suspension, Drivetrain, Performance,
+			WaitingForCAN, Driving, LapTrigger, Warning, Systems, Brakes, Charging, Suspension, Drivetrain, Performance,
 	};
 
 	enum class MCControlState
@@ -157,6 +174,26 @@ public:
 	enum class WarningSeverity
 		: uint8_t {
 			Okay, ShortWarning, LongWarning, ReturnToPits, Error, Danger
+	};
+
+	enum class eBMSChargingState
+		: uint8_t {
+			Disconnected, PreCharging, MainCharging, Balancing, ChargeFinishedOK, ChargingError
+	};
+
+	enum class eBMSLastChargeError
+		: uint8_t {
+			NoError,
+		NoCellCommunication,
+		NoCellCommunicationNoCAN,
+		ChargeDurationExceeded,
+		CellCommunicationLostDuringCharge,
+		CannotSetBalancingVoltage,
+		CellTempsTooHigh,
+		NoCellCommsSoNoTemp,
+		CellNumberMismatch,
+		CellOvervoltage,
+		CellProtectionEvent
 	};
 
 	enum class WarningMessage
@@ -218,6 +255,13 @@ public:
 		uint16_t rBrakeBalLast;
 	} DashCAN1Driving;
 
+	typedef struct DashCAN1Charging {
+		uint16_t TCellMin;
+		uint16_t TCellMax;
+		uint16_t VCellMin;
+		uint16_t VCellMax;
+	};
+
 	typedef struct DashCAN2Driving {
 		MCControlState eMCControlState;
 		ShutdownState eShutdownState;
@@ -225,6 +269,14 @@ public:
 		uint16_t tCurrentDelta;
 		uint16_t VCellMin;
 	} DashCAN2Driving;
+
+	typedef struct DashCAN2Charging {
+		uint16_t TCellMean;
+		uint16_t VCellMean;
+		uint16_t VTotal;
+		eBMSChargingState chargingState;
+		eBMSLastChargeError chargeError;
+	};
 
 	typedef struct DashCAN1Trig {
 		uint32_t tLastLap;
@@ -261,6 +313,7 @@ public:
 		DashCAN1Trig trig;
 		DashCAN1Systems systems;
 		DashCAN1Brakes brakes;
+		DashCAN1Charging charging;
 	} DashCAN1;
 
 	typedef union DashCAN2 { //0xF2
@@ -268,6 +321,7 @@ public:
 		DashCAN2Driving driving;
 		DashCAN2Systems systems;
 		DashCAN2Brakes brakes;
+		DashCAN2Charging charging;
 	} DashCAN2;
 
 	typedef union DashCAN3 { //0xF3
@@ -300,8 +354,8 @@ public:
 		case DashPages::Driving:
 			driving();
 			break;
-		case DashPages::Electrical:
-			electrical();
+		case DashPages::Charging:
+			charging();
 			break;
 		case DashPages::LapTrigger:
 			lapTrigger();
@@ -343,8 +397,41 @@ protected:
 
 	}
 
-	void electrical() {
+	void charging() {
+		float TCellMax, TCellMin, VCellMax, VCellMin, TCellMean, VCellMean, VTotal;
 
+		float16::toFloat32(&TCellMax, swap(dashCAN1->charging.TCellMax));
+		float16::toFloat32(&TCellMin, swap(dashCAN1->charging.TCellMin));
+		float16::toFloat32(&VCellMax, swap(dashCAN1->charging.VCellMax));
+		float16::toFloat32(&VCellMin, swap(dashCAN1->charging.VCellMin));
+		float16::toFloat32(&TCellMean, swap(dashCAN2->charging.TCellMean));
+		float16::toFloat32(&VCellMean, swap(dashCAN2->charging.VCellMean));
+		float16::toFloat32(&VTotal, swap(dashCAN2->charging.VTotal));
+
+		char BMSChargingState[BMS_CHARGING_STATE_MAX_LENGTH];
+		char BMSChargingError[BMS_CHARGING_ERROR_MAX_LENGTH];
+
+		strncpy_P(BMSChargingState, (PGM_P) pgm_read_word(&(BMSChargingStateStringTable[(uint8_t) dashCAN2->charging.chargingState])), BMS_CHARGING_STATE_MAX_LENGTH);
+		strncpy_P(BMSChargingError, (PGM_P) pgm_read_word(&(BMSChargingErrorStringTable[(uint8_t) dashCAN2->charging.chargeError])), BMS_CHARGING_ERROR_MAX_LENGTH);
+
+		LCD.DLStart();
+
+		LCD.ClearColorRGB(0xFFFFFF);
+		LCD.Clear(1, 1, 1);
+
+		LCD.ColorRGB(0x00, 0xFF, 0xFF);
+		LCD.PrintText(5, 0, 28, 0, "TCellMax: %.2f", TCellMax);
+		LCD.PrintText(5, 25, 28, 0, "TCellMin: %.2f", TCellMin);
+		LCD.PrintText(5, 50, 28, 0, "TCellMean: %.2f", TCellMean);
+		LCD.PrintText(5, 75, 28, 0, "VCellMax: %.2f", VCellMax);
+		LCD.PrintText(5, 100, 28, 0, "VCellMin: %.2f", VCellMin);
+		LCD.PrintText(5, 125, 28, 0, "VCellMean: %.2f", VCellMean);
+		LCD.PrintText(5, 125, 28, 0, "VTotal: %.2f", VTotal);
+		LCD.PrintText(5, 150, 28, 0, "Charging State: %s", BMSChargingState);
+		LCD.PrintText(5, 175, 28, 0, "Charging Error: %s", BMSChargingError);
+
+		LCD.DLEnd();
+		LCD.Finish();
 	}
 
 	void performance() {
@@ -364,35 +451,35 @@ protected:
 		float16::toFloat32(&associatedValue, warningCAN->associatedValue);
 
 		switch (warningCAN->warningSeverity) {
-		case WarningSeverity::ShortWarning:
-		case WarningSeverity::LongWarning:
+			case WarningSeverity::ShortWarning:
+			case WarningSeverity::LongWarning:
 			displayBoxes = millis() % 500 > 250;
 			severityText = "WARNING!";
 			color = 0xFFFF00;
 			break;
-		case WarningSeverity::Error:
+			case WarningSeverity::Error:
 			displayBoxes = millis() % 500 > 250;
 			severityText = "ERROR!";
 			color = 0xFF0000;
 			break;
-		case WarningSeverity::Danger:
+			case WarningSeverity::Danger:
 			displayBoxes = true;
 			severityText = "DANGER!";
 			if (millis() % 600 > 450)
-				color = 0xFFFF00;
+			color = 0xFFFF00;
 			else if (millis() % 600 > 300)
-				color = 0x00FF00;
+			color = 0x00FF00;
 			else if (millis() % 600 > 150)
-				color = 0x000000;
+			color = 0x000000;
 			else
-				color = 0xFF0000;
+			color = 0xFF0000;
 			break;
-		case WarningSeverity::ReturnToPits:
+			case WarningSeverity::ReturnToPits:
 			displayBoxes = true;
 			severityText = "Return to Pits";
 			color = 0xFFFF00;
 			break;
-		default:
+			default:
 			displayBoxes = true;
 			severityText = "Unknown Severity";
 		}
