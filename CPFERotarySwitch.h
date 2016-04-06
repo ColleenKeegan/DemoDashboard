@@ -61,6 +61,11 @@ public:
 
 		if (currentPositionRetrieval >= 0) {
 			positions[currentPositionRetrieval] = (uint8_t)(positionCount - (float)result / (1024.0 / (float)positionCount));
+
+			if (positions[currentPositionRetrieval] > 11) {
+				positions[currentPositionRetrieval] = 11;
+			}
+
 			Serial.printf("%d\n", positions[currentPositionRetrieval]);
 
 			if (currentPositionRetrieval < NUM_ROTARYS - 1) {
