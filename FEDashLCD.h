@@ -307,6 +307,18 @@ public:
 		uint16_t rBrakeBalmax;
 	} DashCAN2Brakes;
 
+
+	typedef struct DashCAN3Charging {
+		uint16_t VChargerSetpoint;
+		uint16_t IChargerSetpoint;
+		uint16_t VChargerActual;
+		uint16_t IChargerActual;
+	} DashCAN3Charging;
+
+	typedef struct DashCAN4Charging {
+		uint8_t bChargerConnected;
+	} DashCAN4Charging;
+
 	typedef union DashCAN1 { //0xF0
 		uint8_t data[8];
 		DashCAN1Driving driving;
@@ -326,10 +338,12 @@ public:
 
 	typedef union DashCAN3 { //0xF3
 		uint8_t data[8];
+		DashCAN3Charging charging;
 	} DashCAN3;
 
 	typedef union DashCAN4 { //0xF4
 		uint8_t data[8];
+		DashCAN4Charging charging;
 	} DashCAN4;
 
 	DashCAN1 *dashCAN1 = (DashCAN1 *) dashCAN1Data;
@@ -398,7 +412,7 @@ protected:
 	}
 
 	void charging() {
-		float TCellMax, TCellMin, VCellMax, VCellMin, TCellMean, VCellMean, VTotal;
+		float TCellMax, TCellMin, VCellMax, VCellMin, TCellMean, VCellMean, VTotal, VChargerSetpoint, IChargerSetpoint, VChargerActual, IChargerActual;
 
 		float16::toFloat32(&TCellMax, swap(dashCAN1->charging.TCellMax));
 		float16::toFloat32(&TCellMin, swap(dashCAN1->charging.TCellMin));
@@ -407,6 +421,11 @@ protected:
 		float16::toFloat32(&TCellMean, swap(dashCAN2->charging.TCellMean));
 		float16::toFloat32(&VCellMean, swap(dashCAN2->charging.VCellMean));
 		float16::toFloat32(&VTotal, swap(dashCAN2->charging.VTotal));
+		float16::toFloat32(&VChargerSetpoint, swap(dashCAN3->charging.VChargerSetpoint));
+		float16::toFloat32(&IChargerSetpoint, swap(dashCAN3->charging.IChargerSetpoint));
+		float16::toFloat32(&VChargerActual, swap(dashCAN3->charging.VChargerActual));
+		float16::toFloat32(&IChargerActual, swap(dashCAN3->charging.IChargerActual));
+
 
 		char BMSChargingState[BMS_CHARGING_STATE_MAX_LENGTH];
 		char BMSChargingError[BMS_CHARGING_ERROR_MAX_LENGTH];
@@ -429,6 +448,11 @@ protected:
 		LCD.PrintText(5, 150, 28, 0, "VTotal: %.2f", VTotal);
 		LCD.PrintText(5, 175, 28, 0, "Charging State: %s", BMSChargingState);
 		LCD.PrintText(5, 200, 28, 0, "Last Charging Error: %s", BMSChargingError);
+		LCD.PrintText(190, 0, 28, 0, "VChargerSetpoint: %.2f", VChargerSetpoint);
+		LCD.PrintText(190, 25, 28, 0, "IChargerSetpoint: %.2f", IChargerSetpoint);
+		LCD.PrintText(190, 50, 28, 0, "VChargerActual: %.2f", VChargerActual);
+		LCD.PrintText(190, 75, 28, 0, "IChargerActual: %.2f", IChargerActual);
+		LCD.PrintText(190, 100, 28, 0, "bChargerConnected: %s", dashCAN4->charging.bChargerConnected ? "Yes" : "No");
 
 		LCD.DLEnd();
 		LCD.Finish();
