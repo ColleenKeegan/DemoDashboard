@@ -62,10 +62,10 @@ PGM_P const RotaryRedStringTable[] PROGMEM =
 	RotaryRed1, RotaryRed2, RotaryRed3, RotaryRed4, RotaryRed5, RotaryRed6, RotaryRed7, RotaryRed8, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused, RotaryRedUnused
 };
 
-static const char PROGMEM RotaryYellow1[] = "CLK DIV 8";
-static const char PROGMEM RotaryYellow2[] = "CLK DIV 4";
-static const char PROGMEM RotaryYellow3[] = "CLK DIV 2";
-static const char PROGMEM RotaryYellow4[] = "CLK DIV 0";
+static const char PROGMEM RotaryYellow1[] = "Invalid";
+static const char PROGMEM RotaryYellow2[] = "Invalid";
+static const char PROGMEM RotaryYellow3[] = "Invalid";
+static const char PROGMEM RotaryYellow4[] = "Invalid";
 static const char PROGMEM RotaryYellow5[] = "Invalid";
 static const char PROGMEM RotaryYellow6[] = "Invalid";
 static const char PROGMEM RotaryYellow7[] = "Invalid";
@@ -77,14 +77,14 @@ PGM_P const RotaryYellowStringTable[] PROGMEM = {RotaryYellow1, RotaryYellow2,
 	RotaryYellow8, RotaryYellowUnused, RotaryYellowUnused, RotaryYellowUnused,
 	RotaryYellowUnused};
 
-static const char PROGMEM RotaryBlack1[] = "Default";
-static const char PROGMEM RotaryBlack2[] = "Pit";
-static const char PROGMEM RotaryBlack3[] = "BrakeBal";
-static const char PROGMEM RotaryBlack4[] = "Throttle";
-static const char PROGMEM RotaryBlack5[] = "Code";
-static const char PROGMEM RotaryBlack6[] = "MULTI-6";
-static const char PROGMEM RotaryBlack7[] = "MULTI-7";
-static const char PROGMEM RotaryBlack8[] = "MULTI-8";
+static const char PROGMEM RotaryBlack1[] = "Auto";
+static const char PROGMEM RotaryBlack2[] = "Charging";
+static const char PROGMEM RotaryBlack3[] = "Invalid";
+static const char PROGMEM RotaryBlack4[] = "Invalid";
+static const char PROGMEM RotaryBlack5[] = "Invalid";
+static const char PROGMEM RotaryBlack6[] = "Invalid";
+static const char PROGMEM RotaryBlack7[] = "Invalid";
+static const char PROGMEM RotaryBlack8[] = "Invalid";
 static const char PROGMEM RotaryBlackUnused[] = "Invalid";
 
 PGM_P const RotaryBlackStringTable[] PROGMEM =
@@ -260,7 +260,7 @@ public:
 		uint16_t TCellMax;
 		uint16_t VCellMin;
 		uint16_t VCellMax;
-	};
+	} DashCAN1Charging;
 
 	typedef struct DashCAN2Driving {
 		MCControlState eMCControlState;
@@ -276,7 +276,7 @@ public:
 		uint16_t VTotal;
 		eBMSChargingState chargingState;
 		eBMSLastChargeError chargeError;
-	};
+	} DashCAN2Charging;
 
 	typedef struct DashCAN1Trig {
 		uint32_t tLastLap;
@@ -416,7 +416,7 @@ protected:
 
 		LCD.DLStart();
 
-		LCD.ClearColorRGB(0xFFFFFF);
+		LCD.ClearColorRGB(0x000000);
 		LCD.Clear(1, 1, 1);
 
 		LCD.ColorRGB(0x00, 0xFF, 0xFF);
@@ -426,9 +426,9 @@ protected:
 		LCD.PrintText(5, 75, 28, 0, "VCellMax: %.2f", VCellMax);
 		LCD.PrintText(5, 100, 28, 0, "VCellMin: %.2f", VCellMin);
 		LCD.PrintText(5, 125, 28, 0, "VCellMean: %.2f", VCellMean);
-		LCD.PrintText(5, 125, 28, 0, "VTotal: %.2f", VTotal);
-		LCD.PrintText(5, 150, 28, 0, "Charging State: %s", BMSChargingState);
-		LCD.PrintText(5, 175, 28, 0, "Charging Error: %s", BMSChargingError);
+		LCD.PrintText(5, 150, 28, 0, "VTotal: %.2f", VTotal);
+		LCD.PrintText(5, 175, 28, 0, "Charging State: %s", BMSChargingState);
+		LCD.PrintText(5, 200, 28, 0, "Last Charging Error: %s", BMSChargingError);
 
 		LCD.DLEnd();
 		LCD.Finish();

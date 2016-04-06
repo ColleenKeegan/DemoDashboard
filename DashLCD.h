@@ -309,7 +309,7 @@ public:
 
 		uploadLogoToController();
 
-		CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B250K, canRxIntFunc);
+		CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B1M, canRxIntFunc);
 		initCAN_RX();
 
 		//Init CAN timeout timer (Timer 2)
@@ -362,6 +362,8 @@ public:
 		} else {
 			updateDashboard();
 		}
+
+		_delay_ms(2.0);
 
 	}
 
