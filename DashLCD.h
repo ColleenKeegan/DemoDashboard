@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+
 #include <avr/pgmspace.h>
 #include "FTDI _V1/FT_VM801P43_50.h"
 
@@ -312,6 +314,8 @@ public:
 		CPFECANLib::init(CPFECANLib::CAN_BAUDRATE::B1M, canRxIntFunc);
 		initCAN_RX();
 
+		srand(10);
+
 		//Init CAN timeout timer (Timer 2)
 		TCCR2A = (1 << CS22) | (1 << CS21) | (1 << CS20); //Normal mode, prescale 1/1024 for 63 OVF/sec
 		TIMSK2 = (1 << TOIE2); //Timer 2 OVF Interrupt
@@ -357,14 +361,11 @@ public:
 
 		if (DashboardData.rotaryOverride) {
 			rotaryOverride();
-		} else if (DashboardData.waitingForCANOverride) {
+		} else if (false) {
 			waitingForCAN();
 		} else {
 			updateDashboard();
 		}
-
-		_delay_ms(2.0);
-
 	}
 
 	void CAN_RX_Int(CPFECANLib::MSG *msg, uint8_t mobNum) {
@@ -483,7 +484,7 @@ protected:
 			DashboardData.previousRotaryPositions[i] = CPFERotarySwitch::getPosition((CPFERotarySwitch::RotarySwitches) i);
 		}
 
-		CPFECANLib::sendMsgUsingMOB(DashCANInputMob, &msg);
+		//CPFECANLib::sendMsgUsingMOB(DashCANInputMob, &msg);
 
 		//Request Updated Positions for next iteration
 		CPFERotarySwitch::requestUpdatedPositions();

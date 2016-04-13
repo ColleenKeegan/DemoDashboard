@@ -49,13 +49,13 @@ static const char PROGMEM WarningMessage_RemoteEmergency[] = "REMOTE EMERGENCY S
 
 static const char PROGMEM RotaryRed1[] = "MC Off";
 static const char PROGMEM RotaryRed2[] = "120Nm";
-static const char PROGMEM RotaryRed3[] = "120Nm";
-static const char PROGMEM RotaryRed4[] = "120Nm";
-static const char PROGMEM RotaryRed5[] = "120Nm";
-static const char PROGMEM RotaryRed6[] = "Invalid";
-static const char PROGMEM RotaryRed7[] = "Invalid";
-static const char PROGMEM RotaryRed8[] = "Invalid";
-static const char PROGMEM RotaryRedUnused[] = "Invalid";
+static const char PROGMEM RotaryRed3[] = "160Nm";
+static const char PROGMEM RotaryRed4[] = "160Nm w/ Regen";
+static const char PROGMEM RotaryRed5[] = "240Nm Constant Power";
+static const char PROGMEM RotaryRed6[] = "Unused";
+static const char PROGMEM RotaryRed7[] = "Unused";
+static const char PROGMEM RotaryRed8[] = "Unused";
+static const char PROGMEM RotaryRedUnused[] = "Unused";
 
 PGM_P const RotaryRedStringTable[] PROGMEM =
 {
@@ -77,15 +77,15 @@ PGM_P const RotaryYellowStringTable[] PROGMEM = {RotaryYellow1, RotaryYellow2,
 	RotaryYellow8, RotaryYellowUnused, RotaryYellowUnused, RotaryYellowUnused,
 	RotaryYellowUnused};
 
-static const char PROGMEM RotaryBlack1[] = "Auto";
+static const char PROGMEM RotaryBlack1[] = "Driving";
 static const char PROGMEM RotaryBlack2[] = "Charging";
-static const char PROGMEM RotaryBlack3[] = "Invalid";
-static const char PROGMEM RotaryBlack4[] = "Invalid";
-static const char PROGMEM RotaryBlack5[] = "Invalid";
-static const char PROGMEM RotaryBlack6[] = "Invalid";
-static const char PROGMEM RotaryBlack7[] = "Invalid";
-static const char PROGMEM RotaryBlack8[] = "Invalid";
-static const char PROGMEM RotaryBlackUnused[] = "Invalid";
+static const char PROGMEM RotaryBlack3[] = "Unused";
+static const char PROGMEM RotaryBlack4[] = "Unused";
+static const char PROGMEM RotaryBlack5[] = "Unused";
+static const char PROGMEM RotaryBlack6[] = "Unused";
+static const char PROGMEM RotaryBlack7[] = "Unused";
+static const char PROGMEM RotaryBlack8[] = "Unused";
+static const char PROGMEM RotaryBlackUnused[] = "Unused";
 
 PGM_P const RotaryBlackStringTable[] PROGMEM =
 {
@@ -111,14 +111,15 @@ PGM_P const MCStateStringTable[] PROGMEM =
 static const char PROGMEM ShutdownState0[] = "SC.Initial";
 static const char PROGMEM ShutdownState1[] = "SC.History";
 static const char PROGMEM ShutdownState2[] = "SC.ShallowHistory";
-static const char PROGMEM ShutdownState3[] = "AIR's & Coolant On";
-static const char PROGMEM ShutdownState4[] = "AIR's On";
-static const char PROGMEM ShutdownState5[] = "Precharge";
-static const char PROGMEM ShutdownState6[] = "TSMS Off";
+static const char PROGMEM ShutdownState3[] = "SC.Terminal";
+static const char PROGMEM ShutdownState4[] = "AIR's & Coolant On";
+static const char PROGMEM ShutdownState5[] = "AIR's On";
+static const char PROGMEM ShutdownState6[] = "Precharge";
+static const char PROGMEM ShutdownState7[] = "TSMS Off";
 
 PGM_P const ShutdownStateStringTable[] PROGMEM =
 {
-	ShutdownState0, ShutdownState1, ShutdownState2, ShutdownState3, ShutdownState4, ShutdownState5, ShutdownState6
+	ShutdownState0, ShutdownState1, ShutdownState2, ShutdownState3, ShutdownState4, ShutdownState5, ShutdownState6, ShutdownState7
 };
 
 static const size_t BMS_CHARGING_STATE_MAX_LENGTH = 15;
@@ -307,7 +308,6 @@ public:
 		uint16_t rBrakeBalmax;
 	} DashCAN2Brakes;
 
-
 	typedef struct DashCAN3Charging {
 		uint16_t VChargerSetpoint;
 		uint16_t IChargerSetpoint;
@@ -358,38 +358,19 @@ public:
 	}
 
 	void updateDashboard() {
-		switch (dashPage->dashPage) {
-		case DashPages::Brakes:
-			brakes();
-			break;
-		case DashPages::Drivetrain:
-			drivetrain();
-			break;
-		case DashPages::Driving:
+		switch (CPFERotarySwitch::getPosition(CPFERotarySwitch::RotarySwitches::BLACK)) {
+		case 0:
 			driving();
 			break;
-		case DashPages::Charging:
+		case 1:
 			charging();
 			break;
-		case DashPages::LapTrigger:
-			lapTrigger();
-			break;
-		case DashPages::Performance:
-			performance();
-			break;
-		case DashPages::Systems:
-			systems();
-			break;
-		case DashPages::WaitingForCAN:
-			waitingForCAN();
-			break;
-		case DashPages::Warning:
-			warning();
-			break;
 		default:
-			waitingForCAN();
+			driving();
 			break;
 		}
+
+		_delay_ms(20.0);
 	}
 
 protected:
@@ -403,6 +384,10 @@ protected:
 		return (PGM_P) pgm_read_word(&(RotaryRedStringTable[position]));
 	}
 
+	float random(float range) {
+		return (((float)rand() / (float)RAND_MAX) * range * 2) - range;
+	}
+
 	void brakes() {
 
 	}
@@ -412,26 +397,22 @@ protected:
 	}
 
 	void charging() {
-		float TCellMax, TCellMin, VCellMax, VCellMin, TCellMean, VCellMean, VTotal, VChargerSetpoint, IChargerSetpoint, VChargerActual, IChargerActual;
+		static float TCellMax=30.3, TCellMin=22.6, VCellMax=4.1, VCellMin=3.2, TCellMean=25.6,
+		VCellMean=4.01, VTotal=276.69, VChargerSetpoint=0.0, IChargerSetpoint=0.0, VChargerActual=0.0, IChargerActual=0.0;
 
-		float16::toFloat32(&TCellMax, swap(dashCAN1->charging.TCellMax));
-		float16::toFloat32(&TCellMin, swap(dashCAN1->charging.TCellMin));
-		float16::toFloat32(&VCellMax, swap(dashCAN1->charging.VCellMax));
-		float16::toFloat32(&VCellMin, swap(dashCAN1->charging.VCellMin));
-		float16::toFloat32(&TCellMean, swap(dashCAN2->charging.TCellMean));
-		float16::toFloat32(&VCellMean, swap(dashCAN2->charging.VCellMean));
-		float16::toFloat32(&VTotal, swap(dashCAN2->charging.VTotal));
-		float16::toFloat32(&VChargerSetpoint, swap(dashCAN3->charging.VChargerSetpoint));
-		float16::toFloat32(&IChargerSetpoint, swap(dashCAN3->charging.IChargerSetpoint));
-		float16::toFloat32(&VChargerActual, swap(dashCAN3->charging.VChargerActual));
-		float16::toFloat32(&IChargerActual, swap(dashCAN3->charging.IChargerActual));
-
+		TCellMax += random(0.2);
+		TCellMin += random(0.2);
+		VCellMax += random(0.2);
+		VCellMin += random(0.2);
+		TCellMean += random(0.1);
+		VCellMean += random(0.1);
+		VTotal += random(0.1);
 
 		char BMSChargingState[BMS_CHARGING_STATE_MAX_LENGTH];
 		char BMSChargingError[BMS_CHARGING_ERROR_MAX_LENGTH];
 
-		strncpy_P(BMSChargingState, (PGM_P) pgm_read_word(&(BMSChargingStateStringTable[(uint8_t) dashCAN2->charging.chargingState])), BMS_CHARGING_STATE_MAX_LENGTH);
-		strncpy_P(BMSChargingError, (PGM_P) pgm_read_word(&(BMSChargingErrorStringTable[(uint8_t) dashCAN2->charging.chargeError])), BMS_CHARGING_ERROR_MAX_LENGTH);
+		strncpy_P(BMSChargingState, (PGM_P) pgm_read_word(&(BMSChargingStateStringTable[0])), BMS_CHARGING_STATE_MAX_LENGTH);
+		strncpy_P(BMSChargingError, (PGM_P) pgm_read_word(&(BMSChargingErrorStringTable[0])), BMS_CHARGING_ERROR_MAX_LENGTH);
 
 		LCD.DLStart();
 
@@ -531,52 +512,182 @@ protected:
 	}
 
 	void driving() {
-		float TMC, TMotor, TCellMax, rBrakeBalLast, vCar, tCurrentDelta, VCellMin;
+		enum class DrivingState : uint8_t {
+			stopped, carOn, accel, decel
+		};
+
+		static DrivingState drivingState = DrivingState::stopped;
+		static float TMC = 25.6, TMotor = 25.1, TCellMax = 25.3, rBrakeBalLast = 0.0, vCar = 0, tCurrentDelta = 0.0, VCellMin = 4.1;
+		float tTMC = 25.6, tTMotor = 25.1, tTCellMax = 25.3, trBrakeBalLast = 0.0, tvCar = 0, ttCurrentDelta = 0.0, tVCellMin = 4.1;
+		static uint16_t iterCounter = 0;
+		constexpr uint16_t LOOP_FREQ = 20;
 		char ShutdownStateDesc[STATE_MAX_DESC_LENGTH];
 		char MCControlStateDesc[STATE_MAX_DESC_LENGTH];
 
-		strncpy_P(ShutdownStateDesc, (PGM_P) pgm_read_word(&(ShutdownStateStringTable[(uint8_t) dashCAN2->driving.eShutdownState])), STATE_MAX_DESC_LENGTH);
-		strncpy_P(MCControlStateDesc, (PGM_P) pgm_read_word(&(MCStateStringTable[(uint8_t) dashCAN2->driving.eMCControlState])), STATE_MAX_DESC_LENGTH);
+		static MCControlState mcState = MCControlState::Disabled;
+		static ShutdownState shutdownState = ShutdownState::TSMS_Off;
 
-		float16::toFloat32(&TMC, swap(dashCAN1->driving.TMC));
-		float16::toFloat32(&TMotor, swap(dashCAN1->driving.TMotor));
-		float16::toFloat32(&TCellMax, swap(dashCAN1->driving.TCellMax));
-		float16::toFloat32(&rBrakeBalLast, swap(dashCAN1->driving.rBrakeBalLast));
-		float16::toFloat32(&vCar, swap(dashCAN2->driving.vCar));
-		float16::toFloat32(&tCurrentDelta, swap(dashCAN2->driving.tCurrentDelta));
-		float16::toFloat32(&VCellMin, swap(dashCAN2->driving.VCellMin));
+		switch(drivingState) {
+			case DrivingState::stopped:
+				vCar = 0;
+				tCurrentDelta = 0.0;
+				mcState = MCControlState::Disabled;
+				shutdownState = ShutdownState::TSMS_Off;
+
+				if (TMC > 25.0) {
+					TMC -= 1 + random(.2);
+				}
+
+				if (TMotor > 25.0) {
+					TMotor -= 1 + random(.2);
+				}
+
+				if (TCellMax > 25.0) {
+					TCellMax -= 1 + random(.2);
+				}
+
+				if (VCellMin < 3.9) {
+					VCellMin += .1 + random(.03);
+				}
+
+				if (iterCounter > LOOP_FREQ * 3) {
+					drivingState = DrivingState::carOn;
+					iterCounter = 0;
+				}
+				break;
+			case DrivingState::carOn:
+				mcState = MCControlState::Disabled;
+				shutdownState = ShutdownState::AIR_On;
+
+				if (TMC > 25.0) {
+					TMC -= .01 + random(.001);
+				}
+
+				if (TMotor > 25.0) {
+					TMotor -= .01 + random(.001);
+				}
+
+				if (TCellMax > 25.0) {
+					TCellMax -= .01 + random(.001);
+				}
+
+				if (VCellMin < 3.9) {
+					VCellMin += .001 + random(.001);
+				}
+
+				if (iterCounter > LOOP_FREQ * 1) {
+					drivingState = DrivingState::accel;
+					iterCounter = 0;
+				}
+				break;
+			case DrivingState::accel:
+				mcState = MCControlState::Enabled;
+				shutdownState = ShutdownState::AIR_On;
+				vCar += 1;
+				tCurrentDelta -= .005;
+
+				if (TMC < 85.0) {
+					TMC += .2;
+				}
+
+				if (TMotor < 100.0) {
+					TMotor += .2;
+				}
+
+				if (TCellMax < 50.0) {
+					TCellMax += .1;
+				}
+
+				if (VCellMin > 3.5) {
+					VCellMin -= .01;
+				}
+
+				if (iterCounter > LOOP_FREQ * 7) {
+					drivingState = DrivingState::decel;
+					iterCounter = 0;
+				}
+				break;
+			case DrivingState::decel:
+				mcState = MCControlState::Enabled;
+				shutdownState = ShutdownState::AIR_On;
+				if (vCar > 0) {
+					vCar -= 1;
+				}
+				else {
+					vCar = 0;
+				}
+
+				tCurrentDelta -= .005;
+
+				if (TMC > 25.0) {
+					TMC -= .1 + random(.001);
+				}
+
+				if (TMotor > 25.0) {
+					TMotor -= .1 + random(.001);
+				}
+
+				if (TCellMax > 25.0) {
+					TCellMax -= .05 + random(.001);
+				}
+
+				if (VCellMin < 3.9) {
+					VCellMin += .001 + random(.001);
+				}
+
+				if (iterCounter > LOOP_FREQ * 5) {
+					drivingState = DrivingState::stopped;
+					iterCounter = 0;
+				}
+				break;
+		}
+
+		++iterCounter;
+
+		strncpy_P(ShutdownStateDesc, (PGM_P) pgm_read_word(&(ShutdownStateStringTable[(uint8_t) shutdownState])), STATE_MAX_DESC_LENGTH);
+		strncpy_P(MCControlStateDesc, (PGM_P) pgm_read_word(&(MCStateStringTable[(uint8_t) mcState])), STATE_MAX_DESC_LENGTH);
+
+		tTMC = random(.05) + TMC;
+		tTMotor = random(.05) + TMotor;
+		tTCellMax = random(.05) + TCellMax;
+		trBrakeBalLast = rBrakeBalLast;
+		tvCar = vCar == 0 ? 0.0 : random(0.1) + vCar;
+		ttCurrentDelta = random(.01) + tCurrentDelta;
+		tVCellMin = random(.05) + VCellMin;
 
 		LCD.DLStart();
 
 		LCD.ColorRGB(0x00, 0xFF, 0xFF);
-		LCD.PrintText(5, 0, 28, 0, "TMC: %.2f", TMC);
-		LCD.PrintText(5, 25, 28, 0, "TMotor: %.2f", TMotor);
-		LCD.PrintText(5, 50, 28, 0, "TCellMax: %.2f", TCellMax);
-		LCD.PrintText(5, 75, 28, 0, "rBrakeBalLast: %.2f", rBrakeBalLast);
-		LCD.PrintText(5, 100, 28, 0, "vCar: %.2f", vCar);
-		LCD.PrintText(5, 125, 28, 0, "VCellMin: %.2f", VCellMin);
+		LCD.PrintText(5, 0, 28, 0, "TMC: %.2f", tTMC);
+		LCD.PrintText(5, 25, 28, 0, "TMotor: %.2f", tTMotor);
+		LCD.PrintText(5, 50, 28, 0, "TCellMax: %.2f", tTCellMax);
+		LCD.PrintText(5, 75, 28, 0, "rBrakeBalLast: %.2f", trBrakeBalLast);
+		LCD.PrintText(5, 100, 28, 0, "vCar: %.2f", tvCar);
+		LCD.PrintText(5, 125, 28, 0, "VCellMin: %.2f", tVCellMin);
 		LCD.PrintText(5, 150, 28, 0, "eMCControlState: %s", MCControlStateDesc);
 		LCD.PrintText(5, 175, 28, 0, "eShutdownState: %s", ShutdownStateDesc);
 
 		LCD.ColorRGB(0xFFFFFF);
-		LCD.PrintText(5, 200, 30, 0, "%.1f", tCurrentDelta);
+		LCD.PrintText(5, 200, 30, 0, "%.1f", ttCurrentDelta);
 
 		LCD.ColorRGB(0xFFFFFF);
 		LCD.Cmd_FGColor(0xFF0000);
 		LCD.Cmd_BGColor(0xFF0000);
-		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 30, 20, 20, 180, 0, 100 - (uint16_t) TMotor, 100);
+		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 30, 20, 20, 180, 0, 100 - (uint16_t) tTMotor, 100);
 		LCD.ColorRGB(0xFF0000);
 		LCD.PrintText(FT_DISPLAYWIDTH - 20, 240, 31, FT_OPT_CENTER, "M");
 
 		LCD.ColorRGB(0xFFFFFF);
 		LCD.Cmd_FGColor(0xFF0000);
 		LCD.Cmd_BGColor(0xFF0000);
-		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 90, 20, 20, 180, 0, 100 - (uint16_t) TMC, 100);
+		LCD.Cmd_Slider(FT_DISPLAYWIDTH - 90, 20, 20, 180, 0, 100 - (uint16_t) tTMC, 100);
 		LCD.ColorRGB(0xFF0000);
 		LCD.PrintText(FT_DISPLAYWIDTH - 80, 240, 31, FT_OPT_CENTER, "C");
 
 		LCD.DLEnd();
 		LCD.Finish();
+
+		_delay_ms(50.0);
 	}
 
 	void lapTrigger() {

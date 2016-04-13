@@ -832,7 +832,7 @@ FT_GEStatus FT_GC<FT_Trans>::ColorARGB(uint32_t argb) {
 
 template<class FT_Trans>
 FT_GEStatus FT_GC<FT_Trans>::PrintText(int16_t x, int16_t y, uint8_t Font, uint16_t Options, const char *fmt, ...) {
-	char s[64];
+	char s[128];
 	va_list args;
 	va_start(args, fmt);
 
